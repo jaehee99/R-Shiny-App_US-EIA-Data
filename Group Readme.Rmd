@@ -1,0 +1,24 @@
+---
+title: "Group Project"
+author: "Christopher Hopkins"
+date: "3/20/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+* Topic:
+
+Economic and enviormental research
+
+What we need:
+
+* We need three academic sources
+
+* Primary source of unclean data
+
+* Define use case
+
+* Once complete meet with professor
