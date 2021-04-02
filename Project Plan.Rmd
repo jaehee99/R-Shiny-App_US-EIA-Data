@@ -33,7 +33,14 @@ We will be making a map of the united states in a main panel with a sidebar pane
 
 ### Data Analysis and Visulization with User Choices and Results
 
+we will do a research along with a 
+shiny app that helps visualize how labor demand varies around the US as 
+energy inputs varies. We discussed on first focusing on the price of coal that
+reflects electricity use and then see how firms readjust their labor. In order 
+to see labor adjustments, we will look at the unemployment rate as well as 
+labor income data. 
 
+The visualization will be two U.S maps. The input will be a slider which will feature slider input animate so that the maps can react once the slider moves through time. The variables that will animate the map will be unemployment in one and energy prices on the other map. We want the user to see relations between input prices and labor demand.
 
 ### Team Member Responsibilities and Project Scheldue
 
