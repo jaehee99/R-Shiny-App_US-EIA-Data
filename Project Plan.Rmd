@@ -17,9 +17,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 - Santiago Nule
 
--Jaehee Lee
+- Jaehee Lee
 
--David Willbourne
+- David Willbourne
 
 ## Data Sources:
 
@@ -29,11 +29,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Layout
 
-We will be making a map of the united states in a main panel with a sidebar panel allowing the user to select at least two meterics, employment/unemployment and energy consumption/price . These meterics will then change the color of the map indicating relevant information, based on user selection.
+We will be making a map of the united states in a main panel with a sidebar panel allowing the user to select at least two metrics, employment/unemployment and energy consumption/price . These metrics will then change the color of the map indicating relevant information, based on user selection.
 
 ### Data Analysis and Visulization with User Choices and Results
 
-### Statistical Analysis and visualization with User Choices and Results
+
 
 ### Team Member Responsibilities and Project Scheldue
 
@@ -57,6 +57,15 @@ We will be making a map of the united states in a main panel with a sidebar pane
   
   - Jaehlee: Statistical analysis and Graphing
 
+Project Steps:
 
+1. Research and Research Question identification
 
+2. API 
+
+3. Data selection and cleaning
+
+4. Statistical analysis
+
+5. Graphing, design and layout. 
 
