@@ -9,9 +9,32 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+* Meeting log: 
+
+Meeting 1:
+
+In the first team meeting we discussed that we will do a research along with a 
+shiny app that helps visualize how labor demand varies around the US as 
+energy inputs varies. We discussed on first focusing on the price of coal that
+reflects electricity use and then see how firms readjust their labor. In order 
+to see labor adjustments, we will look at the unemployment rate as well as 
+labor income data. 
+
+We would expect that when the price of electricity increases in a given time 
+period, firms would need to lay of certain individuals in order to mitigate the cost 
+increase that is induced by the price increase. We want graphically display this 
+increase around different states.
+
+The data that wee need:
+
+-Time series data on unemployment.
+-Time series data on income.
+-Time series data on electricity or coal prices.
+
+
 * Topic:
 
-Economic and enviormental research
+Economic and environmental research. 
 
 What we need:
 
