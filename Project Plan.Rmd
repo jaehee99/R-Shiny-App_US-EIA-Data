@@ -1,0 +1,62 @@
+---
+title: "Plan Assesment"
+author: "Christopher Hopkins"
+date: "4/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# App Title: 
+
+### Team Members:
+
+- Christopher Hopkins
+
+- Santiago Nule
+
+-Jaehee Lee
+
+-David Willbourne
+
+## Data Sources:
+
+- U.S. Bureau of labor statistics, we will use their API: https://www.bls.gov/developers/
+
+- U.S.Energy Information Administration,  we will use their API: https://www.eia.gov/opendata/
+
+### Layout
+
+We will be making a map of the united states in a main panel with a sidebar panel allowing the user to select at least two meterics, employment/unemployment and energy consumption/price . These meterics will then change the color of the map indicating relevant information, based on user selection.
+
+### Data Analysis and Visulization with User Choices and Results
+
+### Statistical Analysis and visualization with User Choices and Results
+
+### Team Member Responsibilities and Project Scheldue
+
+1. Sprint one: (3/28/21 - 4/10/21)
+  
+  - David: Research and Research Questions
+  
+  - Santiago: Research and Research Questions
+  
+  - Christopher: API integration and Data Cleaning
+  
+  - Jaehlee: Data Cleaning and Statistical analysis
+
+2. Sprint two: (4/11/21 - 4/28/21)
+
+  - David: Front End, app design and layout
+  
+  - Santiago: Front End, app design and layout
+  
+  - Christopher: Statistical analysis and Graphing
+  
+  - Jaehlee: Statistical analysis and Graphing
+
+
+
+
