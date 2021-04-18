@@ -18,13 +18,19 @@ library(blsAPI) #BLS API
 library(rjson)
 library(eia) #Energy API
 ```
+*For bls data we will do 
+Chris: 14 first states in alphabetical order.
+Santiago: 14-26 states alphabetical order
+Jaehee: 26-39 states...
+David: 39-.... 
+
 
 ```{r}
-blsAPI("LAUST020000000000003" , 2, TRUE)
+blsAPI("LAUST020000000000003" , 2, TRUE) %>%
 
-eia_set_key("8a87a727635f5c834e2799cd76fcb820")
-
-eia_series("ELEC.PRICE.AL-IND.M")->df
-df$data
+# eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+# 
+# eia_series("ELEC.PRICE.AL-IND.M")->df
+# df$data
 ```
 
