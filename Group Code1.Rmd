@@ -17,6 +17,7 @@ library(devtools)
 library(blsAPI) #BLS API
 library(rjson)
 library(eia) #Energy API
+library(lubridate)
 ```
 *For bls data we will do 
 Chris: 14 first states in alphabetical order.
@@ -24,27 +25,45 @@ Santiago: 14-26 states alphabetical order
 Jaehee: 26-39 states...
 David: 39-.... 
 
-<<<<<<< HEAD:Group Code1.Rmd
-=======
-```{r}
-blsAPI(data , 2, TRUE)->test
 
+```{r}
+#BLS dataframe
+data<-list(seriesid = c("LAUST020000000000003", "LAUST010000000000003"))
+blsAPI(data , 2, TRUE)->test
 test
 
-data<-list(seriesid = c("LAUST020000000000003", "LAUST010000000000003"))
->>>>>>> dc75311909fb7acfc786ad00bad0287eda155720:Group Code.Rmd
+#Example of how to clean BLS dataframe
+test %>% 
+  mutate(seriesID = case_when(
+    str_detect(seriesID, "LAUST020000000000003") ~ "Alabama-Unemployment",
+    str_detect(seriesID, "LAUST010000000000003") ~ "Alaska-Unemployment"
+  )) %>% 
+  separate(seriesID, c("State", "Type"), sep = "-") %>% 
+  pivot_wider(names_from = "Type",
+              values_from = "value")
 
-```{r}
-blsAPI("LAUST020000000000003" , 2, TRUE) %>%
 
-<<<<<<< HEAD:Group Code1.Rmd
-# eia_set_key("8a87a727635f5c834e2799cd76fcb820")
-# 
-# eia_series("ELEC.PRICE.AL-IND.M")->df
-# df$data
-=======
-eia_series("ELEC.PRICE.AL-IND.M")->df_alabama_energy
-df_alabama_energy$data
->>>>>>> dc75311909fb7acfc786ad00bad0287eda155720:Group Code.Rmd
+#EIA dataframe 
+eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+eia_data <- c("ELEC.PRICE.AL-IND.M", "ELEC.PRICE.AK-ALL.M" )
+eia_series(eia_data)->df
+df$data
+
+#Example of how to clean EIA dataframe
+state_names <- c("Alabama", "Alaska")
+
+df %>% 
+  select(data)->df
+
+df %>% 
+  mutate(data = map(df$data, ~.x %>% 
+  mutate(
+         month = month(month, label = TRUE))))->df
+
+df %>% 
+  mutate(data = Map(cbind, df$data, state=state_names))->df
+
+df$data
+
 ```
 
