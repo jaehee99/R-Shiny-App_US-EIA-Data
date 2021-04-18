@@ -20,11 +20,15 @@ library(eia) #Energy API
 ```
 
 ```{r}
-blsAPI("LAUST020000000000003" , 2, TRUE)
+blsAPI(data , 2, TRUE)->test
+
+test
+
+data<-list(seriesid = c("LAUST020000000000003", "LAUST010000000000003"))
 
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
 
-eia_series("ELEC.PRICE.AL-IND.M")->df
-df$data
+eia_series("ELEC.PRICE.AL-IND.M")->df_alabama_energy
+df_alabama_energy$data
 ```
 
