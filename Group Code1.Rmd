@@ -24,13 +24,27 @@ Santiago: 14-26 states alphabetical order
 Jaehee: 26-39 states...
 David: 39-.... 
 
+<<<<<<< HEAD:Group Code1.Rmd
+=======
+```{r}
+blsAPI(data , 2, TRUE)->test
+
+test
+
+data<-list(seriesid = c("LAUST020000000000003", "LAUST010000000000003"))
+>>>>>>> dc75311909fb7acfc786ad00bad0287eda155720:Group Code.Rmd
 
 ```{r}
 blsAPI("LAUST020000000000003" , 2, TRUE) %>%
 
+<<<<<<< HEAD:Group Code1.Rmd
 # eia_set_key("8a87a727635f5c834e2799cd76fcb820")
 # 
 # eia_series("ELEC.PRICE.AL-IND.M")->df
 # df$data
+=======
+eia_series("ELEC.PRICE.AL-IND.M")->df_alabama_energy
+df_alabama_energy$data
+>>>>>>> dc75311909fb7acfc786ad00bad0287eda155720:Group Code.Rmd
 ```
 
