@@ -1,0 +1,30 @@
+---
+title: "Group Project"
+author: "Christopher Hopkins"
+date: "4/18/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(httr)
+library(keyring)
+library(devtools)
+library(blsAPI) #BLS API
+library(rjson)
+library(eia) #Energy API
+```
+
+```{r}
+blsAPI("LAUST020000000000003" , 2, TRUE)
+
+eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+
+eia_series("ELEC.PRICE.AL-IND.M")->df
+df$data
+```
+
