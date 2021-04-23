@@ -11,24 +11,43 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(tidyverse)
-library(httr)
-library(keyring)
 library(devtools)
+# Install blsAPI Package
 library(blsAPI) #BLS API
 library(rjson)
+# INstall eia Package
 library(eia) #Energy API
 library(lubridate)
 ```
 *For bls data we will do 
 Chris: 14 first states in alphabetical order.
-Santiago: 14-26 states alphabetical order
-Jaehee: 26-39 states...
-David: 39-.... 
+Santiago: 14-32 states alphabetical order
+Jaehee: 32-51 states...
+
 
 
 ```{r}
-#BLS dataframe
-data<-list(seriesid = c("LAUST020000000000003", "LAUST010000000000003"))
+#BLS dataframe for unemployment rate in Alaska and Alabama
+# Notes about ID the first two numbers are state and the letters at the start represent data set.
+# Steps for finding ID: Go to this link for state numbers: https://download.bls.gov/pub/time.series/sm/sm.state
+# Go to this link: https://beta.bls.gov/dataQuery/find?fq=survey:%5Bla%5D&s=popularity:D
+# Copy the code for one state
+# Change the first two numbers based on state code.
+# Easiest way to do this is copy the code for one state
+# state_list = state ID number
+create_BLSID <- function (data_set_ID, state_list, rest){
+  ID <-list()
+  for (state_list in state_list){
+    str <- str_c(data_set_ID, state_list, rest)
+  }
+}
+
+
+state_list <- c("02", "01")
+
+#data<-list(seriesid = c("LAUST020000000000003", "LAUST010000000000003"))
+data<-list(seriesid=create_BLSID("LAUST", state_list, "0000000000003"))
+data
 blsAPI(data , 2, TRUE)->test
 test
 
