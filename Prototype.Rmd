@@ -1,0 +1,94 @@
+---
+title: "Chris Code"
+author: "Christopher Hopkins"
+date: "4/25/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(devtools)
+# Install blsAPI Package
+library(blsAPI) #BLS API
+library(rjson)
+# INstall eia Package
+library(eia) #Energy API
+library(lubridate)
+```
+
+```{r}
+#Creating a tibble of state name, state abrv and BLS state code
+#This is a list of the state codes for the BLS database
+state_code <-c(1:2,4:6, 8:13, 15:42, 44:51,54:56)
+
+#Makes the tibble states
+states <-tibble(state_name = state.name, state_abrv = state.abb, state_code = state_code)
+
+states %>% 
+  mutate(state_code = case_when(
+    state_code<10 ~ str_c("0",as.character(state_code)),
+    state_code>=10 ~ str_c(as.character(state_code))
+  ))->states
+
+#Creating IDs BLS
+
+BLS_id <- tibble (start = c("LAUST", "TEST"), state = list(states$state_code), end = "0000000000003")
+
+unnest(BLS_id)->BLS_id
+
+BLS_id %>% 
+  mutate(id = str_c(start, state, end))->BLS_id
+
+BLS_id %>% 
+  filter(start == "LAUST")->BLS_id
+
+#Data set name i.e. Unemployment rate, Employment rate, etc.
+BLS_id %>% 
+  mutate(type = case_when(
+    start == "LAUST" ~ "Unemployment Rate"
+  ))
+
+#The Next part is for the eia data.
+
+#Creating IDs EIA
+
+eai_id <- tibble(start = "ELEC.PRICE.", abrv = list(state.abb), end = "-IND.M")
+
+unnest(eai_id)->eai_id
+
+eai_id %>% 
+  mutate(id = str_c(start, abrv, end))->eai_id
+
+eai_id
+
+#We can pull lots of data now pretty quickly.
+
+
+#Getting BLS data using generated IDs
+data<-list(seriesid = BLS_id$id)
+blsAPI(data , 2, TRUE)->Unemployment
+Unemployment
+
+#And just like that we have the data frame for unemployment for every state for a year.
+
+#Time to do the eia api
+
+eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+eia_data <- eai_id$id
+eia_data
+eia_series(eia_data)->df
+
+unnest(df, data)->Retail_cost_electricity
+Retail_cost_electricity
+
+#And now we hat the retail electric cost data frame.
+#We can further clean the data from here and pull it into a shiny app.
+#We can also quickly build a data frame with a large query letting us acess a lot of data.
+#We can also engineer custom queries if we have the time.
+#Let me know if you have questions.
+```
+
