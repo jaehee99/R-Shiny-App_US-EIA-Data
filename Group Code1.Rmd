@@ -62,35 +62,6 @@ test %>%
 
 #EIA dataframe 
 
-type <- list("ELEC.PRICE.", "test.")
-abrv <- list("AL", "AK")
-set <- list(c("ELEC.PRICE","-98.M"), c("test","-IND.M"))
-
-m <- list()
-m1<- list()
-for (x in set){
-  for (y in abrv){
-    
-  }
-}
-m
-
-
-create_EIA_data <- function (type, abrv, set){
-m <- list()
-for (x in set){
-  for (y in abrv){
-    for (z in type){
-      d<-paste0(z, y, x)
-      m[[z]]<-d
-    }
-  }
-}
-m
-}
-
-create_EIA_data(type, abrv, set)
-
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
 eia_data <- create_EIA_data(type, abrv, set)
 eia_data
