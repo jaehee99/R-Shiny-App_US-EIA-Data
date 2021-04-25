@@ -1,0 +1,150 @@
+---
+title: "Full data"
+author: "Jaehee and David"
+date: "4/25/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(devtools)
+library(blsAPI) 
+library(rjson)
+library(eia) 
+library(lubridate)
+library(diffdf)
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+state_code <-c(1:2,4:6, 8:13, 15:42, 44:51,54:56)
+states <-tibble(state_name = state.name, state_abrv = state.abb, state_code = state_code)
+states %>% 
+  mutate(state_code = case_when(
+    state_code<10 ~ str_c("0",as.character(state_code)),
+    state_code>=10 ~ str_c(as.character(state_code))
+  ))->states
+
+eia_avg_elect <- tibble(start = "ELEC.PRICE.", abrv = list(state.abb), end = "-IND.A")
+eia_carbon_emission <-tibble(start = "EMISS.CO2-TOTV-EC-TO-", abrv = list(state.abb), end = ".A")
+eia_customers <- tibble(start = "ELEC.CUSTOMERS.", abrv = list(state.abb), end = "-ALL.A")
+eia_retail_sales <- tibble(start = "ELEC.SALES.", abrv = list(state.abb), end = "-ALL.A")
+eia_total_electricity <- tibble(start = "ELEC.GEN.ALL-",  abrv = list(state.abb), end = "-99.A")
+
+unnest(eia_avg_elect)->eia_avg_elect_id
+unnest(eia_carbon_emission)->eia_carbon_e
+unnest(eia_customers)->eia_customers
+unnest(eia_retail_sales) -> eia_retail_sales
+unnest(eia_total_electricity) -> eia_total_electricity
+
+eia_avg_elect_id %>% 
+  mutate(id = str_c(start, abrv, end))->eia_avg_elect_id
+eia_carbon_e %>% 
+  mutate(id = str_c(start, abrv, end))->eia_carbon_e
+eia_customers %>% 
+  mutate(id = str_c(start, abrv, end))->eia_customers
+eia_retail_sales %>%  
+  mutate(id = str_c(start, abrv, end))-> eia_retail_sales 
+eia_total_electricity %>%  
+  mutate(id = str_c(start, abrv, end))-> eia_total_electricity 
+
+
+eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+eia_avg_elec <- eia_avg_elect_id$id
+eia_emmission<- eia_carbon_e$id
+eia_customers<- eia_customers$id
+eia_retail_sales <- eia_retail_sales$id
+eia_total_electricity <- eia_total_electricity$id
+
+eia_series(eia_avg_elec)->avg_elec
+eia_series(eia_emmission)->emmission
+eia_series(eia_customers)->customers
+eia_series(eia_retail_sales)->retail_sales
+eia_series(eia_total_electricity)->total_electricity
+
+
+avg_elec %>%  
+  select(data) -> avg_elec
+
+emmission %>%  
+  select(data) -> emmission
+
+customers %>% 
+  select(data) -> customers
+
+retail_sales %>%  
+  select(data) -> retail_sales
+
+total_electricity %>%  
+  select(data) -> total_electricity
+
+avg_elec %>%
+mutate(data = Map(cbind, avg_elec$data, state=states$state_name)) -> avg_elec
+
+emmission %>%
+mutate(data = Map(cbind, emmission$data, state=states$state_name)) -> emmission
+
+customers %>%
+mutate(data = Map(cbind, customers$data, state=states$state_name)) -> customers
+
+retail_sales %>%
+mutate(data = Map(cbind, retail_sales$data, state=states$state_name)) -> retail_sales
+
+total_electricity %>%
+mutate(data = Map(cbind, total_electricity$data, state=states$state_name)) -> total_electricity
+
+avg_elec %>%  
+  unnest() -> avg_elec
+
+emmission %>%  
+  unnest() -> emmission
+
+customers %>%  
+  unnest() -> customers
+
+retail_sales %>%  
+  unnest() -> retail_sales
+
+total_electricity %>%  
+  unnest() -> total_electricity
+
+rename(avg_elec, "Electricity_Price" = value) -> avg_elec
+rename(emmission, "Carbon_emissions" = value) -> emmission
+rename(customers, "Customers" = value) -> customers
+rename(retail_sales, "Retail_Sales" = value) -> retail_sales
+rename(total_electricity, "Total_electricity" = value) -> total_electricity
+
+avg_elec %>% 
+  filter(year>=2008 & year <= 2017) -> avg_elec
+
+emmission %>% 
+  filter(year>=2008 & year <= 2017) -> emmission
+
+customers %>% 
+  filter(year>=2008 & year <= 2017) -> customers
+
+retail_sales %>%  
+  filter(year>=2008 & year <= 2017) -> retail_sales
+
+total_electricity %>%  
+  filter(year>=2008 & year <= 2017) -> total_electricity
+
+merge(avg_elec, emmission, by = c("year", "date", "state")) -> full_data_0
+merge(full_data_0, customers, by = c("year", "date", "state")) -> full_data_1
+merge(full_data_1, retail_sales, by = c("year", "date", "state")) -> full_data_2
+merge(full_data_2, total_electricity, by = c("year", "date", "state")) -> final_data
+
+```
+# Test
+```{r}
+ggplot(final_data, aes(x = Electricity_Price, y = Total_electricity))+
+                    geom_point()+
+                    geom_smooth(method = "lm")
+```
+
+
