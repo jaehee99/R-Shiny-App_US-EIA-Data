@@ -62,15 +62,28 @@ BLS_id
 
 #Creating IDs EIA
 
-eai_id <- tibble(start = "ELEC.PRICE.", abrv = list(state.abb), end = "-IND.M")
+eai_avg_elect <- tibble(start = "ELEC.PRICE.", abrv = list(state.abb), end = "-IND.M")
 
-unnest(eai_id)->eai_id
+eai_carbon_emission <-tibble( start = "EMISS.CO2-TOTV-EC-TO-", abrv = list(state.abb), end = ".A")
 
-eai_id %>% 
-  mutate(id = str_c(start, abrv, end))->eai_id
+eai_customers <- tibble( start = "ELEC.CUSTOMERS.", abrv = list(state.abb), end = "-ALL.A")
 
-eai_id
+unnest(eai_avg_elect)->eai_avg_elect_id
 
+eai_avg_elect_id %>% 
+  mutate(id = str_c(start, abrv, end))->eai_avg_elect_id
+
+eai_avg_elect_id
+
+unnest(eai_carbon_emission)->eai_carbon_emission_id
+
+eai_carbon_emission_id %>% 
+ mutate(id = str_c(start, abrv, end))->eai_carbon_emission_id
+
+unnest(eai_customers)->eai_customers
+
+eai_customers %>% 
+  mutate(id = str_c(start, abrv, end))->eai_customers_id
 #We can pull lots of data now pretty quickly.
 
 BLS_id$seriesID
@@ -92,12 +105,22 @@ full_join(Unemployment1, Unemployemnt2)->Unemployment
 #Time to do the eia api
 
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
-eia_data <- eai_id$id
-eia_data
-eia_series(eia_data)->df
+eia_avg_elec <- eai_avg_elect_id$id
+eia_emmission<- eai_carbon_emission_id$id
+eia_customers<- eai_customers_id
+eia_series(eia_avg_elec)->avg_elec
+eia_emmission
+eia_series("EMISS.CO2-TOTV-EC-TO-AL.A")
+eia_series(eia_emmission)->emmissions_carbon
+avg_elec
+emmissions_carbon
+eia_series(eai_data[51:100])
+
+df
 
 unnest(df, data)->Retail_cost_electricity
 Retail_cost_electricity
+
 
 #And now we hat the retail electric cost data frame.
 #We can further clean the data from here and pull it into a shiny app.
@@ -163,7 +186,7 @@ BLS_data %>%
 eai_data %>% 
   filter(year>=2019)->eai_data
 
-#So we have two columns witht the values from each data frame.
+#So we have two columns with the values from each data frame.
 eai_data %>% 
   rename(avg_electricity = value)->eai_data
 BLS_data %>% 
@@ -175,3 +198,4 @@ Full_data %>%
   select(-type)->Full_data
 Full_data
 ```
+
