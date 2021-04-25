@@ -114,11 +114,9 @@ eia_series("EMISS.CO2-TOTV-EC-TO-AL.A")
 eia_series(eia_emmission)->emmissions_carbon
 avg_elec
 emmissions_carbon
-eia_series(eai_data[51:100])
 
-df
 
-unnest(df, data)->Retail_cost_electricity
+unnest(avg_elec, data)->Retail_cost_electricity
 Retail_cost_electricity
 
 
