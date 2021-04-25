@@ -18,6 +18,8 @@ library(rjson)
 # INstall eia Package
 library(eia) #Energy API
 library(lubridate)
+#compares data frames
+library(diffdf)
 ```
 
 ```{r}
@@ -73,10 +75,17 @@ eai_id
 
 BLS_id$seriesID
 #Getting BLS data using generated IDs
+#BLS API has a limit of 25 returns per querey so you have to run it twice.
 data<-list(seriesid = BLS_id$seriesID)
+data2<-list(seriesid = BLS_id$seriesID[26:50])
 data
-blsAPI(data , 2, TRUE)->Unemployment
-Unemployment
+data2
+blsAPI(data , 2, TRUE)->Unemployment1
+blsAPI(data2, 2, TRUE)->Unemployemnt2
+Unemployment1
+Unemployemnt2
+
+full_join(Unemployment1, Unemployemnt2)->Unemployment
 
 #And just like that we have the data frame for unemployment for every state for a year.
 
@@ -147,7 +156,22 @@ BLS_data %>%
   rename(month = periodName) %>% 
   relocate(c(state_name, abb, month))->BLS_data
 
-BLS_data
+#The BLS data frame is more up to date. We will need to remove march of this year.
+BLS_data %>% 
+  filter(!(month == "March" & year == "2021"))->BLS_data
+#The eai data frame goes back farther than the BLS so we need to remove the excess.
 eai_data %>% 
-  filter(year>=2019)
+  filter(year>=2019)->eai_data
+
+#So we have two columns witht the values from each data frame.
+eai_data %>% 
+  rename(avg_electricity = value)->eai_data
+BLS_data %>% 
+  rename(unemployment_rate = value)->BLS_data
+
+#creating the full data set
+full_join(BLS_data, eai_data)->Full_data
+Full_data %>% 
+  select(-type)->Full_data
+Full_data
 ```
