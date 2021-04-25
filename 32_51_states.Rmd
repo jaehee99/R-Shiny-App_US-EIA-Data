@@ -1,0 +1,108 @@
+---
+title: "32-51 states..."
+author: "Jaehee Lee"
+date: "4/23/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(httr)
+library(keyring)
+library(devtools)
+library(blsAPI) #BLS API
+library(rjson)
+library(eia) #Energy API
+library(lubridate)
+```
+*For bls data  
+```{r}
+#BLS dataframe
+data_1 <-list(seriesid = c("LAUST360000000000003","LAUST370000000000003", "LAUST380000000000003", "LAUST390000000000003","LAUST400000000000003","LAUST410000000000003","LAUST420000000000003","LAUST440000000000003","LAUST450000000000003","LAUST460000000000003","LAUST470000000000003","LAUST480000000000003","LAUST490000000000003","LAUST500000000000003","LAUST510000000000003","LAUST530000000000003","LAUST540000000000003","LAUST550000000000003","LAUST560000000000003"))
+blsAPI(data_1 , 2, TRUE) -> test_1
+test_1
+
+#Example of how to clean BLS dataframe
+test_1 %>% 
+  mutate(seriesID = case_when(
+    str_detect(seriesID, "LAUST360000000000003") ~ "New York-Unemployment",
+    str_detect(seriesID, "LAUST370000000000003") ~ "North Carolina-Unemployment",
+    str_detect(seriesID, "LAUST380000000000003") ~ "North Dakota-Unemployment", 
+    str_detect(seriesID, "LAUST390000000000003") ~ "Ohio-Unemployment",
+    str_detect(seriesID, "LAUST400000000000003") ~ "Oklahoma-Unemployment",
+    str_detect(seriesID, "LAUST410000000000003") ~ "Oregon-Unemployment",
+    str_detect(seriesID, "LAUST420000000000003") ~ "Pennsylvania-Unemployment",
+    str_detect(seriesID, "LAUST440000000000003") ~ "Rhode Island-Unemployment",
+    str_detect(seriesID, "LAUST450000000000003") ~ "South Carolina-Unemployment",
+    str_detect(seriesID, "LAUST460000000000003") ~ "South Dakota-Unemployment",
+    str_detect(seriesID, "LAUST470000000000003") ~ "Tennessee-Unemployment",
+    str_detect(seriesID, "LAUST480000000000003") ~ "Texas-Unemployment",
+    str_detect(seriesID, "LAUST490000000000003") ~ "Utah-Unemployment",
+    str_detect(seriesID, "LAUST500000000000003") ~ "Vermont-Unemployment",
+    str_detect(seriesID, "LAUST510000000000003") ~ "Virginia-Unemployment",
+    str_detect(seriesID, "LAUST530000000000003") ~ "Washington-Unemployment",
+    str_detect(seriesID, "LAUST540000000000003") ~ "West Virginia-Unemployment",
+    str_detect(seriesID, "LAUST550000000000003") ~ "Wisconsin-Unemployment",
+    str_detect(seriesID, "LAUST560000000000003") ~ "Wyoming-Unemployment"
+  )) %>% 
+  separate(seriesID, c("State", "Type"), sep = "-") %>% 
+  pivot_wider(names_from = "Type",
+              values_from = "value") -> bls_1
+
+
+# EIA dataframe
+eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+eia_data <- c("ELEC.PRICE.NY-IND.M","ELEC.PRICE.NC-IND.M", "ELEC.PRICE.ND-ALL.M","ELEC.PRICE.OH-ALL.M","ELEC.PRICE.OK-ALL.M","ELEC.PRICE.OR-ALL.M","ELEC.PRICE.PA-ALL.M","ELEC.PRICE.RI-ALL.M","ELEC.PRICE.SC-ALL.M","ELEC.PRICE.SD-ALL.M","ELEC.PRICE.TN-ALL.M","ELEC.PRICE.TX-ALL.M","ELEC.PRICE.UT-ALL.M","ELEC.PRICE.VT-ALL.M","ELEC.PRICE.VA-ALL.M","ELEC.PRICE.WA-ALL.M","ELEC.PRICE.WV-ALL.M","ELEC.PRICE.WI-ALL.M", "ELEC.PRICE.WY-ALL.M")
+eia_series(eia_data)->df
+df$data
+
+
+#Example of how to clean EIA dataframe
+state_names <- c("New York","North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah","Vermont", "Virginia", "Washington", "West Virginia","Wisconsin", "Wyoming")
+
+df %>%
+  select(data)->df
+
+df %>%
+  mutate(data = map(df$data, ~.x %>%
+  mutate(
+         month = month(month, label = TRUE))))->df
+
+df %>%
+  mutate(data = Map(cbind, df$data, state=state_names))->df
+
+df$data
+
+# combine two data together
+df%>%  
+  unnest() -> energy
+
+unemployment <- bls_1
+
+energy %>%  
+  mutate(periodName = month(energy$date, label = TRUE, abbr = FALSE)) -> energy
+
+rename(energy, c("State" = state, "Energy_value" = value)) -> energy
+
+merge(energy, unemployment, by = c("year", "State", "periodName")) -> full_data
+# change to numeric
+as.numeric(full_data$Unemployment) -> full_data$Unemployment
+str(full_data)
+# load libraries
+library(ggplot2)
+library(dplyr)
+
+# plot time series (energy_value, time)
+ggplot(full_data, aes(x=date, y=Energy_value, color = State)) +
+  geom_line() 
+
+# plot time series (Unemployment, time)
+ggplot(full_data, aes(x=date, y=Unemployment, color = State)) +
+  geom_line() 
+
+
+```
