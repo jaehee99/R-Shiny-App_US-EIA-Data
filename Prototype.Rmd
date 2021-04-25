@@ -28,11 +28,14 @@ state_code <-c(1:2,4:6, 8:13, 15:42, 44:51,54:56)
 #Makes the tibble states
 states <-tibble(state_name = state.name, state_abrv = state.abb, state_code = state_code)
 
+states
+
 states %>% 
   mutate(state_code = case_when(
     state_code<10 ~ str_c("0",as.character(state_code)),
     state_code>=10 ~ str_c(as.character(state_code))
   ))->states
+
 
 #Creating IDs BLS
 
@@ -41,7 +44,7 @@ BLS_id <- tibble (start = c("LAUST", "TEST"), state = list(states$state_code), e
 unnest(BLS_id)->BLS_id
 
 BLS_id %>% 
-  mutate(id = str_c(start, state, end))->BLS_id
+  mutate(seriesID = str_c(start, state, end))->BLS_id
 
 BLS_id %>% 
   filter(start == "LAUST")->BLS_id
@@ -50,8 +53,9 @@ BLS_id %>%
 BLS_id %>% 
   mutate(type = case_when(
     start == "LAUST" ~ "Unemployment Rate"
-  ))
+  ))->BLS_id
 
+BLS_id
 #The Next part is for the eia data.
 
 #Creating IDs EIA
@@ -67,9 +71,10 @@ eai_id
 
 #We can pull lots of data now pretty quickly.
 
-
+BLS_id$seriesID
 #Getting BLS data using generated IDs
-data<-list(seriesid = BLS_id$id)
+data<-list(seriesid = BLS_id$seriesID)
+data
 blsAPI(data , 2, TRUE)->Unemployment
 Unemployment
 
@@ -91,4 +96,58 @@ Retail_cost_electricity
 #We can also engineer custom queries if we have the time.
 #Let me know if you have questions.
 ```
+```{r}
+#Graph friendly data frame
 
+Retail_cost_electricity %>% 
+  select(geography, date, value)->eai_data
+eai_data 
+
+#So we can add the months to the eai data
+month_num<-tibble(month_name = month.name, month = c(1:12))
+#allows us to join the data frames by month
+month_num %>% 
+  mutate(month = case_when(
+    month<10 ~ str_c("0",as.character(month)),
+    month>=10 ~ str_c(as.character(month))
+  ))->month_num
+#Get's us year and month which we will need.
+eai_data %>% 
+  separate(geography, c("country", "abb"),"-") %>% 
+  separate(date, c("year", "month", "day"), "-") %>% 
+  select(-day)->eai_data
+#lets us add states name to data frame
+states %>% 
+  rename(abb = state_abrv)->states
+
+#adds month name and state names
+left_join(eai_data, month_num, by = "month")->eai_data
+left_join(eai_data, states, by = "abb")->eai_data
+
+eai_data
+#Makes things look nice.
+eai_data %>% 
+  select(-c(country, month, state_code)) %>% 
+  relocate(c(state_name, abb, month_name, year, value)) %>% 
+  rename(month = month_name)->eai_data
+
+#Making a better BLS
+#Changed name to do join
+states %>% 
+  rename(state = state_code)->states
+Unemployment->BLS_data
+
+#adding state name and type
+left_join(BLS_data, BLS_id, by = "seriesID")->BLS_data
+left_join(BLS_data, states, by = "state")->BLS_data
+
+#cleaning the data frame
+BLS_data %>% 
+  select(-c(period, start, end, seriesID, state)) %>% 
+  rename(month = periodName) %>% 
+  relocate(c(state_name, abb, month))->BLS_data
+
+BLS_data
+eai_data %>% 
+  filter(year>=2019)
+```
