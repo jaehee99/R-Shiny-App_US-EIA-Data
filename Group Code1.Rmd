@@ -41,10 +41,8 @@ Jaehee: 32-51 states...
 # state_list = state ID number
 <<<<<<< HEAD
 create_BLSID <- function (data_set_ID, state_list, rest){
-  ID <-list()
-  for (state_list in state_list){
-    str <- str_c(data_set_ID, state_list, rest)
-  }
+  map2()
+
 }
 
 
@@ -143,8 +141,10 @@ df$data
 
 ```{r}
 #EIA dataframe 
+
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
-eia_data <- c("ELEC.PRICE.AL-IND.M", "ELEC.PRICE.AK-ALL.M" )
+eia_data <- create_EIA_data(type, abrv, set)
+eia_data
 eia_series(eia_data)->df
 df$data
 
@@ -165,5 +165,31 @@ df %>%
 df$data
 
 >>>>>>> santi-branch
+```
+
+```{r}
+
+#Creating IDs EIA
+
+eai_id <- tibble(start = c("ELEC.PRICE.", "TEST.PRICE."), abrv = list(c("AL", "AK", "MD", "DC")), end = c("-TEST1", "-TEST2"))
+
+unnest(eai_id)->eai_id
+
+eai_id %>% 
+  mutate(id = str_c(start, abrv, end))->eai_id
+
+
+#Creating IDs BLS
+
+BLS_id <- tibble (start = c("LAUST", "TEST"), state = list(c("02", "01", "52", "32")), end = c("000000", "00000002"))
+
+unnest(BLS_id)->BLS_id
+
+BLS_id %>% 
+  mutate(id = str_c(start, state, end))->BLS_id
+
+BLS_id
+
+
 ```
 

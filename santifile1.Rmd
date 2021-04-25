@@ -1,0 +1,82 @@
+---
+title: "14_32_states"
+author: "santiago"
+date: "4/25/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(httr)
+library(keyring)
+library(devtools)
+library(blsAPI) #BLS API
+library(rjson)
+library(eia) #Energy API
+library(lubridate)
+```
+
+```{r}
+state_code <-c(1:2,4:6, 8:13, 15:42, 44:51,54:56)
+
+
+#Makes the tibble states
+states <-tibble(state_name = state.name, state_abrv = state.abb, state_code = state_code)
+
+
+states %>% 
+  mutate(state_code = case_when(
+    state_code<10 ~ str_c("0",as.character(state_code)),
+    state_code>=10 ~ str_c(as.character(state_code))
+  ))->states
+
+
+#Creating IDs BLS
+
+BLS_id <- tibble (start = c("LAUST", "TEST"), state = list(states$state_code), end = "0000000000003")
+
+unnest(BLS_id)->BLS_id
+
+BLS_id %>% 
+  mutate(seriesID = str_c(start, state, end))->BLS_id
+
+BLS_id %>% 
+  filter(start == "LAUST")->BLS_id
+
+#Data set name i.e. Unemployment rate, Employment rate, etc.
+BLS_id %>% 
+  mutate(type = case_when(
+    start == "LAUST" ~ "Unemployment Rate"
+  ))->BLS_id
+
+#The Next part is for the eia data.
+
+#Creating IDs EIA
+
+eai_id <- tibble(start = "ELEC.PRICE.", abrv = list(state.abb), end = "-IND.M")
+
+unnest(eai_id)->eai_id
+
+eai_id %>% 
+  mutate(id = str_c(start, abrv, end))->eai_id
+
+#We can pull lots of data now pretty quickly.
+
+BLS_id$seriesID
+#Getting BLS data using generated IDs
+data<-list(seriesid = BLS_id$seriesID)
+data
+blsAPI(data , 2, TRUE)->Unemployment
+Unemployment
+
+#And just like that we have the data frame for unemployment for every state for a year.
+
+read_csv(file = "data/eai_retail_cost_elec.csv")->eia_df
+
+```
+
+
