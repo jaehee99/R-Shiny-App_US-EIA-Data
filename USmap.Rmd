@@ -14,7 +14,7 @@ library(tidyverse)
 ```
 
 ```{r}
-read_csv(file = "data/Full_data.csv")->full_data
+read_csv(file = "data/Full_data_4_26.csv")->full_data
 read_rds("../../lectures_class/95_mapping/data/covid_data.rds")->df_all
 ```
 
