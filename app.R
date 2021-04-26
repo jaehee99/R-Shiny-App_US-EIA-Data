@@ -25,13 +25,17 @@
  # Next, we add on the states (so each row is a state, then the dataframe of its data) and unnest() into a longer dataframe
  # Finally, we filter for the years all dataframes have in common
  pull_data <- function(api_start, api_end) {
-     str_c(api_start, state.abb, api_end) %>% 
+     tibble(start = api_start, abrv = state.abb, end = api_end) %>% 
+         mutate(id = str_c(start, abrv, end)) %>%
+         select(id) %>% 
+         as.list() %>% 
+         # magrittr:extract2(x, 1) is equivalent to x[[1]]
+         magrittr::extract2(1) %>% 
          eia_series() %>% 
          select(data) %>% 
          mutate(state = state.name) %>% 
          select(state, everything()) %>% 
-         unnest(data) %>%
-         filter(year>=2008 & year <= 2017)
+         unnest(data)
  }
  
  # call function for each variable we want and rename the standard "value" column to the more descriptive name we want in the final data
@@ -54,6 +58,55 @@
      select(state, year, electricity_price, carbon_emissions, customers, retail_sales, total_electricity)
  rm(avg_elec, customers, emission, retail_sales, total_electricity)
  
+ # Create list of API calls for hourly electricity demand data using str_c
+ # Manually add electric grid regions, since they don't align with states
+ # Unnest and select relevant data
+ # Create list of API calls for hourly electricity demand data using str_c
+ # Manually add electric grid regions, since they don't align with states
+ # Unnest and select relevant data
+ # Create local time variable (rather than UTC) so plots are easier to intepret
+ load_data <- str_c("EBA.",
+                    c("CAL", "CAR", "CENT", "FLA", "MIDA", "MIDW", "NE", "NY", "NW", "SE", "SW", "TEN", "TEX"),
+                    "-ALL.D.H") %>%
+     eia_series() %>%
+     mutate(
+         region = c(
+             "California",
+             "Carolinas",
+             "Central",
+             "Florida",
+             "Mid-Atlantic",
+             "Midwest",
+             "New England",
+             "New York",
+             "Northwest",
+             "Southeast",
+             "Southwest",
+             "Tennessee",
+             "Texas"
+         )
+     ) %>%
+     unnest(data) %>%
+     select(region, "MWh" = value, "date_utc" = date) %>%
+     mutate(
+         date_local = case_when(
+             region == "California" ~ with_tz(date_utc, tzone = "America/Los_Angeles"),
+             region == "Carolinas" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "Central" ~ with_tz(date_utc, tzone = "America/Denver"),
+             region == "Florida" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "Mid-Atlantic" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "Midwest" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "New England" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "New York" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "Northwest" ~ with_tz(date_utc, tzone = "America/Los_Angeles"),
+             region == "Southeast" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "Southwest" ~ with_tz(date_utc, tzone = "America/Denver"),
+             region == "Tennessee" ~ with_tz(date_utc, tzone = "America/Chicago"),
+             region == "Texas" ~ with_tz(date_utc, tzone = "America/Chicago")
+         )
+     ) %>%
+     select(-date_utc)%>% 
+     filter(date_local >= ymd("2020-04-26"))
  
 #  # Creates a dataframe with the state name, abbreviation, and "state code"
 #  state_code <-c(1:2,4:6, 8:13, 15:42, 44:51,54:56)
@@ -208,12 +261,25 @@ ui <- shinyUI(navbarPage("FinalProject",
                                       checkboxInput("OLSselect",
                                                     "Add OLS")),
                                   mainPanel(plotOutput("plot2"))),
+                         tabPanel("daily load analysis",
+                             sidebarPanel(
+                                 selectInput("tab3_state1", "State 1",
+                                             choices = ""),
+                                 selectInput("tab3_state2", "State 2",
+                                             choices = ""),
+                                 dateInput(
+                                     "tab3_date1", "Date to Compare"
+                                 ),
+                         ),
+                         mainPanel(plotOutput("tab3_plot1"),
+                                   plotOutput("tab3_plot2"))),
                          tabPanel("spreadsheet",
                                   fluidPage(
                                       tableOutput("table2")
                                   ))
 )
 )
+
 
 # if (is.numeric(Full_data[[input$var1]])){
 #     if (input$logselect == TRUE){
@@ -299,7 +365,7 @@ server <- function(input, output, session){
             if(input$OLSselect == TRUE){
                 Full_data %>%
                     filter(!!input$filt3 == !!input$filt4) %>% 
-                ggplot(, aes(x = !!input$var2, y = !!input$var3))+
+                ggplot(aes(x = !!input$var2, y = !!input$var3))+
                     geom_jitter()+
                     geom_smooth(method = 'lm')
                 }
@@ -348,6 +414,39 @@ server <- function(input, output, session){
         Full_data %>% 
             select_if(is.numeric)
     })
+    
+    observe({
+        
+        updateSelectInput(session,
+                          "tab3_state1",
+                          choices = load_data %>% 
+                              distinct(region))
+    })
+    
+    observe({
+        
+        updateSelectInput(session,
+                          "tab3_state2",
+                          choices = load_data %>% 
+                              distinct(region))
+    })
+    
+    output$tab3_plot1 <- renderPlot({
+        load_data %>% 
+            filter(floor_date(date_local, unit = "day") == !!input$tab3_date1) %>% 
+            filter(region == !!input$tab3_state1) %>% 
+            ggplot(aes(x = date_local, y = MWh)) +
+            geom_line()
+    })
+    
+    output$tab3_plot2 <- renderPlot({
+        load_data %>% 
+            filter(floor_date(date_local, unit = "day") == !!input$tab3_date1) %>% 
+            filter(region == !!input$tab3_state2) %>% 
+            ggplot(aes(x = date_local, y = MWh)) +
+            geom_line()
+    })
+    
 }
 
 shinyApp(ui, server)

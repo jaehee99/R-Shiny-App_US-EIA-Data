@@ -15,31 +15,52 @@ library(lubridate)
 ```{r}
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
 
-# Create list of API calls using str_c
+# Create list of API calls for hourly electricity demand data using str_c
 # Manually add electric grid regions, since they don't align with states
 # Unnest and select relevant data
-load_data <- str_c("EBA.", region_abbreviations, "-ALL.D.H") %>% 
-  eia_series() %>% 
-  mutate(region = c("California", "Carolinas", "Central", "Florida", "Mid-Atlantic", "Midwest", "New England", "New York", "Northwest", "Southeast", "Southwest", "Tennessee", "Texas")) %>% 
-  unnest(data) %>% 
-  select(region, "MWh" = value, "date_utc" = date)
-
-# Existing timezones are UTC; create local time variable so plots are easier to intepret
-load_data$date_local <- case_when(
-  load_data$region == "California" ~ with_tz(load_data$date_utc, tzone = "America/Los_Angeles"),
-  load_data$region == "Carolinas" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
-  load_data$region == "Central" ~ with_tz(load_data$date_utc, tzone = "America/Denver"),
-  load_data$region == "Florida" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
-  load_data$region == "Mid-Atlantic" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
-  load_data$region == "Midwest" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
-  load_data$region == "New England" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
-  load_data$region == "New York" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
-  load_data$region == "Northwest" ~ with_tz(load_data$date_utc, tzone = "America/Los_Angeles"),
-  load_data$region == "Southeast" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
-  load_data$region == "Southwest" ~ with_tz(load_data$date_utc, tzone = "America/Denver"),
-  load_data$region == "Tennessee" ~ with_tz(load_data$date_utc, tzone = "America/Chicago"),
-  load_data$region == "Texas" ~ with_tz(load_data$date_utc, tzone = "America/Chicago")
-)
+# Create local time variable (rather than UTC) so plots are easier to intepret
+load_data <- str_c("EBA.",
+                   c("CAL", "CAR", "CENT", "FLA", "MIDA", "MIDW", "NE", "NY", "NW", "SE", "SW", "TEN", "TEX"),
+                   "-ALL.D.H") %>%
+  eia_series() %>%
+  mutate(
+    region = c(
+      "California",
+      "Carolinas",
+      "Central",
+      "Florida",
+      "Mid-Atlantic",
+      "Midwest",
+      "New England",
+      "New York",
+      "Northwest",
+      "Southeast",
+      "Southwest",
+      "Tennessee",
+      "Texas"
+    )
+  ) %>%
+  unnest(data) %>%
+  select(region, "MWh" = value, "date_utc" = date) %>%
+  mutate(
+    date_local = case_when(
+      region == "California" ~ with_tz(date_utc, tzone = "America/Los_Angeles"),
+      region == "Carolinas" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "Central" ~ with_tz(date_utc, tzone = "America/Denver"),
+      region == "Florida" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "Mid-Atlantic" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "Midwest" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "New England" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "New York" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "Northwest" ~ with_tz(date_utc, tzone = "America/Los_Angeles"),
+      region == "Southeast" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "Southwest" ~ with_tz(date_utc, tzone = "America/Denver"),
+      region == "Tennessee" ~ with_tz(date_utc, tzone = "America/Chicago"),
+      region == "Texas" ~ with_tz(date_utc, tzone = "America/Chicago")
+    )
+  ) %>%
+  select(-date_utc) %>% 
+  filter(date_local >= ymd("2020-04-26"))
 ```
 
 ```{r}
