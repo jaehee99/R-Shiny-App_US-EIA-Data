@@ -15,8 +15,7 @@ library(eia)
 ```
 
 ``` {r}
-############## not sure if we need the line below
-# eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+eia_set_key("8a87a727635f5c834e2799cd76fcb820")
 
 # First, create a tibble with the api start, the state abbreviation, and the api end
 # Next, we create an id for each state based on that tibble, which we will use in the api call
@@ -63,7 +62,7 @@ full_data <- left_join(avg_elec, emission, by = c("state", "date", "year")) %>%
   left_join(customers, by = c("state", "date", "year")) %>% 
   left_join(retail_sales, by = c("state", "date", "year")) %>% 
   left_join(total_electricity, by = c("state", "date", "year")) %>% 
-  select(state, electricity_price, carbon_emissions, customers, retail_sales, total_electricity, everything())
+  select(state, year, electricity_price, carbon_emissions, customers, retail_sales, total_electricity)
 rm(avg_elec, customers, emission, retail_sales, total_electricity)
 ```
 
