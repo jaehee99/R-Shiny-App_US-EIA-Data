@@ -69,6 +69,11 @@ rm(avg_elec, customers, emission, retail_sales, total_electricity)
 full_data
 ```
 
+```{r}
+write.csv(full_data,"Full_data.csv", row.names = FALSE)
+
+```
+
 # Test
 ```{r}
 ggplot(full_data, aes(x = electricity_price, y = total_electricity))+
