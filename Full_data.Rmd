@@ -91,7 +91,7 @@ retail_sales <- tibble(start = "ELEC.SALES.", abrv = state.abb, end = "-ALL.A") 
   filter(year>=2008 & year <= 2017)
   
 
-total_electricity <- tibble(start = "ELEC.GEN.ALL-",  abrv = state.abb, end = "-99.A") %>%  
+total_electricity <- tibble(start = "ELEC.GEN.ALL-",  abrv = state.abb, end = "-99.A") %>%
   mutate(id = str_c(start, abrv, end))%>%
   select(id) %>% 
   as.list() %>% 
@@ -106,11 +106,11 @@ total_electricity <- tibble(start = "ELEC.GEN.ALL-",  abrv = state.abb, end = "-
 ```
 
 ```{r}
-merge(avg_elec, emmission, by = c("year", "date", "state")) -> full_data_0
-merge(full_data_0, customers, by = c("year", "date", "state")) -> full_data_1
-merge(full_data_1, retail_sales, by = c("year", "date", "state")) -> full_data_2
-merge(full_data_2, total_electricity, by = c("year", "date", "state")) -> final_data
-
+full_data <- left_join(avg_elec, emission, by = c("state", "date", "year")) %>% 
+  left_join(customers, by = c("state", "date", "year")) %>% 
+  left_join(retail_sales, by = c("state", "date", "year")) %>% 
+  left_join(total_electricity, by = c("state", "date", "year")) %>% 
+  select(state, electricity_price, carbon_emissions, customers, retail_sales, total_electricity, everything())
 ```
 
 # Test
