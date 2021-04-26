@@ -55,7 +55,7 @@
      left_join(customers, by = c("state", "date", "year")) %>% 
      left_join(retail_sales, by = c("state", "date", "year")) %>% 
      left_join(total_electricity, by = c("state", "date", "year")) %>% 
-     select(state, electricity_price, carbon_emissions, customers, retail_sales, total_electricity, everything())
+     select(state, year, electricity_price, carbon_emissions, customers, retail_sales, total_electricity)
  rm(avg_elec, customers, emission, retail_sales, total_electricity)
  
  
@@ -184,12 +184,12 @@ ui <- shinyUI(navbarPage("FinalProject",
                                   sidebarPanel(
                                       varSelectInput("filt1",
                                                      "Filter Variable",
-                                                     data = Full_data[c(1,3)]),
+                                                     data = Full_data[c(1:2)]),
                                       selectInput("filt2", "Select Filter",
                                                   choices = ""),
                                       varSelectInput("var1",
                                                      "Plot 1 Variable",
-                                                     data = Full_data[4:8])),
+                                                     data = Full_data[3:7])),
                                   mainPanel(fluidRow(10,
                                                      column(5,
                                                             plotOutput("plot1")),
@@ -200,15 +200,15 @@ ui <- shinyUI(navbarPage("FinalProject",
                                   sidebarPanel(
                                       varSelectInput("filt3",
                                                     "Filter Variable",
-                                                    data = Full_data[c(1,3)]),
+                                                    data = Full_data[c(1:2)]),
                                       selectInput("filt4", "Select Filter",
                                                   choices = ""),
                                       varSelectInput("var2",
                                                      "X axis",
-                                                     data = Full_data),
+                                                     data = Full_data[1:2]),
                                       varSelectInput("var3",
                                                      "Y axis",
-                                                     data = Full_data),
+                                                     data = Full_data[3:7]),
                                       checkboxInput("OLSselect",
                                                     "Add OLS")),
                                   mainPanel(plotOutput("plot2"))),
@@ -266,7 +266,7 @@ server <- function(input, output, session){
     output$plot1 <- renderPlot({
 
         Full_data %>%
-            filter(!!input$filt3 == !!input$filt4) %>% 
+            filter(!!input$filt1 == !!input$filt2) %>% 
         ggplot(aes(x=!!input$var1))+
             geom_density()
 
