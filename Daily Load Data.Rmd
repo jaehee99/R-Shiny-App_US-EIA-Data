@@ -15,31 +15,36 @@ library(lubridate)
 ```{r}
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
 
-df <- str_c("EBA.", region_abbreviations, "-ALL.D.H") %>% 
+# Create list of API calls using str_c
+# Manually add electric grid regions, since they don't align with states
+# Unnest and select relevant data
+load_data <- str_c("EBA.", region_abbreviations, "-ALL.D.H") %>% 
   eia_series() %>% 
   mutate(region = c("California", "Carolinas", "Central", "Florida", "Mid-Atlantic", "Midwest", "New England", "New York", "Northwest", "Southeast", "Southwest", "Tennessee", "Texas")) %>% 
-  select(region, data) %>% 
   unnest(data) %>% 
-  mutate(date = as_datetime(date)) %>% 
   select(region, "MWh" = value, "date_utc" = date)
 
-df$date_local <- case_when(
-  df$region == "California" ~ with_tz(df$date_utc, tzone = "America/Los_Angeles"),
-  df$region == "Carolinas" ~ with_tz(df$date_utc, tzone = "America/New_York"),
-  df$region == "Central" ~ with_tz(df$date_utc, tzone = "America/Denver"),
-  df$region == "Florida" ~ with_tz(df$date_utc, tzone = "America/New_York"),
-  df$region == "Mid-Atlantic" ~ with_tz(df$date_utc, tzone = "America/New_York"),
-  df$region == "Midwest" ~ with_tz(df$date_utc, tzone = "America/New_York"),
-  df$region == "New England" ~ with_tz(df$date_utc, tzone = "America/New_York"),
-  df$region == "New York" ~ with_tz(df$date_utc, tzone = "America/New_York"),
-  df$region == "Northwest" ~ with_tz(df$date_utc, tzone = "America/Los_Angeles"),
-  df$region == "Southeast" ~ with_tz(df$date_utc, tzone = "America/New_York"),
-  df$region == "Southwest" ~ with_tz(df$date_utc, tzone = "America/Denver"),
-  df$region == "Tennessee" ~ with_tz(df$date_utc, tzone = "America/Chicago"),
-  df$region == "Texas" ~ with_tz(df$date_utc, tzone = "America/Chicago")
+# Existing timezones are UTC; create local time variable so plots are easier to intepret
+load_data$date_local <- case_when(
+  load_data$region == "California" ~ with_tz(load_data$date_utc, tzone = "America/Los_Angeles"),
+  load_data$region == "Carolinas" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
+  load_data$region == "Central" ~ with_tz(load_data$date_utc, tzone = "America/Denver"),
+  load_data$region == "Florida" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
+  load_data$region == "Mid-Atlantic" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
+  load_data$region == "Midwest" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
+  load_data$region == "New England" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
+  load_data$region == "New York" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
+  load_data$region == "Northwest" ~ with_tz(load_data$date_utc, tzone = "America/Los_Angeles"),
+  load_data$region == "Southeast" ~ with_tz(load_data$date_utc, tzone = "America/New_York"),
+  load_data$region == "Southwest" ~ with_tz(load_data$date_utc, tzone = "America/Denver"),
+  load_data$region == "Tennessee" ~ with_tz(load_data$date_utc, tzone = "America/Chicago"),
+  load_data$region == "Texas" ~ with_tz(load_data$date_utc, tzone = "America/Chicago")
 )
+```
 
-df %>% 
+```{r}
+#test
+load_data %>% 
   filter(floor_date(date_local, unit = "day") == ymd("2021-04-24")) %>% 
   filter(region == "New England" | region == "Southwest") %>% 
   ggplot(aes(x = date_local, y = MWh)) +
