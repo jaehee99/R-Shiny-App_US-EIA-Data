@@ -14,193 +14,140 @@
  library(eia)
  library(lubridate)
  library(diffdf)
-# 
-# #Creating a tibble of state name, state abrv and BLS state code
-# #This is a list of the state codes for the BLS database
-# state_code <-c(1:2,4:6, 8:13, 15:42, 44:51,54:56)
-# 
-# #Makes the tibble states
-# states <-tibble(state_name = state.name, state_abrv = state.abb, state_code = state_code)
-# 
-# states
-# 
-# states %>% 
-#     mutate(state_code = case_when(
-#         state_code<10 ~ str_c("0",as.character(state_code)),
-#         state_code>=10 ~ str_c(as.character(state_code))
-#     ))->states
-# 
-# 
-# #Creating IDs BLS
-# 
-# BLS_id <- tibble (start = c("LAUST", "TEST"), state = list(states$state_code), end = "0000000000003")
-# 
-# unnest(BLS_id)->BLS_id
-# 
-# BLS_id %>% 
-#     mutate(seriesID = str_c(start, state, end))->BLS_id
-# 
-# BLS_id %>% 
-#     filter(start == "LAUST")->BLS_id
-# 
-# #Data set name i.e. Unemployment rate, Employment rate, etc.
-# BLS_id %>% 
-#     mutate(type = case_when(
-#         start == "LAUST" ~ "Unemployment Rate"
-#     ))->BLS_id
-# 
-# BLS_id
-# #The Next part is for the eia data.
-# 
-# #Creating IDs EIA
-# 
-# eai_avg_elect <- tibble(start = "ELEC.PRICE.", abrv = list(state.abb), end = "-IND.M")
-# 
-# eai_carbon_emission <-tibble( start = "EMISS.CO2-TOTV-EC-TO-", abrv = list(state.abb), end = ".A")
-# 
-# eai_customers <- tibble( start = "ELEC.CUSTOMERS.", abrv = list(state.abb), end = "-ALL.A")
-# 
-# unnest(eai_avg_elect)->eai_avg_elect_id
-# 
-# eai_avg_elect_id %>% 
-#     mutate(id = str_c(start, abrv, end))->eai_avg_elect_id
-# 
-# eai_avg_elect_id
-# 
-# unnest(eai_carbon_emission)->eai_carbon_emission_id
-# 
-# eai_carbon_emission_id %>% 
-#     mutate(id = str_c(start, abrv, end))->eai_carbon_emission_id
-# 
-# unnest(eai_customers)->eai_customers
-# 
-# eai_customers %>% 
-#     mutate(id = str_c(start, abrv, end))->eai_customers_id
-# #We can pull lots of data now pretty quickly.
-# 
-# BLS_id$seriesID
-# #Getting BLS data using generated IDs
-# #BLS API has a limit of 25 returns per querey so you have to run it twice.
-# data<-list(seriesid = BLS_id$seriesID)
-# data2<-list(seriesid = BLS_id$seriesID[26:50])
-# data
-# data2
-# blsAPI(data , 2, TRUE)->Unemployment1
-# blsAPI(data2, 2, TRUE)->Unemployemnt2
-# Unemployment1
-# Unemployemnt2
-# 
-# full_join(Unemployment1, Unemployemnt2)->Unemployment
-# 
-# #And just like that we have the data frame for unemployment for every state for a year.
-# 
-# #Time to do the eia api
-# 
-# eia_set_key("8a87a727635f5c834e2799cd76fcb820")
-# eia_avg_elec <- eai_avg_elect_id$id
-# eia_emmission<- eai_carbon_emission_id$id
-# eia_customers<- eai_customers_id
-# eia_series(eia_avg_elec)->avg_elec
-# eia_emmission
-# eia_series("EMISS.CO2-TOTV-EC-TO-AL.A")
-# eia_series(eia_emmission)->emmissions_carbon
-# avg_elec
-# emmissions_carbon
-# 
-# 
-# unnest(avg_elec, data)->Retail_cost_electricity
-# Retail_cost_electricity
-# 
-# 
-# #And now we hat the retail electric cost data frame.
-# #We can further clean the data from here and pull it into a shiny app.
-# #We can also quickly build a data frame with a large query letting us acess a lot of data.
-# #We can also engineer custom queries if we have the time.
-# #Let me know if you have questions.
-# 
-# #Graph friendly data frame
-# 
-# Retail_cost_electricity %>% 
-#     select(geography, date, value)->eai_data
-# eai_data 
-# 
-# #So we can add the months to the eai data
-# month_num<-tibble(month_name = month.name, month = c(1:12))
-# #allows us to join the data frames by month
-# month_num %>% 
-#     mutate(month = case_when(
-#         month<10 ~ str_c("0",as.character(month)),
-#         month>=10 ~ str_c(as.character(month))
-#     ))->month_num
-# #Get's us year and month which we will need.
-# eai_data %>% 
-#     separate(geography, c("country", "abb"),"-") %>% 
-#     separate(date, c("year", "month", "day"), "-") %>% 
-#     select(-day)->eai_data
-# #lets us add states name to data frame
-# states %>% 
-#     rename(abb = state_abrv)->states
-# 
-# #adds month name and state names
-# left_join(eai_data, month_num, by = "month")->eai_data
-# left_join(eai_data, states, by = "abb")->eai_data
-# 
-# eai_data
-# #Makes things look nice.
-# eai_data %>% 
-#     select(-c(country, month, state_code)) %>% 
-#     relocate(c(state_name, abb, month_name, year, value)) %>% 
-#     rename(month = month_name)->eai_data
-# 
-# #Making a better BLS
-# #Changed name to do join
-# states %>% 
-#     rename(state = state_code)->states
-# Unemployment->BLS_data
-# 
-# #adding state name and type
-# left_join(BLS_data, BLS_id, by = "seriesID")->BLS_data
-# left_join(BLS_data, states, by = "state")->BLS_data
-# 
-# #cleaning the data frame
-# BLS_data %>% 
-#     select(-c(period, start, end, seriesID, state)) %>% 
-#     rename(month = periodName) %>% 
-#     relocate(c(state_name, abb, month))->BLS_data
-# 
-# #The BLS data frame is more up to date. We will need to remove march of this year.
-# BLS_data %>% 
-#     filter(!(month == "March" & year == "2021"))->BLS_data
-# #The eai data frame goes back farther than the BLS so we need to remove the excess.
-# eai_data %>% 
-#     filter(year>=2019)->eai_data
-# 
-# #So we have two columns with the values from each data frame.
-# eai_data %>% 
-#     rename(avg_electricity = value)->eai_data
-# BLS_data %>% 
-#     rename(unemployment_rate = value)->BLS_data
-# 
-# #creating the full data set
-# full_join(BLS_data, eai_data)->Full_data
-# Full_data %>% 
-#     select(-type)->Full_data
-Full_data
+ library(shiny)
+ library(ggplot2)
 
-library(shiny)
-library(ggplot2)
+ # Creates a dataframe with the state name, abbreviation, and "state code"
+ state_code <-c(1:2,4:6, 8:13, 15:42, 44:51,54:56)
+ states <-tibble(state_name = state.name, state_abrv = state.abb, state_code = state_code)
+ states %>%
+   mutate(state_code = case_when(
+     state_code<10 ~ str_c("0",as.character(state_code)),
+     state_code>=10 ~ str_c(as.character(state_code))
+   ))->states
+ 
+ eia_avg_elect <- tibble(start = "ELEC.PRICE.", abrv = list(state.abb), end = "-IND.A")
+ eia_carbon_emission <-tibble(start = "EMISS.CO2-TOTV-EC-TO-", abrv = list(state.abb), end = ".A")
+ eia_customers <- tibble(start = "ELEC.CUSTOMERS.", abrv = list(state.abb), end = "-ALL.A")
+ eia_retail_sales <- tibble(start = "ELEC.SALES.", abrv = list(state.abb), end = "-ALL.A")
+ eia_total_electricity <- tibble(start = "ELEC.GEN.ALL-",  abrv = list(state.abb), end = "-99.A")
+ 
+ unnest(eia_avg_elect)->eia_avg_elect_id
+ unnest(eia_carbon_emission)->eia_carbon_e
+ unnest(eia_customers)->eia_customers
+ unnest(eia_retail_sales) -> eia_retail_sales
+ unnest(eia_total_electricity) -> eia_total_electricity
+ 
+ eia_avg_elect_id %>% 
+   mutate(id = str_c(start, abrv, end))->eia_avg_elect_id
+ eia_carbon_e %>% 
+   mutate(id = str_c(start, abrv, end))->eia_carbon_e
+ eia_customers %>% 
+   mutate(id = str_c(start, abrv, end))->eia_customers
+ eia_retail_sales %>%  
+   mutate(id = str_c(start, abrv, end))-> eia_retail_sales 
+ eia_total_electricity %>%  
+   mutate(id = str_c(start, abrv, end))-> eia_total_electricity 
+ 
+ 
+ eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+ eia_avg_elec <- eia_avg_elect_id$id
+ eia_emmission<- eia_carbon_e$id
+ eia_customers<- eia_customers$id
+ eia_retail_sales <- eia_retail_sales$id
+ eia_total_electricity <- eia_total_electricity$id
+ 
+ eia_series(eia_avg_elec)->avg_elec
+ eia_series(eia_emmission)->emmission
+ eia_series(eia_customers)->customers
+ eia_series(eia_retail_sales)->retail_sales
+ eia_series(eia_total_electricity)->total_electricity
+ 
+ 
+ avg_elec %>%  
+   select(data) -> avg_elec
+ 
+ emmission %>%  
+   select(data) -> emmission
+ 
+ customers %>% 
+   select(data) -> customers
+ 
+ retail_sales %>%  
+   select(data) -> retail_sales
+ 
+ total_electricity %>%  
+   select(data) -> total_electricity
+ 
+ avg_elec %>%
+   mutate(data = Map(cbind, avg_elec$data, state=states$state_name)) -> avg_elec
+ 
+ emmission %>%
+   mutate(data = Map(cbind, emmission$data, state=states$state_name)) -> emmission
+ 
+ customers %>%
+   mutate(data = Map(cbind, customers$data, state=states$state_name)) -> customers
+ 
+ retail_sales %>%
+   mutate(data = Map(cbind, retail_sales$data, state=states$state_name)) -> retail_sales
+ 
+ total_electricity %>%
+   mutate(data = Map(cbind, total_electricity$data, state=states$state_name)) -> total_electricity
+ 
+ avg_elec %>%  
+   unnest() -> avg_elec
+ 
+ emmission %>%  
+   unnest() -> emmission
+ 
+ customers %>%  
+   unnest() -> customers
+ 
+ retail_sales %>%  
+   unnest() -> retail_sales
+ 
+ total_electricity %>%  
+   unnest() -> total_electricity
+ 
+ rename(avg_elec, "Electricity_Price" = value) -> avg_elec
+ rename(emmission, "Carbon_emissions" = value) -> emmission
+ rename(customers, "Customers" = value) -> customers
+ rename(retail_sales, "Retail_Sales" = value) -> retail_sales
+ rename(total_electricity, "Total_electricity" = value) -> total_electricity
+ 
+ avg_elec %>% 
+   filter(year>=2008 & year <= 2017) -> avg_elec
+ 
+ emmission %>% 
+   filter(year>=2008 & year <= 2017) -> emmission
+ 
+ customers %>% 
+   filter(year>=2008 & year <= 2017) -> customers
+ 
+ retail_sales %>%  
+   filter(year>=2008 & year <= 2017) -> retail_sales
+ 
+ total_electricity %>%  
+   filter(year>=2008 & year <= 2017) -> total_electricity
+ 
+ merge(avg_elec, emmission, by = c("year", "date", "state")) -> full_data_0
+ merge(full_data_0, customers, by = c("year", "date", "state")) -> full_data_1
+ merge(full_data_1, retail_sales, by = c("year", "date", "state")) -> full_data_2
+ merge(full_data_2, total_electricity, by = c("year", "date", "state")) -> Full_data
+ 
+Full_data
 
 ui <- shinyUI(navbarPage("FinalProject",
                          tabPanel("univiate anaylsis",
                                   sidebarPanel(
                                       varSelectInput("filt1",
                                                      "Filter Variable",
-                                                     data = Full_data[c(1, 3:4)]),
+                                                     data = Full_data[c(1,3)]),
                                       selectInput("filt2", "Select Filter",
                                                   choices = ""),
                                       varSelectInput("var1",
                                                      "Plot 1 Variable",
-                                                     data = Full_data[5:6])),
+                                                     data = Full_data[4:8])),
                                   mainPanel(fluidRow(10,
                                                      column(5,
                                                             plotOutput("plot1")),
@@ -211,7 +158,7 @@ ui <- shinyUI(navbarPage("FinalProject",
                                   sidebarPanel(
                                       varSelectInput("filt3",
                                                     "Filter Variable",
-                                                    data = Full_data[c(1, 3:4)]),
+                                                    data = Full_data[c(1,3)]),
                                       selectInput("filt4", "Select Filter",
                                                   choices = ""),
                                       varSelectInput("var2",

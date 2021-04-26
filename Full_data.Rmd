@@ -140,6 +140,7 @@ merge(full_data_0, customers, by = c("year", "date", "state")) -> full_data_1
 merge(full_data_1, retail_sales, by = c("year", "date", "state")) -> full_data_2
 merge(full_data_2, total_electricity, by = c("year", "date", "state")) -> final_data
 
+final_data
 ```
 
 # Test
