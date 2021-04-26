@@ -17,6 +17,8 @@
  library(shiny)
  library(ggplot2)
  
+ eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+ 
  # First, create a tibble with the api start, the state abbreviation, and the api end
  # Next, we create an id for each state based on that tibble, which we will use in the api call
  # Next, we select only the ID and convert it to a list, using the magrittr::extract to keep it in the pipe
