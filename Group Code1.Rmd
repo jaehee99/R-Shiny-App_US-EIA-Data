@@ -16,7 +16,11 @@ library(devtools)
 library(blsAPI) #BLS API
 library(rjson)
 # INstall eia Package
+<<<<<<< HEAD
 library(eia) #Energy API
+=======
+#library(eia) #Energy API
+>>>>>>> santi-branch
 library(lubridate)
 ```
 *For bls data we will do 
@@ -35,6 +39,7 @@ Jaehee: 32-51 states...
 # Change the first two numbers based on state code.
 # Easiest way to do this is copy the code for one state
 # state_list = state ID number
+<<<<<<< HEAD
 create_BLSID <- function (data_set_ID, state_list, rest){
   map2()
 
@@ -46,19 +51,66 @@ state_list <- c("02", "01")
 #data<-list(seriesid = c("LAUST020000000000003", "LAUST010000000000003"))
 data<-list(seriesid=create_BLSID("LAUST", state_list, "0000000000003"))
 data
+=======
+
+data<-list(seriesid = c("LAUST150000000000003", "LAUST160000000000003", "LAUST170000000000003", "LAUST180000000000003", "LAUST190000000000003", "LAUST200000000000003", "LAUST210000000000003", "LAUST220000000000003", "LAUST230000000000003", "LAUST240000000000003", "LAUST250000000000003", "LAUST260000000000003", "LAUST270000000000003", "LAUST280000000000003", "LAUST290000000000003", "LAUST300000000000003", "LAUST310000000000003", "LAUST320000000000003", "LAUST330000000000003", "LAUST340000000000003" ))
+
+
+data
+
+>>>>>>> santi-branch
 blsAPI(data , 2, TRUE)->test
 test
 
 #Example of how to clean BLS dataframe
+<<<<<<< HEAD
 test %>% 
   mutate(seriesID = case_when(
     str_detect(seriesID, "LAUST020000000000003") ~ "Alabama-Unemployment",
     str_detect(seriesID, "LAUST010000000000003") ~ "Alaska-Unemployment"
+=======
+# test %>% 
+#   mutate(seriesID = case_when(
+#     str_detect(seriesID, "LAUST020000000000003") ~ "Alabama-Unemployment",
+#     str_detect(seriesID, "LAUST010000000000003") ~ "Alaska-Unemployment"
+#   )) %>% 
+#   separate(seriesID, c("State", "Type"), sep = "-") %>% 
+#   pivot_wider(names_from = "Type",
+#               values_from = "value")
+# ```
+```
+
+
+```{r}
+
+test %>% 
+  mutate(seriesID = case_when(
+    str_detect(seriesID, "LAUST150000000000003") ~ "Hawaii-Unemployment",
+    str_detect(seriesID, "LAUST160000000000003") ~ "Idaho-Unemployment",
+    str_detect(seriesID, "LAUST170000000000003") ~ "Illinois-Unemployment",
+    str_detect(seriesID, "LAUST180000000000003") ~ "Indiana-Unemployment",
+    str_detect(seriesID, "LAUST190000000000003") ~ "Iowa-Unemployment",
+    str_detect(seriesID, "LAUST200000000000003") ~ "Kansas-Unemployment",
+    str_detect(seriesID, "LAUST210000000000003") ~ "Kentucky-Unemployment",
+    str_detect(seriesID, "LAUST220000000000003") ~ "Louisiana-Unemployment",
+    str_detect(seriesID, "LAUST230000000000003") ~ "Maine-Unemployment",
+    str_detect(seriesID, "LAUST240000000000003") ~ "Maryland-Unemployment",
+    str_detect(seriesID, "LAUST250000000000003") ~ "Massachusetts-Unemployment",
+    str_detect(seriesID, "LAUST260000000000003") ~ "Michigan-Unemployment",
+    str_detect(seriesID, "LAUST270000000000003") ~ "Minnesota-Unemployment",
+    str_detect(seriesID, "LAUST280000000000003") ~ "Mississippi-Unemployment",
+    str_detect(seriesID, "LAUST290000000000003") ~ "Missouri-Unemployment",
+    str_detect(seriesID, "LAUST300000000000003") ~ "Montana-Unemployment",
+    str_detect(seriesID, "LAUST310000000000003") ~ "Nebraska-Unemployment",
+    str_detect(seriesID, "LAUST320000000000003") ~ "Nevada-Unemployment",
+    str_detect(seriesID, "LAUST330000000000003") ~ "NewHampshire-Unemployment",
+>>>>>>> santi-branch
   )) %>% 
   separate(seriesID, c("State", "Type"), sep = "-") %>% 
   pivot_wider(names_from = "Type",
               values_from = "value")
 
+<<<<<<< HEAD
 
 #EIA dataframe 
 
@@ -83,6 +135,63 @@ df %>%
   mutate(data = Map(cbind, df$data, state=state_names))->df
 
 df$data
+
+=======
+```
+
+
+
+```{r}
+#EIA dataframe 
+
+eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+eia_data <- create_EIA_data(type, abrv, set)
+eia_data
+eia_series(eia_data)->df
+df$data
+
+#Example of how to clean EIA dataframe
+state_names <- c("Alabama", "Alaska")
+
+df %>% 
+  select(data)->df
+
+df %>% 
+  mutate(data = map(df$data, ~.x %>% 
+  mutate(
+         month = month(month, label = TRUE))))->df
+
+df %>% 
+  mutate(data = Map(cbind, df$data, state=state_names))->df
+
+df$data
+
+>>>>>>> santi-branch
+```
+
+```{r}
+
+#Creating IDs EIA
+
+eai_id <- tibble(start = c("ELEC.PRICE.", "TEST.PRICE."), abrv = list(c("AL", "AK", "MD", "DC")), end = c("-TEST1", "-TEST2"))
+
+unnest(eai_id)->eai_id
+
+eai_id %>% 
+  mutate(id = str_c(start, abrv, end))->eai_id
+
+
+#Creating IDs BLS
+
+BLS_id <- tibble (start = c("LAUST", "TEST"), state = list(c("02", "01", "52", "32")), end = c("000000", "00000002"))
+
+unnest(BLS_id)->BLS_id
+
+BLS_id %>% 
+  mutate(id = str_c(start, state, end))->BLS_id
+
+BLS_id
+
 
 ```
 
@@ -112,3 +221,27 @@ BLS_id
 
 ```
 
+asdpgojbargpouahrfawfr
+
+
+
+
+
+
+
+
+awrgpohawerpoiawiheg
+
+
+
+
+
+
+
+
+
+
+awrg;oiawrgij
+
+
+awepofuhwfe
