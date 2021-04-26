@@ -44,7 +44,12 @@ avg_elec <- tibble(start = "ELEC.PRICE.", abrv = state.abb, end = "-IND.A") %>%
   # magrittr:extract2(x, 1) is equivalent to x[[1]]
   magrittr::extract2(1) %>% 
   eia_series() %>% 
-  select(data)
+  select(data) %>% 
+  mutate(state = states$state_name) %>% 
+  select(state, everything()) %>% 
+  unnest(data) %>% 
+  rename("electricity_price" = value) %>% 
+  filter(year>=2008 & year <= 2017)
 
 emission <-tibble(start = "EMISS.CO2-TOTV-EC-TO-", abrv = state.abb, end = ".A") %>% 
   mutate(id = str_c(start, abrv, end))%>%
@@ -52,7 +57,12 @@ emission <-tibble(start = "EMISS.CO2-TOTV-EC-TO-", abrv = state.abb, end = ".A")
   as.list() %>% 
   magrittr::extract2(1) %>% 
   eia_series()%>% 
-  select(data)
+  select(data) %>% 
+  mutate(state = states$state_name) %>% 
+  select(state, everything()) %>% 
+  unnest(data) %>% 
+  rename("carbon_emissions" = value) %>% 
+  filter(year>=2008 & year <= 2017)
 
 customers <- tibble(start = "ELEC.CUSTOMERS.", abrv = state.abb, end = "-ALL.A") %>% 
   mutate(id = str_c(start, abrv, end))%>%
@@ -60,7 +70,12 @@ customers <- tibble(start = "ELEC.CUSTOMERS.", abrv = state.abb, end = "-ALL.A")
   as.list() %>% 
   magrittr::extract2(1) %>% 
   eia_series()%>% 
-  select(data)
+  select(data) %>% 
+  mutate(state = states$state_name) %>% 
+  select(state, everything()) %>% 
+  unnest(data) %>% 
+  rename("customers" = value) %>% 
+  filter(year>=2008 & year <= 2017)
 
 retail_sales <- tibble(start = "ELEC.SALES.", abrv = state.abb, end = "-ALL.A") %>%  
   mutate(id = str_c(start, abrv, end))%>%
@@ -68,7 +83,13 @@ retail_sales <- tibble(start = "ELEC.SALES.", abrv = state.abb, end = "-ALL.A") 
   as.list() %>% 
   magrittr::extract2(1) %>% 
   eia_series()%>% 
-  select(data)
+  select(data) %>% 
+  mutate(state = states$state_name) %>% 
+  select(state, everything()) %>% 
+  unnest(data) %>% 
+  rename("retail_sales" = value) %>% 
+  filter(year>=2008 & year <= 2017)
+  
 
 total_electricity <- tibble(start = "ELEC.GEN.ALL-",  abrv = state.abb, end = "-99.A") %>%  
   mutate(id = str_c(start, abrv, end))%>%
@@ -76,76 +97,15 @@ total_electricity <- tibble(start = "ELEC.GEN.ALL-",  abrv = state.abb, end = "-
   as.list() %>% 
   magrittr::extract2(1) %>% 
   eia_series()%>% 
-  select(data)
+  select(data) %>% 
+  mutate(state = states$state_name) %>% 
+  select(state, everything()) %>% 
+  unnest(data) %>% 
+  rename("total_electricity" = value) %>% 
+  filter(year>=2008 & year <= 2017)
 ```
 
 ```{r}
-avg_elec %>%  
-  select(data) -> avg_elec
-
-emmission %>%  
-  select(data) -> emmission
-
-customers %>% 
-  select(data) -> customers
-
-retail_sales %>%  
-  select(data) -> retail_sales
-
-total_electricity %>%  
-  select(data) -> total_electricity
-
-avg_elec %>%
-mutate(data = Map(cbind, avg_elec$data, state=states$state_name)) -> avg_elec
-
-emmission %>%
-mutate(data = Map(cbind, emmission$data, state=states$state_name)) -> emmission
-
-customers %>%
-mutate(data = Map(cbind, customers$data, state=states$state_name)) -> customers
-
-retail_sales %>%
-mutate(data = Map(cbind, retail_sales$data, state=states$state_name)) -> retail_sales
-
-total_electricity %>%
-mutate(data = Map(cbind, total_electricity$data, state=states$state_name)) -> total_electricity
-
-avg_elec %>%  
-  unnest() -> avg_elec
-
-emmission %>%  
-  unnest() -> emmission
-
-customers %>%  
-  unnest() -> customers
-
-retail_sales %>%  
-  unnest() -> retail_sales
-
-total_electricity %>%  
-  unnest() -> total_electricity
-
-rename(avg_elec, "Electricity_Price" = value) -> avg_elec
-rename(emmission, "Carbon_emissions" = value) -> emmission
-rename(customers, "Customers" = value) -> customers
-rename(retail_sales, "Retail_Sales" = value) -> retail_sales
-rename(total_electricity, "Total_electricity" = value) -> total_electricity
-
-avg_elec %>% 
-  filter(year>=2008 & year <= 2017) -> avg_elec
-
-emmission %>% 
-  filter(year>=2008 & year <= 2017) -> emmission
-
-customers %>% 
-  filter(year>=2008 & year <= 2017) -> customers
-
-retail_sales %>%  
-  filter(year>=2008 & year <= 2017) -> retail_sales
-
-total_electricity %>%  
-  filter(year>=2008 & year <= 2017) -> total_electricity
-
 merge(avg_elec, emmission, by = c("year", "date", "state")) -> full_data_0
 merge(full_data_0, customers, by = c("year", "date", "state")) -> full_data_1
 merge(full_data_1, retail_sales, by = c("year", "date", "state")) -> full_data_2
