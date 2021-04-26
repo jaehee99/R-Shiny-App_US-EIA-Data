@@ -65,8 +65,6 @@ full_data <- left_join(avg_elec, emission, by = c("state", "date", "year")) %>%
   left_join(total_electricity, by = c("state", "date", "year")) %>% 
   select(state, year, electricity_price, carbon_emissions, customers, retail_sales, total_electricity)
 rm(avg_elec, customers, emission, retail_sales, total_electricity)
-
-full_data
 ```
 
 # Test

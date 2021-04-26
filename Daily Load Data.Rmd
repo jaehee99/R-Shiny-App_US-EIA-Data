@@ -1,0 +1,32 @@
+---
+title: "Load Data"
+author: "David Wilbourne"
+date: "4/25/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(eia)
+library(lubridate)
+```
+
+```{r}
+eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+
+pull_load_data <- function(api_start, api_end) {
+  EBA.CAL-ALL.D.H
+}
+x <- c("CAL", "CAR", "CENT", "FLA", "MIDA", "MIDW", "NE", "NY", "NW", "SE", "SW", "TEN", "TEX")
+str_c("EBA.", x, "-ALL.D.H")
+
+df <- eia_series("EBA.MIDA-ALL.D.H") %>% 
+  select(data) %>% 
+  unnest(data) %>% 
+  mutate(date = as_datetime(date)) %>% 
+  select(region, value, date)
+
+
+```
+
