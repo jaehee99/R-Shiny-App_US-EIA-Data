@@ -35,8 +35,7 @@
          select(data) %>% 
          mutate(state = state.name) %>% 
          select(state, everything()) %>% 
-         unnest(data) %>%
-         filter(year>=2008 & year <= 2017)
+         unnest(data)
  }
  
  # call function for each variable we want and rename the standard "value" column to the more descriptive name we want in the final data
