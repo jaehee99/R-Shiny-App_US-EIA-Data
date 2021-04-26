@@ -1,39 +1,4 @@
-library(tidyverse)
-library(devtools)
-library(blsAPI)
-library(rjson)
-library(eia)
-library(lubridate)
-library(diffdf)
-library(shiny)
-library(ggplot2)
-library(ggthemes)
-eia_set_key("8a87a727635f5c834e2799cd76fcb820")
 
-<<<<<<< HEAD
-pull_data <- function(api_start, api_end) {
-    tibble(start = api_start, abrv = state.abb, end = api_end) %>% 
-        mutate(id = str_c(start, abrv, end)) %>%
-        select(id) %>% 
-        as.list() %>% 
-        magrittr::extract2(1) %>% 
-        eia_series() %>% 
-        select(data) %>% 
-        mutate(state = state.name) %>% 
-        select(state, everything()) %>% 
-        unnest(data)
-}
-avg_elec <- pull_data(api_start = "ELEC.PRICE.", api_end = "-IND.A") %>% 
-    rename("electricity_price" = value)
-emission <- pull_data(api_start = "EMISS.CO2-TOTV-EC-TO-", api_end = ".A") %>% 
-    rename("carbon_emissions" = value)
-customers <- pull_data(api_start = "ELEC.CUSTOMERS.", api_end = "-ALL.A") %>% 
-    rename("customers" = value)
-retail_sales <- pull_data(api_start = "ELEC.SALES.", api_end = "-ALL.A") %>% 
-    rename("retail_sales" = value)
-total_electricity <- pull_data(api_start = "ELEC.GEN.ALL-", api_end = "-99.A") %>% 
-    rename("total_electricity" = value)
-=======
  library(tidyverse)
  library(devtools)
  library(blsAPI)
@@ -43,6 +8,9 @@ total_electricity <- pull_data(api_start = "ELEC.GEN.ALL-", api_end = "-99.A") %
  library(diffdf)
  library(shiny)
  library(ggplot2)
+ library(ggthemes)
+ 
+ eia_set_key("8a87a727635f5c834e2799cd76fcb820")
  
  # First, create a tibble with the api start, the state abbreviation, and the api end
  # Next, we create an id for each state based on that tibble, which we will use in the api call
@@ -52,13 +20,17 @@ total_electricity <- pull_data(api_start = "ELEC.GEN.ALL-", api_end = "-99.A") %
  # Next, we add on the states (so each row is a state, then the dataframe of its data) and unnest() into a longer dataframe
  # Finally, we filter for the years all dataframes have in common
  pull_data <- function(api_start, api_end) {
-     str_c(api_start, state.abb, api_end) %>% 
+     tibble(start = api_start, abrv = state.abb, end = api_end) %>% 
+         mutate(id = str_c(start, abrv, end)) %>%
+         select(id) %>% 
+         as.list() %>% 
+         # magrittr:extract2(x, 1) is equivalent to x[[1]]
+         magrittr::extract2(1) %>% 
          eia_series() %>% 
          select(data) %>% 
          mutate(state = state.name) %>% 
          select(state, everything()) %>% 
-         unnest(data) %>%
-         filter(year>=2008 & year <= 2017)
+         unnest(data)
  }
  
  # call function for each variable we want and rename the standard "value" column to the more descriptive name we want in the final data
@@ -81,6 +53,55 @@ total_electricity <- pull_data(api_start = "ELEC.GEN.ALL-", api_end = "-99.A") %
      select(state, year, electricity_price, carbon_emissions, customers, retail_sales, total_electricity)
  rm(avg_elec, customers, emission, retail_sales, total_electricity)
  
+ # Create list of API calls for hourly electricity demand data using str_c
+ # Manually add electric grid regions, since they don't align with states
+ # Unnest and select relevant data
+ # Create list of API calls for hourly electricity demand data using str_c
+ # Manually add electric grid regions, since they don't align with states
+ # Unnest and select relevant data
+ # Create local time variable (rather than UTC) so plots are easier to intepret
+ load_data <- str_c("EBA.",
+                    c("CAL", "CAR", "CENT", "FLA", "MIDA", "MIDW", "NE", "NY", "NW", "SE", "SW", "TEN", "TEX"),
+                    "-ALL.D.H") %>%
+     eia_series() %>%
+     mutate(
+         region = c(
+             "California",
+             "Carolinas",
+             "Central",
+             "Florida",
+             "Mid-Atlantic",
+             "Midwest",
+             "New England",
+             "New York",
+             "Northwest",
+             "Southeast",
+             "Southwest",
+             "Tennessee",
+             "Texas"
+         )
+     ) %>%
+     unnest(data) %>%
+     select(region, "MWh" = value, "date_utc" = date) %>%
+     mutate(
+         date_local = case_when(
+             region == "California" ~ with_tz(date_utc, tzone = "America/Los_Angeles"),
+             region == "Carolinas" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "Central" ~ with_tz(date_utc, tzone = "America/Denver"),
+             region == "Florida" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "Mid-Atlantic" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "Midwest" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "New England" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "New York" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "Northwest" ~ with_tz(date_utc, tzone = "America/Los_Angeles"),
+             region == "Southeast" ~ with_tz(date_utc, tzone = "America/New_York"),
+             region == "Southwest" ~ with_tz(date_utc, tzone = "America/Denver"),
+             region == "Tennessee" ~ with_tz(date_utc, tzone = "America/Chicago"),
+             region == "Texas" ~ with_tz(date_utc, tzone = "America/Chicago")
+         )
+     ) %>%
+     select(-date_utc)%>% 
+     filter(date_local >= ymd("2020-04-26"))
  
 #  # Creates a dataframe with the state name, abbreviation, and "state code"
 #  state_code <-c(1:2,4:6, 8:13, 15:42, 44:51,54:56)
@@ -201,15 +222,30 @@ total_electricity <- pull_data(api_start = "ELEC.GEN.ALL-", api_end = "-99.A") %
 #  merge(full_data_2, total_electricity, by = c("year", "date", "state")) -> Full_data
 #  
 # Full_data
->>>>>>> 3f2343d8d16ab415092f5ec4aabe4f2ea8a0cc26
 
-Full_data <- left_join(avg_elec, emission, by = c("state", "date", "year")) %>% 
-    left_join(customers, by = c("state", "date", "year")) %>% 
-    left_join(retail_sales, by = c("state", "date", "year")) %>% 
-    left_join(total_electricity, by = c("state", "date", "year")) %>% 
-    select(state, year, electricity_price, carbon_emissions, customers, retail_sales, total_electricity)
-rm(avg_elec, customers, emission, retail_sales, total_electricity)
-
+# if (is.numeric(Full_data[[input$var1]])){
+#     if (input$logselect == TRUE){
+#         ggplot(Full_data, aes(x=log(!!input$var1)))+
+#             geom_histogram(bins = input$bins)
+#     }
+#     else{
+#         ggplot(Full_data, aes(x= !!input$var1))+
+#             geom_histogram(bins = input$bins)
+#     }
+# }
+# else{
+#     if (input$logselect == TRUE){
+#         validate(
+#             need(is.factor(input$var1), "cannot use log transformation on factor.")
+#         )
+#         ggplot(Full_data, aes(x=log(!!input$var1)))+
+#             geom_bar()
+#     }
+#     else{
+#         ggplot(Full_data, aes(x=!!input$var1))+
+#             geom_bar()
+#     }
+# }
 ui <- fluidPage(
     titlePanel("EIA Data Project"), 
     tabsetPanel(
@@ -256,8 +292,18 @@ ui <- fluidPage(
                                       )))
         )
         ,
-        
-        
+      tabPanel("daily load analysis",
+                             sidebarPanel(
+                                 selectInput("tab3_state1", "State 1",
+                                             choices = ""),
+                                 selectInput("tab3_state2", "State 2",
+                                             choices = ""),
+                                 dateInput(
+                                     "tab3_date1", "Date to Compare"
+                                 ),
+                         ),
+                         mainPanel(plotOutput("tab3_plot1"),
+                                   plotOutput("tab3_plot2"))),
         tabPanel("Time Series",
                  sidebarPanel(
                      varSelectInput("filt5",
@@ -288,8 +334,6 @@ ui <- fluidPage(
                  ))
     )
 )
-
-
 
 server <- function(input, output, session){
     observe({
@@ -413,6 +457,39 @@ server <- function(input, output, session){
         Full_data %>%
             select_if(is.numeric)
     })
+    
+    observe({
+        
+        updateSelectInput(session,
+                          "tab3_state1",
+                          choices = load_data %>% 
+                              distinct(region))
+    })
+    
+    observe({
+        
+        updateSelectInput(session,
+                          "tab3_state2",
+                          choices = load_data %>% 
+                              distinct(region))
+    })
+    
+    output$tab3_plot1 <- renderPlot({
+        load_data %>% 
+            filter(floor_date(date_local, unit = "day") == !!input$tab3_date1) %>% 
+            filter(region == !!input$tab3_state1) %>% 
+            ggplot(aes(x = date_local, y = MWh)) +
+            geom_line()
+    })
+    
+    output$tab3_plot2 <- renderPlot({
+        load_data %>% 
+            filter(floor_date(date_local, unit = "day") == !!input$tab3_date1) %>% 
+            filter(region == !!input$tab3_state2) %>% 
+            ggplot(aes(x = date_local, y = MWh)) +
+            geom_line()
+    })
+    
 }
 
 shinyApp(ui, server)
