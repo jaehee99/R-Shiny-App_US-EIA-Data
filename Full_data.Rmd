@@ -22,9 +22,10 @@ library(dplyr)
 ```
 
 ```{r}
+# Creates a dataframe with the state name, abbreviation, and "state code"
 state_code <-c(1:2,4:6, 8:13, 15:42, 44:51,54:56)
 states <-tibble(state_name = state.name, state_abrv = state.abb, state_code = state_code)
-states %>% 
+states %>%
   mutate(state_code = case_when(
     state_code<10 ~ str_c("0",as.character(state_code)),
     state_code>=10 ~ str_c(as.character(state_code))
@@ -140,6 +141,7 @@ merge(full_data_1, retail_sales, by = c("year", "date", "state")) -> full_data_2
 merge(full_data_2, total_electricity, by = c("year", "date", "state")) -> final_data
 
 ```
+
 # Test
 ```{r}
 ggplot(final_data, aes(x = Electricity_Price, y = Total_electricity))+
