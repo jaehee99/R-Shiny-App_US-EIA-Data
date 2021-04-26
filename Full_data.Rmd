@@ -31,6 +31,7 @@ states %>%
     state_code>=10 ~ str_c(as.character(state_code))
   ))->states
 
+# Create a tibble for each variable we want, where the tibble contains the components of the api call for each state, e.g. "ELEC.PRICE." + "AL" + "-IND.A"
 eia_avg_elect_id <- tibble(start = "ELEC.PRICE.", abrv = state.abb, end = "-IND.A")
 eia_carbon_e <-tibble(start = "EMISS.CO2-TOTV-EC-TO-", abrv = state.abb, end = ".A")
 eia_customers <- tibble(start = "ELEC.CUSTOMERS.", abrv = state.abb, end = "-ALL.A")
@@ -38,23 +39,22 @@ eia_retail_sales <- tibble(start = "ELEC.SALES.", abrv = state.abb, end = "-ALL.
 eia_total_electricity <- tibble(start = "ELEC.GEN.ALL-",  abrv = state.abb, end = "-99.A")
 
 eia_avg_elect_id %>% 
-  mutate(id = str_c(start, abrv, end))->eia_avg_elect_id
+  mutate(id = str_c(start, abrv, end)) %>% 
+  select(id) -> eia_avg_elect_id
 eia_carbon_e %>% 
-  mutate(id = str_c(start, abrv, end))->eia_carbon_e
+  mutate(id = str_c(start, abrv, end)) %>% 
+  select(id) ->eia_carbon_e
 eia_customers %>% 
-  mutate(id = str_c(start, abrv, end))->eia_customers
+  mutate(id = str_c(start, abrv, end))%>% 
+  select(id) ->eia_customers
 eia_retail_sales %>%  
-  mutate(id = str_c(start, abrv, end))-> eia_retail_sales 
+  mutate(id = str_c(start, abrv, end))%>% 
+  select(id) -> eia_retail_sales 
 eia_total_electricity %>%  
-  mutate(id = str_c(start, abrv, end))-> eia_total_electricity 
-
+  mutate(id = str_c(start, abrv, end))%>% 
+  select(id) -> eia_total_electricity 
 
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
-eia_avg_elec <- eia_avg_elect_id$id
-eia_emmission<- eia_carbon_e$id
-eia_customers<- eia_customers$id
-eia_retail_sales <- eia_retail_sales$id
-eia_total_electricity <- eia_total_electricity$id
 
 eia_series(eia_avg_elec)->avg_elec
 eia_series(eia_emmission)->emmission
