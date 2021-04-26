@@ -25,17 +25,13 @@
  # Next, we add on the states (so each row is a state, then the dataframe of its data) and unnest() into a longer dataframe
  # Finally, we filter for the years all dataframes have in common
  pull_data <- function(api_start, api_end) {
-     tibble(start = api_start, abrv = state.abb, end = api_end) %>% 
-         mutate(id = str_c(start, abrv, end)) %>%
-         select(id) %>% 
-         as.list() %>% 
-         # magrittr:extract2(x, 1) is equivalent to x[[1]]
-         magrittr::extract2(1) %>% 
+     str_c(api_start, state.abb, api_end) %>% 
          eia_series() %>% 
          select(data) %>% 
          mutate(state = state.name) %>% 
          select(state, everything()) %>% 
-         unnest(data)
+         unnest(data) %>%
+         filter(year>=2008 & year <= 2017)
  }
  
  # call function for each variable we want and rename the standard "value" column to the more descriptive name we want in the final data
