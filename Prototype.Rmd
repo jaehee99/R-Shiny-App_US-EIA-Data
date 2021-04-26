@@ -18,8 +18,11 @@ library(rjson)
 # INstall eia Package
 library(eia) #Energy API
 library(lubridate)
+<<<<<<< HEAD
+=======
 #compares data frames
 library(diffdf)
+>>>>>>> d847ce27f09e928fbcaba91f8bfbfa15db68b4a6
 ```
 
 ```{r}
@@ -62,6 +65,17 @@ BLS_id
 
 #Creating IDs EIA
 
+<<<<<<< HEAD
+eai_id <- tibble(start = "ELEC.PRICE.", abrv = list(state.abb), end = "-IND.M")
+
+unnest(eai_id)->eai_id
+
+eai_id %>% 
+  mutate(id = str_c(start, abrv, end))->eai_id
+
+eai_id
+
+=======
 eai_avg_elect <- tibble(start = "ELEC.PRICE.", abrv = list(state.abb), end = "-IND.M")
 
 eai_carbon_emission <-tibble( start = "EMISS.CO2-TOTV-EC-TO-", abrv = list(state.abb), end = ".A")
@@ -84,10 +98,17 @@ unnest(eai_customers)->eai_customers
 
 eai_customers %>% 
   mutate(id = str_c(start, abrv, end))->eai_customers_id
+>>>>>>> d847ce27f09e928fbcaba91f8bfbfa15db68b4a6
 #We can pull lots of data now pretty quickly.
 
 BLS_id$seriesID
 #Getting BLS data using generated IDs
+<<<<<<< HEAD
+data<-list(seriesid = BLS_id$seriesID)
+data
+blsAPI(data , 2, TRUE)->Unemployment
+Unemployment
+=======
 #BLS API has a limit of 25 returns per querey so you have to run it twice.
 data<-list(seriesid = BLS_id$seriesID)
 data2<-list(seriesid = BLS_id$seriesID[26:50])
@@ -99,12 +120,18 @@ Unemployment1
 Unemployemnt2
 
 full_join(Unemployment1, Unemployemnt2)->Unemployment
+>>>>>>> d847ce27f09e928fbcaba91f8bfbfa15db68b4a6
 
 #And just like that we have the data frame for unemployment for every state for a year.
 
 #Time to do the eia api
 
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+<<<<<<< HEAD
+eia_data <- eai_id$id
+eia_data
+eia_series(eia_data)->df
+=======
 eia_avg_elec <- eai_avg_elect_id$id
 eia_emmission<- eai_carbon_emission_id$id
 eia_customers<- eai_customers_id
@@ -115,11 +142,19 @@ eia_series(eia_emmission)->emmissions_carbon
 avg_elec
 emmissions_carbon
 
+<<<<<<< HEAD
+=======
+df
+>>>>>>> d847ce27f09e928fbcaba91f8bfbfa15db68b4a6
+>>>>>>> origin/main
 
 unnest(avg_elec, data)->Retail_cost_electricity
 Retail_cost_electricity
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> d847ce27f09e928fbcaba91f8bfbfa15db68b4a6
 #And now we hat the retail electric cost data frame.
 #We can further clean the data from here and pull it into a shiny app.
 #We can also quickly build a data frame with a large query letting us acess a lot of data.
@@ -177,6 +212,12 @@ BLS_data %>%
   rename(month = periodName) %>% 
   relocate(c(state_name, abb, month))->BLS_data
 
+<<<<<<< HEAD
+BLS_data
+eai_data %>% 
+  filter(year>=2019)
+```
+=======
 #The BLS data frame is more up to date. We will need to remove march of this year.
 BLS_data %>% 
   filter(!(month == "March" & year == "2021"))->BLS_data
@@ -221,3 +262,4 @@ Full_data %>%
   distinct(state_name)
 ```
 
+>>>>>>> d847ce27f09e928fbcaba91f8bfbfa15db68b4a6
