@@ -39,25 +39,36 @@ eia_retail_sales <- tibble(start = "ELEC.SALES.", abrv = state.abb, end = "-ALL.
 eia_total_electricity <- tibble(start = "ELEC.GEN.ALL-",  abrv = state.abb, end = "-99.A")
 
 eia_avg_elect_id %>% 
-  mutate(id = str_c(start, abrv, end)) %>% 
-  select(id) -> eia_avg_elect_id
+  mutate(id = str_c(start, abrv, end)) %>%
+  select(id) %>% 
+  as.list() %>% 
+  magrittr::extract2(1)->eia_avg_elect_id # magrittr:extract2(x, 1) is equivalent to x[[1]]
 eia_carbon_e %>% 
-  mutate(id = str_c(start, abrv, end)) %>% 
-  select(id) ->eia_carbon_e
+  mutate(id = str_c(start, abrv, end))%>%
+  select(id) %>% 
+  as.list() %>% 
+  magrittr::extract2(1)->eia_carbon_e
 eia_customers %>% 
-  mutate(id = str_c(start, abrv, end))%>% 
-  select(id) ->eia_customers
+  mutate(id = str_c(start, abrv, end))%>%
+  select(id) %>% 
+  as.list() %>% 
+  magrittr::extract2(1)->eia_customers
 eia_retail_sales %>%  
-  mutate(id = str_c(start, abrv, end))%>% 
-  select(id) -> eia_retail_sales 
+  mutate(id = str_c(start, abrv, end))%>%
+  select(id) %>% 
+  as.list() %>% 
+  magrittr::extract2(1)-> eia_retail_sales 
 eia_total_electricity %>%  
-  mutate(id = str_c(start, abrv, end))%>% 
-  select(id) -> eia_total_electricity 
+  mutate(id = str_c(start, abrv, end))%>%
+  select(id) %>% 
+  as.list() %>% 
+  magrittr::extract2(1)-> eia_total_electricity 
 
-eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+############## not sure if we need the line below
+# eia_set_key("8a87a727635f5c834e2799cd76fcb820")
 
-eia_series(eia_avg_elec)->avg_elec
-eia_series(eia_emmission)->emmission
+eia_series(eia_avg_elect_id)->avg_elec
+eia_series(eia_carbon_e)->emmission
 eia_series(eia_customers)->customers
 eia_series(eia_retail_sales)->retail_sales
 eia_series(eia_total_electricity)->total_electricity
