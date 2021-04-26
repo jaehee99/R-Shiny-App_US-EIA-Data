@@ -97,7 +97,7 @@ library(ggplot2)
 library(dplyr)
 
 # plot time series (energy_value, time)
-ggplot(full_data, aes(x=date, y=Energy_value, color = State)) +
+ggplot(full_data, aes(x=year, y=Energy_value, color = State)) +
   geom_line() 
 
 # plot time series (Unemployment, time)
