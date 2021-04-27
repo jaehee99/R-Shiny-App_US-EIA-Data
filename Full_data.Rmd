@@ -34,6 +34,8 @@ pull_data <- function(api_start, api_end) {
   unnest(data) %>%
   filter(year>=2008 & year <= 2017)
 }
+library(GGally)
+
 ```
 
 ```{r}
