@@ -10,7 +10,6 @@ library(ggplot2)
 library(ggthemes)
 library(ggcorrplot)
 library(GGally)
-library(ggpubr)
 library(broom)
 
 
@@ -172,7 +171,9 @@ ui <- fluidPage(
         checkboxInput("OLSselect",
                       "Add OLS ? "),
         checkboxInput("all_states0",
-                      "All states? & show summary?")
+                      "All states?"), 
+        checkboxInput("summary_summary", 
+                      "Show summary?")
       ),
       mainPanel(plotOutput("bivariate_plot1")),
       conditionalPanel(condition = "input.all_states0",
@@ -333,7 +334,7 @@ server <- function(input, output, session) {
   })
   # Bivarate tab, summary table 
   output$bivariate_table <- renderPrint({
-    if (input$all_states0) {
+    if (input$summary_summary) {
       lmout <-
         lm(Full_data[[input$bivariate_var2]] ~ Full_data[[input$bivariate_var1]], data = Full_data)
       print(summary(lmout))
