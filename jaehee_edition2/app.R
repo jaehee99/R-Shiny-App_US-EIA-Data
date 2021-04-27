@@ -128,12 +128,12 @@ ui <- fluidPage(
         tabPanel(
             "Univariate",
             sidebarPanel(
-                varSelectInput("filt1",
+                varSelectInput("univariate_filt1",
                                "Filter Variable",
                                data = Full_data[c(1:2)]),
-                selectInput("filt2", "Select Filter",
+                selectInput("univariate_filt2", "Select Filter",
                             choices = ""),
-                varSelectInput("var1",
+                varSelectInput("univariate_var",
                                "Plot 1 Variable",
                                data = Full_data[3:7]), 
                 sliderInput("bins", 
@@ -148,36 +148,36 @@ ui <- fluidPage(
             mainPanel(fluidRow(
                 
                 column(10,
-                       plotOutput("plot1"), 
+                       plotOutput("density"), 
                        plotOutput("histogram"))
             ))
         ),
         tabPanel(
             "Bivariate",
             sidebarPanel(
-                varSelectInput("filt3",
+                varSelectInput("bivariate_filt1",
                                "Filter Variable",
                                data = Full_data[c(1:2)]),
-                selectInput("filt4", "Select Filter",
+                selectInput("bivariate_filt2", "Select Filter",
                             choices = ""),
-                varSelectInput("var2",
+                varSelectInput("bivariate_var1",
                                "X axis",
                                data = Full_data[3:7]),
-                varSelectInput("var3",
+                varSelectInput("bivariate_var2",
                                "Y axis",
                                data = Full_data[3:7]),
                 checkboxInput("OLSselect",
-                              "Add OLS"),
+                              "Add OLS ? "),
                 checkboxInput("all_states0",
-                              "All states? show summary?")
+                              "All states? & show summary?")
             ),
-            mainPanel(plotOutput("plot2")),
+            mainPanel(plotOutput("bivariate_plot1")),
             conditionalPanel(condition = "input.all_states0",
                              mainPanel(
                                  column(12,
-                                        plotOutput("plot0"),
+                                        plotOutput("bivariate_plot2"),
                                         
-                                        verbatimTextOutput("lm"))
+                                        verbatimTextOutput("bivariate_table"))
                              ))
         ),
         tabPanel(
@@ -186,38 +186,38 @@ ui <- fluidPage(
                 
                 tabsetPanel(
                     tabPanel("Correlation", 
-                             plotOutput("corr_1")), 
+                             plotOutput("correlation_plot")), 
                     tabPanel("Pairs",
-                             plotOutput("pairs")))
+                             plotOutput("pair_plot")))
                 
             )
         ),
         tabPanel(
             "Daily Load",
             sidebarPanel(
-                selectInput("tab3_state1", "State 1",
+                selectInput("daily_load_var1", "Choose State 1? ",
                             choices = ""),
-                selectInput("tab3_state2", "State 2",
+                selectInput("daily_load_var2", "Choose State 2?",
                             choices = ""),
-                dateInput("tab3_date1", "Date to Compare"),
+                dateInput("daily_load_date", "Date to Compare"),
             ),
             mainPanel(
                 column(10, 
-                       plotOutput("tab3_plot1"),
-                       plotOutput("tab3_plot2")))
+                       plotOutput("daily_load_plot1"),
+                       plotOutput("daily_load_plot2")))
         ),
         tabPanel(
             "Time Series",
             sidebarPanel(
-                varSelectInput("filt5",
+                varSelectInput("time_series_filt1",
                                "Filter Variable",
                                data = Full_data[1]),
-                selectInput("filt6", "Choose state",
+                selectInput("time_series_filt2", "Choose state",
                             choices = ""),
-                varSelectInput("var4",
+                varSelectInput("time_series_var1",
                                "X axis",
                                data = Full_data[2]),
-                varSelectInput("var5",
+                varSelectInput("time_series_var2",
                                "Y axis",
                                data = Full_data[3:7]),
                 checkboxInput("smooth_line",
@@ -225,68 +225,68 @@ ui <- fluidPage(
                 checkboxInput("all_states",
                               "All states?")
             ),
-            mainPanel(plotOutput("plot3")),
+            mainPanel(plotOutput("time_series_plot_1")),
             conditionalPanel(condition = "input.all_states",
                              mainPanel(column(
-                                 width = 12, plotOutput("plot4")
+                                 width = 12, plotOutput("time_series_plot_2")
                              )))
         ),
         
         tabPanel("spreadsheet",
-                 fluidPage(tableOutput("table2")))
+                 fluidPage(tableOutput("spreadsheet_table")))
     )
 )
 
 server <- function(input, output, session) {
     observe({
         updateSelectInput(session,
-                          "filt2",
+                          "univariate_filt2",
                           choices = Full_data %>%
-                              select(!!input$filt1) %>%
-                              distinct(!!input$filt1))
+                              select(!!input$univariate_filt1) %>%
+                              distinct(!!input$univariate_filt1))
     })
     
     observe({
         updateSelectInput(session,
-                          "filt4",
+                          "bivariate_filt2",
                           choices = Full_data %>%
-                              select(!!input$filt3) %>%
-                              distinct(!!input$filt3))
+                              select(!!input$bivariate_filt1) %>%
+                              distinct(!!input$bivariate_filt1))
     })
     observe({
         updateSelectInput(session,
-                          "filt6",
+                          "time_series_filt2",
                           choices = Full_data %>%
-                              select(!!input$filt5) %>%
-                              distinct(!!input$filt5))
+                              select(!!input$time_series_filt1) %>%
+                              distinct(!!input$time_series_filt1))
     })
     
-    output$plot1 <- renderPlot({
+    output$density <- renderPlot({
         Full_data %>%
-            filter(!!input$filt1 == !!input$filt2) %>%
-            ggplot(aes(x = !!input$var1)) +
+            filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>%
+            ggplot(aes(x = !!input$univariate_var)) +
             geom_density()+
             theme_bw()+
-            labs(title = paste("Density plot of ", input$var1, "in", input$filt2))
+            labs(title = paste("Density plot of ", input$univariate_var, "in", input$univariate_filt2))
         
     })
     output$histogram <- renderPlot({
       Full_data %>%  
-      filter(!!input$filt1 == !!input$filt2) %>%
-            ggplot(aes(x = !!input$var1)) + 
+      filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>%
+            ggplot(aes(x = !!input$univariate_var)) + 
             geom_histogram(bins = input$bins)  +
         theme_bw()+
-        labs(title = paste("Histogram of ", input$var1, "in", input$filt2))
+        labs(title = paste("Histogram of ", input$univariate_var, "in", input$univariate_filt2))
       
     })
     
-    output$plot2 <- renderPlot({
+    output$bivariate_plot1 <- renderPlot({
         p2 <- Full_data %>%
-            filter(!!input$filt3 == !!input$filt4) %>%
-            ggplot(aes(x = !!input$var2, y = !!input$var3)) +
+            filter(!!input$bivariate_filt1 == !!input$bivariate_filt2) %>%
+            ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2)) +
             geom_point() +
             theme_bw() +
-            labs(title = paste(input$var3, " VS ", input$var2, "(", input$filt4 , ")"))
+            labs(title = paste(input$bivariate_var2, " VS ", input$bivariate_var1, "(", input$bivariate_filt2 , ")"))
         
         if (input$OLSselect) {
             p2 +
@@ -297,15 +297,15 @@ server <- function(input, output, session) {
         }
         
     })
-    output$plot0 <- renderPlot({
+    output$bivariate_plot2 <- renderPlot({
         if (input$all_states0) {
             Full_data %>%
-                ggplot(aes(x = !!input$var2, y = !!input$var3)) +
+                ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2)) +
                 geom_point() +
                 geom_smooth(method = "lm",
                             se = F,
                             color = "red") +
-                labs(title = paste(input$var3, " VS ", input$var2, "(all data)")) +
+                labs(title = paste(input$bivariate_var2, " VS ", input$bivariate_var1, "(all data)")) +
                 theme_bw()
             
         }
@@ -315,13 +315,13 @@ server <- function(input, output, session) {
         
     })
     
-    output$plot3 <- renderPlot({
+    output$time_series_plot_1 <- renderPlot({
         p3 <- Full_data %>%
-            filter(!!input$filt5 == !!input$filt6) %>%
-            ggplot(aes(x = !!input$var4, y = !!input$var5)) +
+            filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
+            ggplot(aes(x = !!input$time_series_var1, y = !!input$time_series_var2)) +
             geom_line(color = "#FC4E07", size = 0.7) +
             theme_minimal() +
-            labs(title = paste(input$var5, "vs year (", input$filt6, ")"))
+            labs(title = paste(input$time_series_var2, "vs year (", input$time_series_filt2, ")"))
         
         if (input$smooth_line) {
             p3 +
@@ -340,17 +340,17 @@ server <- function(input, output, session) {
         
     })
     
-    output$plot4 <- renderPlot({
+    output$time_series_plot_2 <- renderPlot({
         if (input$all_states) {
             Full_data %>%
                 ggplot(aes(
-                    x = !!input$var4,
-                    y = !!input$var5,
+                    x = !!input$time_series_var1,
+                    y = !!input$time_series_var2,
                     color = state
                 )) +
                 geom_line() +
                 theme_minimal() +
-                labs(title = paste(input$var5, "vs year (all data)"))
+                labs(title = paste(input$time_series_var2, "vs year (all data)"))
             
         }
         else{
@@ -359,10 +359,10 @@ server <- function(input, output, session) {
         
     })
     
-    output$lm <- renderPrint({
+    output$bivariate_table <- renderPrint({
         if (input$all_states0) {
             lmout <-
-                lm(Full_data[[input$var3]] ~ Full_data[[input$var2]], data = Full_data)
+                lm(Full_data[[input$bivariate_var2]] ~ Full_data[[input$bivariate_var1]], data = Full_data)
             print(summary(lmout))
         }
         else {
@@ -371,51 +371,51 @@ server <- function(input, output, session) {
     })
     
     
-    output$table2 <- renderTable({
+    output$spreadsheet_table <- renderTable({
         Full_data %>%
             select_if(is.numeric)
     })
     
     observe({
         updateSelectInput(session,
-                          "tab3_state1",
+                          "daily_load_var1",
                           choices = load_data %>%
                               distinct(region))
     })
     
     observe({
         updateSelectInput(session,
-                          "tab3_state2",
+                          "daily_load_var2",
                           choices = load_data %>%
                               distinct(region))
     })
     
-    output$tab3_plot1 <- renderPlot({
+    output$daily_load_plot1 <- renderPlot({
         load_data %>%
-            filter(floor_date(date_local, unit = "day") == !!input$tab3_date1) %>%
-            filter(region == !!input$tab3_state1) %>%
+            filter(floor_date(date_local, unit = "day") == !!input$daily_load_date) %>%
+            filter(region == !!input$daily_load_var1) %>%
             ggplot(aes(x = date_local, y = MWh)) +
             geom_line()+
             theme_bw()+
-            labs(title = paste(input$tab3_state1, "electricity"))
+            labs(title = paste(input$daily_load_var1, "electricity"))
         
         
     })
     
-    output$tab3_plot2 <- renderPlot({
+    output$daily_load_plot2 <- renderPlot({
         load_data %>%
-            filter(floor_date(date_local, unit = "day") == !!input$tab3_date1) %>%
-            filter(region == !!input$tab3_state2) %>%
+            filter(floor_date(date_local, unit = "day") == !!input$daily_load_date) %>%
+            filter(region == !!input$daily_load_var2) %>%
             ggplot(aes(x = date_local, y = MWh)) +
             geom_line()+
             theme_bw()+
-            labs(title = paste(input$tab3_state2, "electricity"))
+            labs(title = paste(input$daily_load_var2, "electricity"))
         
         
     })
     output$t_test <- renderTable({
         Full_data %>% 
-            select(input$var1) %>%  
+            select(input$univariate_var) %>%  
             t.test(alternative = "two.sided", mu = input$num, conf.level = 0.95) %>%  
             tidy() %>% 
             select(p.value,estimate, conf.low, conf.high) %>%  
@@ -423,7 +423,7 @@ server <- function(input, output, session) {
         
         
     })
-    output$corr_1 <- renderPlot({
+    output$correlation_plot <- renderPlot({
         Full_data %>%  
             filter(year>=2008 & year <= 2017) %>% 
             select(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) -> new_data
@@ -432,11 +432,11 @@ server <- function(input, output, session) {
                    hc.order = TRUE,
                    lab = TRUE)
     })
-    output$pairs <- renderPlot({
+    output$pair_plot <- renderPlot({
         Full_data %>%  
             filter(year>=2008 & year <= 2017) %>% 
             select(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) -> new_data
-        ggpairs(new_data)+ 
+        pairs(new_data)+ 
             theme_bw()
     })
     
