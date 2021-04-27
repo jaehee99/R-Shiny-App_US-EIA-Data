@@ -136,7 +136,6 @@ ui <- fluidPage(
                 varSelectInput("var1",
                                "Plot 1 Variable",
                                data = Full_data[3:7]), 
-                checkboxInput("log", "Log_Transform?"),
                 sliderInput("bins", 
                             "Number of Bins?:", 
                             min = 1, 
