@@ -180,7 +180,7 @@ ui <- fluidPage(
             mainPanel(
                 
                 tabsetPanel(
-                    tabPanel("Correlation Analysis", 
+                    tabPanel("Correlation", 
                              plotOutput("corr_1")), 
                     tabPanel("Pairs",
                              plotOutput("pairs")))
