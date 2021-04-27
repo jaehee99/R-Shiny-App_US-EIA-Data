@@ -131,6 +131,7 @@ ui <- fluidPage(
     tabPanel(
       "Univariate",
       sidebarPanel(
+        
         varSelectInput("univariate_filt1",
                        "Filter Variable",
                        data = Full_data[c(1:2)]),
@@ -149,7 +150,7 @@ ui <- fluidPage(
       ),
       mainPanel(fluidRow(
         
-        column(10,
+        column(8,
                plotOutput("density"), 
                plotOutput("histogram"))
       ))
@@ -178,10 +179,12 @@ ui <- fluidPage(
         checkboxInput("summary_summary", 
                       "Show summary?")
       ),
-      mainPanel(plotOutput("bivariate_plot1")),
+      mainPanel(column(8,
+        plotOutput("bivariate_plot1")
+        )),
       conditionalPanel(condition = "input.all_states0",
                        mainPanel(
-                         column(12,
+                         column(8,
                                 plotOutput("bivariate_plot2"),
                                 
                                 verbatimTextOutput("bivariate_table"))
@@ -211,7 +214,7 @@ ui <- fluidPage(
         dateInput("daily_load_date", "Date to Compare"),
       ),
       mainPanel(
-        column(10, 
+        column(8, 
                plotOutput("daily_load_plot1"),
                plotOutput("daily_load_plot2")))
     ),
