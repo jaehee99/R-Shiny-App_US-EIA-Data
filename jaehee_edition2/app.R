@@ -124,7 +124,6 @@ str_c("EBA.",
 
 ui <- fluidPage(
     titlePanel("EIA Data Project"),
-    theme ("mytheme.css"),
     tabsetPanel(
         tabPanel(
             "Univariate",
@@ -137,6 +136,12 @@ ui <- fluidPage(
                 varSelectInput("var1",
                                "Plot 1 Variable",
                                data = Full_data[3:7]), 
+                checkboxInput("log", "Log_Transform?"),
+                sliderInput("bins", 
+                            "Number of Bins?:", 
+                            min = 1, 
+                            max = 100, 
+                            value = 40 ), 
                 numericInput("num", "Null Value", value = 0),
                 tableOutput("t_test")
                 
@@ -144,7 +149,8 @@ ui <- fluidPage(
             mainPanel(fluidRow(
                 
                 column(10,
-                       plotOutput("plot1"))
+                       plotOutput("plot1"), 
+                       plotOutput("histogram"))
             ))
         ),
         tabPanel(
@@ -264,6 +270,12 @@ server <- function(input, output, session) {
             theme_bw()+
             labs(title = paste("Density plot of ", input$var1, "in", input$filt2))
         
+    })
+    output$histogram <- renderPlot({
+      Full_data %>%  
+      filter(!!input$filt1 == !!input$filt2) %>%
+            ggplot(aes(x = !!input$var1)) + 
+            geom_histogram(bins = input$bins)  
     })
     
     output$plot2 <- renderPlot({
