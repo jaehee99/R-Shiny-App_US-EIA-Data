@@ -269,7 +269,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = !!input$univariate_var)) +
       geom_density(color = "#018571")+
       theme_bw()+
-      labs(title = paste("Density plot of ", input$univariate_var, "in", input$univariate_filt2))
+      labs(title = paste("[ PLOT 1 ] Density plot of ", input$univariate_var, "in", input$univariate_filt2))
     
   })
   # Univariate tab second plot
@@ -280,7 +280,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = !!input$univariate_var)) + 
       geom_histogram(bins = input$bins, color = "hot pink", fill = "light blue")  +
       theme_bw()+
-      labs(title = paste("Histogram of ", input$univariate_var, "in", input$univariate_filt2))
+      labs(title = paste("[ PLOT 2 ] Histogram of ", input$univariate_var, "in", input$univariate_filt2))
     
   })
   # Univariate t test table
@@ -393,7 +393,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = date_local, y = MWh)) +
       geom_line(color = "#FC4E07", size = 0.7)+
       theme_bw()+
-      labs(title = paste(input$daily_load_var1, "electricity"))
+      labs(title = paste("[ PLOT 1 ] ",input$daily_load_var1, "electricity"))
   })
   # Daily load second plot(second choice of the state)
   output$daily_load_plot2 <- renderPlot({
@@ -403,7 +403,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = date_local, y = MWh)) +
       geom_line(color = "#FC4E07", size = 0.7)+
       theme_bw()+
-      labs(title = paste(input$daily_load_var2, "electricity"))
+      labs(title = paste("[ PLOT 2 ] ",input$daily_load_var2, "electricity"))
   })
   # tab 5: Time series
   observe({
@@ -420,7 +420,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = !!input$time_series_var1, y = !!input$time_series_var2)) +
       geom_line(color = "#FC4E07", size = 0.7) +
       theme_minimal() +
-      labs(title = paste(input$time_series_var2, "vs year (", input$time_series_filt2, ")"))
+      labs(title = paste("[ PLOT 1 ] ",input$time_series_var2, "vs year (", input$time_series_filt2, ")"))
     
     if (input$smooth_line) {
       p3 +
@@ -446,7 +446,7 @@ server <- function(input, output, session) {
         )) +
         geom_line() +
         theme_minimal() +
-        labs(title = paste(input$time_series_var2, "vs year (all data)"))
+        labs(title = paste("[ PLOT 2 ] ",input$time_series_var2, "vs year (all data)"))
     }
     else{
       print("")
