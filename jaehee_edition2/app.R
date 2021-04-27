@@ -388,7 +388,7 @@ server <- function(input, output, session) {
       filter(floor_date(date_local, unit = "day") == !!input$daily_load_date) %>%
       filter(region == !!input$daily_load_var1) %>%
       ggplot(aes(x = date_local, y = MWh)) +
-      geom_line()+
+      geom_line(color = "#FC4E07", size = 0.7)+
       theme_bw()+
       labs(title = paste(input$daily_load_var1, "electricity"))
   })
@@ -398,7 +398,7 @@ server <- function(input, output, session) {
       filter(floor_date(date_local, unit = "day") == !!input$daily_load_date) %>%
       filter(region == !!input$daily_load_var2) %>%
       ggplot(aes(x = date_local, y = MWh)) +
-      geom_line()+
+      geom_line(color = "#FC4E07", size = 0.7)+
       theme_bw()+
       labs(title = paste(input$daily_load_var2, "electricity"))
   })
