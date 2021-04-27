@@ -244,7 +244,7 @@ ui <- fluidPage(
 )
 # Create Server
 server <- function(input, output, session) {
-
+  
 # tab 1: Univariate
     observe({
       updateSelectInput(session,
@@ -253,7 +253,8 @@ server <- function(input, output, session) {
                           select(!!input$univariate_filt1) %>%
                           distinct(!!input$univariate_filt1))
     })
-    
+    # Univariate tab first plot 
+    #density plot
     output$density <- renderPlot({
         Full_data %>%
             filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>%
@@ -263,6 +264,8 @@ server <- function(input, output, session) {
             labs(title = paste("Density plot of ", input$univariate_var, "in", input$univariate_filt2))
         
     })
+    # Univariate tab second plot
+    # histogram
     output$histogram <- renderPlot({
       Full_data %>%  
       filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>%
@@ -272,6 +275,7 @@ server <- function(input, output, session) {
         labs(title = paste("Histogram of ", input$univariate_var, "in", input$univariate_filt2))
       
     })
+    # Univariate t test table
     output$t_test <- renderTable({
       Full_data %>% 
         select(input$univariate_var) %>%  
@@ -290,6 +294,8 @@ server <- function(input, output, session) {
                           select(!!input$bivariate_filt1) %>%
                           distinct(!!input$bivariate_filt1))
     })
+    # Bivariate tab, first plot
+    # scatter plot based on two variables (with filter, depends on year or state)
     output$bivariate_plot1 <- renderPlot({
         p2 <- Full_data %>%
             filter(!!input$bivariate_filt1 == !!input$bivariate_filt2) %>%
@@ -307,6 +313,8 @@ server <- function(input, output, session) {
         }
         
     })
+    # Bivariate tab, second plot
+    # scatter plot based on two variables (with no filter, all data)
     output$bivariate_plot2 <- renderPlot({
         if (input$all_states0) {
             Full_data %>%
@@ -317,14 +325,12 @@ server <- function(input, output, session) {
                             color = "red") +
                 labs(title = paste(input$bivariate_var2, " VS ", input$bivariate_var1, "(all data)")) +
                 theme_bw()
-            
         }
         else{
             print("")
         }
-        
     })
-    
+    # Bivarate tab, summary table 
     output$bivariate_table <- renderPrint({
       if (input$all_states0) {
         lmout <-
@@ -336,6 +342,8 @@ server <- function(input, output, session) {
       }
     })
 # tab 3: Multivariate
+    # Multivariate first tab: correlation heat map 
+    # filtered years(2008~2017), this is because in order to create correlation plot we have to have same rows
     output$correlation_plot <- renderPlot({
       Full_data %>%  
         filter(year>=2008 & year <= 2017) %>% 
@@ -345,6 +353,7 @@ server <- function(input, output, session) {
                  hc.order = TRUE,
                  lab = TRUE)
     })
+    # Multivariate second tab: pairs 
     output$pair_plot <- renderPlot({
       Full_data %>%  
         filter(year>=2008 & year <= 2017) %>% 
@@ -366,7 +375,7 @@ server <- function(input, output, session) {
                         choices = load_data %>%
                           distinct(region))
     })
-    
+    # Daily load first plot (first choice of the state)
     output$daily_load_plot1 <- renderPlot({
       load_data %>%
         filter(floor_date(date_local, unit = "day") == !!input$daily_load_date) %>%
@@ -375,10 +384,8 @@ server <- function(input, output, session) {
         geom_line()+
         theme_bw()+
         labs(title = paste(input$daily_load_var1, "electricity"))
-      
-      
     })
-    
+    # Daily load second plot(second choice of the state)
     output$daily_load_plot2 <- renderPlot({
       load_data %>%
         filter(floor_date(date_local, unit = "day") == !!input$daily_load_date) %>%
@@ -387,8 +394,6 @@ server <- function(input, output, session) {
         geom_line()+
         theme_bw()+
         labs(title = paste(input$daily_load_var2, "electricity"))
-      
-      
     })
 # tab 5: Time series
     observe({
@@ -398,6 +403,7 @@ server <- function(input, output, session) {
                           select(!!input$time_series_filt1) %>%
                           distinct(!!input$time_series_filt1))
     })
+    # Time series first plot
     output$time_series_plot_1 <- renderPlot({
         p3 <- Full_data %>%
             filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
@@ -414,15 +420,12 @@ server <- function(input, output, session) {
                     method = "loess",
                     se = F
                 )
-            
-            
         }
         else{
             p3
         }
-        
     })
-    
+    # Time series second plot
     output$time_series_plot_2 <- renderPlot({
         if (input$all_states) {
             Full_data %>%
@@ -434,15 +437,12 @@ server <- function(input, output, session) {
                 geom_line() +
                 theme_minimal() +
                 labs(title = paste(input$time_series_var2, "vs year (all data)"))
-            
         }
         else{
             print("")
         }
-        
     })
 # tab 6: Spreadsheet    
-
     output$spreadsheet_table <- renderTable({
         Full_data %>%
             select_if(is.numeric)
