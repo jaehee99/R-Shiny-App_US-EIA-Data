@@ -244,29 +244,16 @@ ui <- fluidPage(
 )
 # Create Server
 server <- function(input, output, session) {
+
+# tab 1: Univariate
     observe({
-        updateSelectInput(session,
-                          "univariate_filt2",
-                          choices = Full_data %>%
-                              select(!!input$univariate_filt1) %>%
-                              distinct(!!input$univariate_filt1))
+      updateSelectInput(session,
+                        "univariate_filt2",
+                        choices = Full_data %>%
+                          select(!!input$univariate_filt1) %>%
+                          distinct(!!input$univariate_filt1))
     })
     
-    observe({
-        updateSelectInput(session,
-                          "bivariate_filt2",
-                          choices = Full_data %>%
-                              select(!!input$bivariate_filt1) %>%
-                              distinct(!!input$bivariate_filt1))
-    })
-    observe({
-        updateSelectInput(session,
-                          "time_series_filt2",
-                          choices = Full_data %>%
-                              select(!!input$time_series_filt1) %>%
-                              distinct(!!input$time_series_filt1))
-    })
-# tab 1: Univariate
     output$density <- renderPlot({
         Full_data %>%
             filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>%
@@ -296,6 +283,13 @@ server <- function(input, output, session) {
       
     })
 # tab 2: Bivariate
+    observe({
+      updateSelectInput(session,
+                        "bivariate_filt2",
+                        choices = Full_data %>%
+                          select(!!input$bivariate_filt1) %>%
+                          distinct(!!input$bivariate_filt1))
+    })
     output$bivariate_plot1 <- renderPlot({
         p2 <- Full_data %>%
             filter(!!input$bivariate_filt1 == !!input$bivariate_filt2) %>%
@@ -397,6 +391,13 @@ server <- function(input, output, session) {
       
     })
 # tab 5: Time series
+    observe({
+      updateSelectInput(session,
+                        "time_series_filt2",
+                        choices = Full_data %>%
+                          select(!!input$time_series_filt1) %>%
+                          distinct(!!input$time_series_filt1))
+    })
     output$time_series_plot_1 <- renderPlot({
         p3 <- Full_data %>%
             filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
