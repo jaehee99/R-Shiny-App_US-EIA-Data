@@ -121,8 +121,10 @@ str_c("EBA.",
     select(-date_utc) %>%
     filter(date_local >= ymd("2020-04-26")) -> load_data
 
+
 ui <- fluidPage(
     titlePanel("EIA Data Project"),
+    theme ("mytheme.css"),
     tabsetPanel(
         tabPanel(
             "Univariate",
@@ -413,8 +415,7 @@ server <- function(input, output, session) {
             select(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) -> new_data
         
         ggcorrplot(cor(new_data, use="complete.obs"), 
-                   hc.order = TRUE, 
-                   type = "lower",
+                   hc.order = TRUE,
                    lab = TRUE)
     })
     output$pairs <- renderPlot({
@@ -424,6 +425,7 @@ server <- function(input, output, session) {
         ggpairs(new_data)+ 
             theme_bw()
     })
+    
     
 }
 
