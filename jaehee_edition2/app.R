@@ -124,7 +124,8 @@ str_c("EBA.",
 
 # Create UI 
 ui <- fluidPage(
-  titlePanel("EIA Data Project"),
+  titlePanel("US EIA Data Project"),
+  # EIA stands for Energy Information Administration
   tabsetPanel(
     # tab 1: Univariate
     tabPanel(
