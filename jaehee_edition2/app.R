@@ -169,9 +169,11 @@ ui <- fluidPage(
                        "Y axis",
                        data = Full_data[3:7]),
         checkboxInput("OLSselect",
-                      "Add OLS ? "),
+                      "Add OLS to [ PLOT 1 ]? "),
         checkboxInput("all_states0",
-                      "All states?"), 
+                      "All states? & All year?"), 
+        checkboxInput("OLSselect_2",
+                      "Add OLS to [ PLOT 2 ]? "),
         checkboxInput("summary_summary", 
                       "Show summary?")
       ),
@@ -299,37 +301,39 @@ server <- function(input, output, session) {
   # Bivariate tab, first plot
   # scatter plot based on two variables (with filter, depends on year or state)
   output$bivariate_plot1 <- renderPlot({
-    p2 <- Full_data %>%
+    biv_plot1 <- Full_data %>%
       filter(!!input$bivariate_filt1 == !!input$bivariate_filt2) %>%
       ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2)) +
       geom_point() +
       theme_bw() +
-      labs(title = paste(input$bivariate_var2, " VS ", input$bivariate_var1, "(", input$bivariate_filt2 , ")"))
+      labs(title = paste("[ PLOT 1 ]", input$bivariate_var2, " VS ", input$bivariate_var1, "(", input$bivariate_filt2 , ")"))
     
     if (input$OLSselect) {
-      p2 +
+      biv_plot1 +
         geom_smooth(method = "lm", se = F)
     }
     else{
-      p2
+      biv_plot1
     }
     
   })
   # Bivariate tab, second plot
   # scatter plot based on two variables (with no filter, all data)
   output$bivariate_plot2 <- renderPlot({
-    if (input$all_states0) {
-      Full_data %>%
-        ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2)) +
-        geom_point() +
+   biv_plot2 <- Full_data %>%
+      ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2)) +
+      geom_point() +
+      labs(title = paste("[ PLOT 2 ]",input$bivariate_var2, " VS ", input$bivariate_var1, "(all data)")) +
+      theme_bw()
+  
+    if (input$OLSselect_2) {
+      biv_plot2 +
         geom_smooth(method = "lm",
                     se = F,
-                    color = "red") +
-        labs(title = paste(input$bivariate_var2, " VS ", input$bivariate_var1, "(all data)")) +
-        theme_bw()
+                    color = "red") 
     }
     else{
-      print("")
+      biv_plot2
     }
   })
   # Bivarate tab, summary table 
@@ -340,7 +344,7 @@ server <- function(input, output, session) {
       print(summary(lmout))
     }
     else {
-      print("")
+      print("If you want to see the summary of [ PLOT2 ], click 'Show summary'")
     }
   })
   # tab 3: Multivariate
