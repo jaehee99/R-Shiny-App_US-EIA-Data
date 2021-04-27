@@ -121,10 +121,11 @@ str_c("EBA.",
     select(-date_utc) %>%
     filter(date_local >= ymd("2020-04-26")) -> load_data
 
-
+# Create UI 
 ui <- fluidPage(
     titlePanel("EIA Data Project"),
     tabsetPanel(
+# tab 1: Univariate
         tabPanel(
             "Univariate",
             sidebarPanel(
@@ -152,6 +153,7 @@ ui <- fluidPage(
                        plotOutput("histogram"))
             ))
         ),
+# tab 2: Bivariate
         tabPanel(
             "Bivariate",
             sidebarPanel(
@@ -180,6 +182,7 @@ ui <- fluidPage(
                                         verbatimTextOutput("bivariate_table"))
                              ))
         ),
+# tab 3: Multivariate
         tabPanel(
             "Multivariate",
             mainPanel(
@@ -192,6 +195,7 @@ ui <- fluidPage(
                 
             )
         ),
+# tab 4: Daily load
         tabPanel(
             "Daily Load",
             sidebarPanel(
@@ -206,6 +210,8 @@ ui <- fluidPage(
                        plotOutput("daily_load_plot1"),
                        plotOutput("daily_load_plot2")))
         ),
+        
+# tab 5: Time Series
         tabPanel(
             "Time Series",
             sidebarPanel(
@@ -231,12 +237,12 @@ ui <- fluidPage(
                                  width = 12, plotOutput("time_series_plot_2")
                              )))
         ),
-        
+# tab 6: Spreadsheet
         tabPanel("spreadsheet",
                  fluidPage(tableOutput("spreadsheet_table")))
     )
 )
-
+# Create Server
 server <- function(input, output, session) {
     observe({
         updateSelectInput(session,
@@ -260,7 +266,7 @@ server <- function(input, output, session) {
                               select(!!input$time_series_filt1) %>%
                               distinct(!!input$time_series_filt1))
     })
-    
+# tab 1: Univariate
     output$density <- renderPlot({
         Full_data %>%
             filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>%
@@ -279,7 +285,17 @@ server <- function(input, output, session) {
         labs(title = paste("Histogram of ", input$univariate_var, "in", input$univariate_filt2))
       
     })
-    
+    output$t_test <- renderTable({
+      Full_data %>% 
+        select(input$univariate_var) %>%  
+        t.test(alternative = "two.sided", mu = input$num, conf.level = 0.95) %>%  
+        tidy() %>% 
+        select(p.value,estimate, conf.low, conf.high) %>%  
+        rename(c('P-Value' = p.value, 'Estimate' = estimate, '95% Lower' = conf.low, '95% Higher' = conf.high))
+      
+      
+    })
+# tab 2: Bivariate
     output$bivariate_plot1 <- renderPlot({
         p2 <- Full_data %>%
             filter(!!input$bivariate_filt1 == !!input$bivariate_filt2) %>%
@@ -315,6 +331,72 @@ server <- function(input, output, session) {
         
     })
     
+    output$bivariate_table <- renderPrint({
+      if (input$all_states0) {
+        lmout <-
+          lm(Full_data[[input$bivariate_var2]] ~ Full_data[[input$bivariate_var1]], data = Full_data)
+        print(summary(lmout))
+      }
+      else {
+        print("")
+      }
+    })
+# tab 3: Multivariate
+    output$correlation_plot <- renderPlot({
+      Full_data %>%  
+        filter(year>=2008 & year <= 2017) %>% 
+        select(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) -> new_data
+      
+      ggcorrplot(cor(new_data, use="complete.obs"), 
+                 hc.order = TRUE,
+                 lab = TRUE)
+    })
+    output$pair_plot <- renderPlot({
+      Full_data %>%  
+        filter(year>=2008 & year <= 2017) %>% 
+        select(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) -> new_data
+      pairs(new_data)+ 
+        theme_bw()
+    })
+# tab 4: Daily load   
+    observe({
+      updateSelectInput(session,
+                        "daily_load_var1",
+                        choices = load_data %>%
+                          distinct(region))
+    })
+    
+    observe({
+      updateSelectInput(session,
+                        "daily_load_var2",
+                        choices = load_data %>%
+                          distinct(region))
+    })
+    
+    output$daily_load_plot1 <- renderPlot({
+      load_data %>%
+        filter(floor_date(date_local, unit = "day") == !!input$daily_load_date) %>%
+        filter(region == !!input$daily_load_var1) %>%
+        ggplot(aes(x = date_local, y = MWh)) +
+        geom_line()+
+        theme_bw()+
+        labs(title = paste(input$daily_load_var1, "electricity"))
+      
+      
+    })
+    
+    output$daily_load_plot2 <- renderPlot({
+      load_data %>%
+        filter(floor_date(date_local, unit = "day") == !!input$daily_load_date) %>%
+        filter(region == !!input$daily_load_var2) %>%
+        ggplot(aes(x = date_local, y = MWh)) +
+        geom_line()+
+        theme_bw()+
+        labs(title = paste(input$daily_load_var2, "electricity"))
+      
+      
+    })
+# tab 5: Time series
     output$time_series_plot_1 <- renderPlot({
         p3 <- Full_data %>%
             filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
@@ -358,89 +440,12 @@ server <- function(input, output, session) {
         }
         
     })
-    
-    output$bivariate_table <- renderPrint({
-        if (input$all_states0) {
-            lmout <-
-                lm(Full_data[[input$bivariate_var2]] ~ Full_data[[input$bivariate_var1]], data = Full_data)
-            print(summary(lmout))
-        }
-        else {
-            print("")
-        }
-    })
-    
-    
+# tab 6: Spreadsheet    
+
     output$spreadsheet_table <- renderTable({
         Full_data %>%
             select_if(is.numeric)
     })
-    
-    observe({
-        updateSelectInput(session,
-                          "daily_load_var1",
-                          choices = load_data %>%
-                              distinct(region))
-    })
-    
-    observe({
-        updateSelectInput(session,
-                          "daily_load_var2",
-                          choices = load_data %>%
-                              distinct(region))
-    })
-    
-    output$daily_load_plot1 <- renderPlot({
-        load_data %>%
-            filter(floor_date(date_local, unit = "day") == !!input$daily_load_date) %>%
-            filter(region == !!input$daily_load_var1) %>%
-            ggplot(aes(x = date_local, y = MWh)) +
-            geom_line()+
-            theme_bw()+
-            labs(title = paste(input$daily_load_var1, "electricity"))
-        
-        
-    })
-    
-    output$daily_load_plot2 <- renderPlot({
-        load_data %>%
-            filter(floor_date(date_local, unit = "day") == !!input$daily_load_date) %>%
-            filter(region == !!input$daily_load_var2) %>%
-            ggplot(aes(x = date_local, y = MWh)) +
-            geom_line()+
-            theme_bw()+
-            labs(title = paste(input$daily_load_var2, "electricity"))
-        
-        
-    })
-    output$t_test <- renderTable({
-        Full_data %>% 
-            select(input$univariate_var) %>%  
-            t.test(alternative = "two.sided", mu = input$num, conf.level = 0.95) %>%  
-            tidy() %>% 
-            select(p.value,estimate, conf.low, conf.high) %>%  
-            rename(c('P-Value' = p.value, 'Estimate' = estimate, '95% Lower' = conf.low, '95% Higher' = conf.high))
-        
-        
-    })
-    output$correlation_plot <- renderPlot({
-        Full_data %>%  
-            filter(year>=2008 & year <= 2017) %>% 
-            select(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) -> new_data
-        
-        ggcorrplot(cor(new_data, use="complete.obs"), 
-                   hc.order = TRUE,
-                   lab = TRUE)
-    })
-    output$pair_plot <- renderPlot({
-        Full_data %>%  
-            filter(year>=2008 & year <= 2017) %>% 
-            select(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) -> new_data
-        pairs(new_data)+ 
-            theme_bw()
-    })
-    
-    
-}
+ }
 
 shinyApp(ui, server)
