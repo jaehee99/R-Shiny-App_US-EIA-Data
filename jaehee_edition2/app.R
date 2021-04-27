@@ -140,7 +140,7 @@ ui <- fluidPage(
                             "Number of Bins?:", 
                             min = 1, 
                             max = 100, 
-                            value = 40 ), 
+                            value = 40), 
                 numericInput("num", "Null Value", value = 0),
                 tableOutput("t_test")
                 
@@ -274,7 +274,10 @@ server <- function(input, output, session) {
       Full_data %>%  
       filter(!!input$filt1 == !!input$filt2) %>%
             ggplot(aes(x = !!input$var1)) + 
-            geom_histogram(bins = input$bins)  
+            geom_histogram(bins = input$bins)  +
+        theme_bw()+
+        labs(title = paste("Histogram of ", input$var1, "in", input$filt2))
+      
     })
     
     output$plot2 <- renderPlot({
