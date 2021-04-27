@@ -264,7 +264,7 @@ server <- function(input, output, session) {
     Full_data %>%
       filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>%
       ggplot(aes(x = !!input$univariate_var)) +
-      geom_density()+
+      geom_density(color = "#018571")+
       theme_bw()+
       labs(title = paste("Density plot of ", input$univariate_var, "in", input$univariate_filt2))
     
@@ -275,7 +275,7 @@ server <- function(input, output, session) {
     Full_data %>%  
       filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>%
       ggplot(aes(x = !!input$univariate_var)) + 
-      geom_histogram(bins = input$bins)  +
+      geom_histogram(bins = input$bins, color = "hot pink", fill = "light blue")  +
       theme_bw()+
       labs(title = paste("Histogram of ", input$univariate_var, "in", input$univariate_filt2))
     
@@ -331,7 +331,7 @@ server <- function(input, output, session) {
       biv_plot2 +
         geom_smooth(method = "lm",
                     se = F,
-                    color = "red") 
+                    color = "blue") 
     }
     else{
       biv_plot2
