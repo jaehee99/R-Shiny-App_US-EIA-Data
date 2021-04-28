@@ -11,7 +11,6 @@ library(ggthemes)
 library(ggcorrplot)
 library(GGally)
 library(broom)
-library(bslib)
 library(shinythemes)
 
 
@@ -126,17 +125,10 @@ str_c("EBA.",
 
 # Create UI 
 ui <- fluidPage(
-
+ 
+   #Add theme, make it interactive to the users
     shinythemes::themeSelector(),
     theme = shinytheme("cerulean"),
-  
-   #  bg = "#FFFFFF", 
-   #  fg = "#000000", 
-   #  primary = "#000000",
-   # base_font = "Times New Roman",
-   #  code_font = font_google("JetBrains Mono")
-    
-  #End of theme
 
   titlePanel("US Labor Demand and Energy Analysis app"),
   # EIA stands for Energy Information Administration
