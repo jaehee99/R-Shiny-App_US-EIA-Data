@@ -149,7 +149,7 @@ ui <- fluidPage(
                        data = Full_data[3:7]), 
         radioButtons("Choices", "Choose a plot type?", choices = plot_choices),
         sliderInput("bins",
-                    "Number of Bins?:",
+                    "Histogram: Number of Bins?:",
                     min = 1,
                     max = 100,
                     value = 40),
@@ -458,8 +458,7 @@ server <- function(input, output, session) {
   })
   # tab 6: Spreadsheet    
   output$spreadsheet_table <- renderTable({
-    Full_data %>%
-      select_if(is.numeric)
+    Full_data 
   })
 }
 
