@@ -279,6 +279,7 @@ server <- function(input, output, session) {
       geom_density(color = "#018571")+
       theme_economist_white()+
       labs(title = paste("[ PLOT 1 ] Density plot of ", input$univariate_var, "in", input$univariate_filt2))
+    
  
   })
   # Univariate tab second plot
@@ -314,6 +315,7 @@ server <- function(input, output, session) {
   # Bivariate tab, first plot
   # scatter plot based on two variables (with filter, depends on year or state)
   output$bivariate_plot1 <- renderPlot({
+
     biv_plot1 <- Full_data %>%
       filter(!!input$bivariate_filt1 == !!input$bivariate_filt2) %>%
       ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2)) +
@@ -334,10 +336,10 @@ server <- function(input, output, session) {
   # scatter plot based on two variables (with no filter, all data)
   output$bivariate_plot2 <- renderPlot({
    biv_plot2 <- Full_data %>%
-      ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2)) +
+      ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2, color = state)) +
       geom_point() +
       labs(title = paste("[ PLOT 2 ]",input$bivariate_var2, " VS ", input$bivariate_var1, "(all data)")) +
-      theme_economist_white()
+      theme_bw()
   
     if (input$OLSselect_2) {
       biv_plot2 +
