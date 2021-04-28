@@ -38,7 +38,6 @@ pull_data <- function(api_start, api_end) {
     select(state, everything()) %>%
     unnest(data)
 }
-
 # call function for each variable we want and rename the standard "value" column to the more descriptive name we want in the final data
 avg_elec <-
   pull_data(api_start = "ELEC.PRICE.", api_end = "-IND.A") %>%
@@ -55,7 +54,6 @@ retail_sales <-
 total_electricity <-
   pull_data(api_start = "ELEC.GEN.ALL-", api_end = "-99.A") %>%
   rename("total_electricity" = value)
-
 # join tibbles together using the state, date, and year columns
 Full_data <-
   left_join(avg_elec, emission, by = c("state", "date", "year")) %>%
@@ -72,7 +70,6 @@ Full_data <-
     total_electricity
   )
 rm(avg_elec, customers, emission, retail_sales, total_electricity)
-
 # Create list of API calls for hourly electricity demand data using str_c
 # Manually add electric grid regions, since they don't align with states
 # Unnest and select relevant data
@@ -126,12 +123,11 @@ str_c("EBA.",
 plot_choices = c("Density Plot", "Histogram", "Frequency Polygon")
 # Create UI 
 ui <- fluidPage(
- 
    #Add theme, make it interactive to the users
     shinythemes::themeSelector(),
     theme = shinytheme("cerulean"),
-
-  titlePanel("US Labor Demand and Energy Analysis app"),
+ 
+     titlePanel("US Labor Demand and Energy Analysis app"),
   # EIA stands for Energy Information Administration
   tabsetPanel(
     # tab 1: Univariate
@@ -198,7 +194,6 @@ ui <- fluidPage(
                        mainPanel(
                          column(8,
                                 plotOutput("bivariate_plot2"),
-                                
                                 verbatimTextOutput("bivariate_table"))
                        ))
     ),
@@ -234,37 +229,32 @@ ui <- fluidPage(
     # tab 5: Time Series
     tabPanel(
       "Time Series",
-      sidebarPanel(
-        varSelectInput("time_series_filt1",
+      sidebarLayout(position = "left", 
+        sidebarPanel(varSelectInput("time_series_filt1",
                        "Filter Variable",
                        data = Full_data[1]),
         selectInput("time_series_filt2", "Choose state",
                     choices = ""),
         varSelectInput("time_series_var1",
-                       "X axis",
-                       data = Full_data[2]),
+                       "What variable trend do you want to see (choice1)?",
+                       data = Full_data[3:7]),
         varSelectInput("time_series_var2",
-                       "Y axis",
+                       "What variable trend do you want to see (choice2)?",
                        data = Full_data[3:7]),
         checkboxInput("smooth_line",
                       "Add trend smooth line?"),
         checkboxInput("all_states",
-                      "All states?")
-      ),
-      mainPanel(column(8,
-                       plotOutput("time_series_plot_1"))), 
-      
-      conditionalPanel(condition = "input.all_states",
-                       mainPanel(column(8
-                                        , plotOutput("time_series_plot_2")
-                       )))
-    ),
+                      "All states by states (color)?")),
+      mainPanel( column(8,
+                        plotOutput("time_series_plot_1"), 
+                       plotOutput("time_series_plot_2"), 
+                       plotOutput("time_series_plot_3")
+                       ))
+      )),
+    
     # tab 6: Spreadsheet
     tabPanel("spreadsheet",
-             fluidPage( DT::dataTableOutput("spreadsheet_table")))
-    
-   
-    
+             fluidPage(DT::dataTableOutput("spreadsheet_table")))
   )
 )
 # Create Server
@@ -290,7 +280,7 @@ server <- function(input, output, session) {
         "Density Plot" = geom_density(color = "#018571"), 
         "Frequency Polygon" = geom_freqpoly(color = "#018571")
       ) +
-      theme_economist_white()+
+      theme_bw()+
       labs(title = paste(input$univariate_var, "in", input$univariate_filt2))
   })
   # Univariate t test table
@@ -320,7 +310,7 @@ server <- function(input, output, session) {
       filter(!!input$bivariate_filt1 == !!input$bivariate_filt2) %>%
       ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2)) +
       geom_point() +
-      theme_economist_white() +
+      theme_bw() +
       labs(title = paste("[ PLOT 1 ]", input$bivariate_var2, " VS ", input$bivariate_var1, "(", input$bivariate_filt2 , ")"))
     
     if (input$OLSselect) {
@@ -380,7 +370,7 @@ server <- function(input, output, session) {
       filter(year>=2008 & year <= 2017) %>% 
       select(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) -> new_data
     pairs(new_data)+ 
-      theme_economist_white()
+      theme_bw()
   })
   # tab 4: Daily load   
   observe({
@@ -403,7 +393,7 @@ server <- function(input, output, session) {
       filter(region == !!input$daily_load_var1) %>%
       ggplot(aes(x = date_local, y = MWh)) +
       geom_line(color = "#FC4E07", size = 0.7)+
-      theme_economist_white()+
+      theme_bw()+
       labs(title = paste("[ PLOT 1 ] ",input$daily_load_var1, "electricity"))
   })
   # Daily load second plot(second choice of the state)
@@ -413,7 +403,7 @@ server <- function(input, output, session) {
       filter(region == !!input$daily_load_var2) %>%
       ggplot(aes(x = date_local, y = MWh)) +
       geom_line(color = "#FC4E07", size = 0.7)+
-      theme_economist_white()+
+      theme_bw()+
       labs(title = paste("[ PLOT 2 ] ",input$daily_load_var2, "electricity"))
   })
   # tab 5: Time series
@@ -426,15 +416,15 @@ server <- function(input, output, session) {
   })
   # Time series first plot
   output$time_series_plot_1 <- renderPlot({
-    p3 <- Full_data %>%
+    p1 <- Full_data %>%
       filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
-      ggplot(aes(x = !!input$time_series_var1, y = !!input$time_series_var2)) +
+      ggplot(aes(x = year, y = !!input$time_series_var1)) +
       geom_line(color = "#FC4E07", size = 0.7) +
-      theme_economist_white() +
-      labs(title = paste("[ PLOT 1 ] ",input$time_series_var2, "vs year (", input$time_series_filt2, ")"))
+      theme_bw() +
+      labs(title = paste("[ PLOT 1 ] ",input$time_series_var1, "vs year (", input$time_series_filt2, ")"))
     
     if (input$smooth_line) {
-      p3 +
+      p1 +
         geom_smooth(
           color = "#33CCCC",
           size = 0.5,
@@ -443,30 +433,51 @@ server <- function(input, output, session) {
         )
     }
     else{
-      p3
+      p1
+    }
+  })
+  output$time_series_plot_2 <- renderPlot({
+    p2 <- Full_data %>%
+      filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
+      ggplot(aes(x = year, y = !!input$time_series_var2)) +
+      geom_line(color = "#FC4E07", size = 0.7) +
+      theme_bw() +
+      labs(title = paste("[ PLOT 2 ] ",input$time_series_var2, "vs year (", input$time_series_filt2, ")"))
+    
+    if (input$smooth_line) {
+      p2 +
+        geom_smooth(
+          color = "#33CCCC",
+          size = 0.5,
+          method = "loess",
+          se = F
+        )
+    }
+    else{
+      p2
     }
   })
   # Time series second plot
-  output$time_series_plot_2 <- renderPlot({
+  output$time_series_plot_3 <- renderPlot({
     if (input$all_states) {
       Full_data %>%
         ggplot(aes(
-          x = !!input$time_series_var1,
+          x = year,
           y = !!input$time_series_var2,
           color = state
         )) +
         geom_line() +
         theme_bw() +
-        labs(title = paste("[ PLOT 2 ] ",input$time_series_var2, "vs year (all data)"))
+        labs(title = paste("[ PLOT 3 ] ",input$time_series_var2, "vs year (all data)"))
     }
     else{
       print("")
     }
   })
+
   # tab 6: Spreadsheet   
   output$spreadsheet_table <- DT::renderDataTable({
     Full_data
   })
 }
-
 shinyApp(ui, server)
