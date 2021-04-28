@@ -22,13 +22,32 @@ library(lubridate)
 *For bls data  
 ```{r}
 #BLS dataframe
-data_1 <-list(seriesid = c("LAUST360000000000003","LAUST370000000000003", "LAUST380000000000003", "LAUST390000000000003","LAUST400000000000003","LAUST410000000000003","LAUST420000000000003","LAUST440000000000003","LAUST450000000000003","LAUST460000000000003","LAUST470000000000003","LAUST480000000000003","LAUST490000000000003","LAUST500000000000003","LAUST510000000000003","LAUST530000000000003","LAUST540000000000003","LAUST550000000000003","LAUST560000000000003"))
+data_1 <-list(seriesid = c("LAUST150000000000003", "LAUST160000000000003", "LAUST170000000000003", "LAUST180000000000003", "LAUST190000000000003", "LAUST200000000000003", "LAUST210000000000003", "LAUST220000000000003", "LAUST230000000000003", "LAUST240000000000003", "LAUST250000000000003", "LAUST260000000000003", "LAUST270000000000003", "LAUST280000000000003", "LAUST290000000000003", "LAUST300000000000003", "LAUST310000000000003", "LAUST320000000000003", "LAUST330000000000003", "LAUST340000000000003", "LAUST360000000000003","LAUST370000000000003", "LAUST380000000000003", "LAUST390000000000003","LAUST400000000000003","LAUST410000000000003","LAUST420000000000003","LAUST440000000000003","LAUST450000000000003","LAUST460000000000003","LAUST470000000000003","LAUST480000000000003","LAUST490000000000003","LAUST500000000000003","LAUST510000000000003","LAUST530000000000003","LAUST540000000000003","LAUST550000000000003","LAUST560000000000003"))
 blsAPI(data_1 , 2, TRUE) -> test_1
 test_1
 
 #Example of how to clean BLS dataframe
 test_1 %>% 
   mutate(seriesID = case_when(
+    str_detect(seriesID, "LAUST150000000000003") ~ "Hawaii-Unemployment",
+    str_detect(seriesID, "LAUST160000000000003") ~ "Idaho-Unemployment",
+    str_detect(seriesID, "LAUST170000000000003") ~ "Illinois-Unemployment",
+    str_detect(seriesID, "LAUST180000000000003") ~ "Indiana-Unemployment",
+    str_detect(seriesID, "LAUST190000000000003") ~ "Iowa-Unemployment",
+    str_detect(seriesID, "LAUST200000000000003") ~ "Kansas-Unemployment",
+    str_detect(seriesID, "LAUST210000000000003") ~ "Kentucky-Unemployment",
+    str_detect(seriesID, "LAUST220000000000003") ~ "Louisiana-Unemployment",
+    str_detect(seriesID, "LAUST230000000000003") ~ "Maine-Unemployment",
+    str_detect(seriesID, "LAUST240000000000003") ~ "Maryland-Unemployment",
+    str_detect(seriesID, "LAUST250000000000003") ~ "Massachusetts-Unemployment",
+    str_detect(seriesID, "LAUST260000000000003") ~ "Michigan-Unemployment",
+    str_detect(seriesID, "LAUST270000000000003") ~ "Minnesota-Unemployment",
+    str_detect(seriesID, "LAUST280000000000003") ~ "Mississippi-Unemployment",
+    str_detect(seriesID, "LAUST290000000000003") ~ "Missouri-Unemployment",
+    str_detect(seriesID, "LAUST300000000000003") ~ "Montana-Unemployment",
+    str_detect(seriesID, "LAUST310000000000003") ~ "Nebraska-Unemployment",
+    str_detect(seriesID, "LAUST320000000000003") ~ "Nevada-Unemployment",
+    str_detect(seriesID, "LAUST330000000000003") ~ "NewHampshire-Unemployment",
     str_detect(seriesID, "LAUST360000000000003") ~ "New York-Unemployment",
     str_detect(seriesID, "LAUST370000000000003") ~ "North Carolina-Unemployment",
     str_detect(seriesID, "LAUST380000000000003") ~ "North Dakota-Unemployment", 
@@ -93,16 +112,7 @@ merge(energy, unemployment, by = c("year", "State", "periodName")) -> full_data
 as.numeric(full_data$Unemployment) -> full_data$Unemployment
 str(full_data)
 # load libraries
-library(ggplot2)
-library(dplyr)
 
-# plot time series (energy_value, time)
-ggplot(full_data, aes(x=year, y=Energy_value, color = State)) +
-  geom_line() 
-
-# plot time series (Unemployment, time)
-ggplot(full_data, aes(x=date, y=Unemployment, color = State)) +
-  geom_line() 
 
 
 ```
