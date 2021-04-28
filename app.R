@@ -11,6 +11,7 @@ library(ggthemes)
 library(ggcorrplot)
 library(GGally)
 library(broom)
+library(bslib)
 
 
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
@@ -124,8 +125,15 @@ str_c("EBA.",
 
 # Create UI 
 ui <- fluidPage(
+  theme = bs_theme(
+    bg = "#9F8C6C", 
+    fg = "#000000", 
+    primary = "#FAFAFA",
+    base_font = "Times New Roman",
+    code_font = font_google("JetBrains Mono")),
+  #End of theme
 
-  titlePanel("US EIA Data Project"),
+  titlePanel("US Labor Demand and Energy Analysis app"),
   # EIA stands for Energy Information Administration
   tabsetPanel(
     # tab 1: Univariate
