@@ -1,0 +1,74 @@
+---
+title: "Load Data"
+author: "David Wilbourne"
+date: "4/25/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(eia)
+library(lubridate)
+```
+
+```{r}
+eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+
+# Create list of API calls for hourly electricity demand data using str_c
+# Manually add electric grid regions, since they don't align with states
+# Unnest and select relevant data
+# Create local time variable (rather than UTC) so plots are easier to intepret
+load_data <- str_c("EBA.",
+                   c("CAL", "CAR", "CENT", "FLA", "MIDA", "MIDW", "NE", "NY", "NW", "SE", "SW", "TEN", "TEX"),
+                   "-ALL.D.H") %>%
+  eia_series() %>%
+  mutate(
+    region = c(
+      "California",
+      "Carolinas",
+      "Central",
+      "Florida",
+      "Mid-Atlantic",
+      "Midwest",
+      "New England",
+      "New York",
+      "Northwest",
+      "Southeast",
+      "Southwest",
+      "Tennessee",
+      "Texas"
+    )
+  ) %>%
+  unnest(data) %>%
+  select(region, "MWh" = value, "date_utc" = date) %>%
+  mutate(
+    date_local = case_when(
+      region == "California" ~ with_tz(date_utc, tzone = "America/Los_Angeles"),
+      region == "Carolinas" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "Central" ~ with_tz(date_utc, tzone = "America/Denver"),
+      region == "Florida" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "Mid-Atlantic" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "Midwest" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "New England" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "New York" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "Northwest" ~ with_tz(date_utc, tzone = "America/Los_Angeles"),
+      region == "Southeast" ~ with_tz(date_utc, tzone = "America/New_York"),
+      region == "Southwest" ~ with_tz(date_utc, tzone = "America/Denver"),
+      region == "Tennessee" ~ with_tz(date_utc, tzone = "America/Chicago"),
+      region == "Texas" ~ with_tz(date_utc, tzone = "America/Chicago")
+    )
+  ) %>%
+  select(-date_utc) %>% 
+  filter(date_local >= ymd("2020-04-26"))
+```
+
+```{r}
+#test
+load_data %>% 
+  filter(floor_date(date_local, unit = "day") == ymd("2021-04-24")) %>% 
+  filter(region == "New England" | region == "Southwest") %>% 
+  ggplot(aes(x = date_local, y = MWh)) +
+  geom_line(aes(color = region))
+```
+
