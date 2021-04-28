@@ -257,7 +257,10 @@ ui <- fluidPage(
     ),
     # tab 6: Spreadsheet
     tabPanel("spreadsheet",
-             fluidPage(tableOutput("spreadsheet_table")))
+             fluidPage( DT::dataTableOutput("spreadsheet_table")))
+    
+   
+    
   )
 )
 # Create Server
@@ -456,9 +459,9 @@ server <- function(input, output, session) {
       print("")
     }
   })
-  # tab 6: Spreadsheet    
-  output$spreadsheet_table <- renderTable({
-    Full_data 
+  # tab 6: Spreadsheet   
+  output$spreadsheet_table <- DT::renderDataTable({
+    Full_data
   })
 }
 
