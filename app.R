@@ -337,27 +337,27 @@ server <- function(input, output, session) {
       print("")
     }
   })
-  
-  
+
+
   output$table2 <- renderTable({
     Full_data %>%
       select_if(is.numeric)
   })
-  
+
   observe({
     updateSelectInput(session,
                       "tab3_state1",
                       choices = load_data %>%
                         distinct(region))
   })
-  
+
   observe({
     updateSelectInput(session,
                       "tab3_state2",
                       choices = load_data %>%
                         distinct(region))
   })
-  
+
   output$tab3_plot1 <- renderPlot({
     load_data %>%
       filter(floor_date(date_local, unit = "day") == !!input$tab3_date1) %>%
@@ -365,7 +365,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = date_local, y = MWh)) +
       geom_line()
   })
-  
+
   output$tab3_plot2 <- renderPlot({
     load_data %>%
       filter(floor_date(date_local, unit = "day") == !!input$tab3_date1) %>%
