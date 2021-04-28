@@ -123,6 +123,7 @@ str_c("EBA.",
   select(-date_utc) %>%
   filter(date_local >= ymd("2020-04-26")) -> load_data
 
+plot_choices = c("Density Plot", "Histogram", "Frequency Polygon")
 # Create UI 
 ui <- fluidPage(
  
@@ -146,19 +147,20 @@ ui <- fluidPage(
         varSelectInput("univariate_var",
                        "Choose Variable?",
                        data = Full_data[3:7]), 
-        sliderInput("bins", 
-                    "Number of Bins?:", 
-                    min = 1, 
-                    max = 100, 
+        radioButtons("Choices", "Choose a plot type?", choices = plot_choices),
+        sliderInput("bins",
+                    "Number of Bins?:",
+                    min = 1,
+                    max = 100,
                     value = 40),
         tableOutput("t_test")
         
       ),
       mainPanel(fluidRow(
         
-        column(8,  
-               plotOutput("density"), 
-               plotOutput("histogram"))
+        column(8, 
+             plotOutput("univariate_plot")
+               )
       ))
     ),
     # tab 2: Bivariate
@@ -270,28 +272,19 @@ server <- function(input, output, session) {
                         distinct(!!input$univariate_filt1))
   })
 
-  # Univariate tab first plot 
-  #density plot
-  output$density <- renderPlot({
-    Full_data %>%
-      filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>%
-      ggplot(aes(x = !!input$univariate_var)) +
-      geom_density(color = "#018571")+
-      theme_economist_white()+
-      labs(title = paste("[ PLOT 1 ] Density plot of ", input$univariate_var, "in", input$univariate_filt2))
-    
- 
-  })
-  # Univariate tab second plot
-  # histogram
-  output$histogram <- renderPlot({
+  # Univariate tab first plot
+  output$univariate_plot <- renderPlot({
     Full_data %>%  
-      filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>%
-      ggplot(aes(x = !!input$univariate_var)) + 
-      geom_histogram(bins = input$bins, color = "hot pink", fill = "light blue")  +
+      filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>% 
+    ggplot(aes(x = !!input$univariate_var)) +
+      switch(
+        input$Choices, 
+        "Histogram" = geom_histogram(bins = input$bins, color = "hot pink", fill = "light blue"),
+        "Density Plot" = geom_density(color = "#018571"), 
+        "Frequency Polygon" = geom_freqpoly(color = "#018571")
+      ) +
       theme_economist_white()+
-      labs(title = paste("[ PLOT 2 ] Histogram of ", input$univariate_var, "in", input$univariate_filt2))
-    
+      labs(title = paste(input$univariate_var, "in", input$univariate_filt2))
   })
   # Univariate t test table
   output$t_test <- renderTable({
