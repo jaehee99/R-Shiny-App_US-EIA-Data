@@ -153,7 +153,9 @@ ui <- fluidPage(
                     min = 1,
                     max = 100,
                     value = 40),
-        tableOutput("t_test")
+        tableOutput("t_test"), 
+        helpText("Warning: No data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007).
+                        That is why we cannot see the graphs when we click these options. ")
         
       ),
       mainPanel(fluidRow(
@@ -185,7 +187,9 @@ ui <- fluidPage(
         checkboxInput("OLSselect_2",
                       "Add OLS to [ PLOT 2 ]? "),
         checkboxInput("summary_summary", 
-                      "Show summary?")
+                      "Show summary?"), 
+        helpText("Warning: No data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007).
+                        That is why we cannot see the graphs when we click these options. ")
       ),
       mainPanel(column(8,
         plotOutput("bivariate_plot1")
