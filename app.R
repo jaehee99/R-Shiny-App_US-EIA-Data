@@ -12,6 +12,7 @@ library(ggcorrplot)
 library(GGally)
 library(broom)
 library(bslib)
+library(shinythemes)
 
 
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
@@ -125,12 +126,16 @@ str_c("EBA.",
 
 # Create UI 
 ui <- fluidPage(
-  theme = bs_theme(
-    bg = "#9F8C6C", 
-    fg = "#000000", 
-    primary = "#FAFAFA",
-    base_font = "Times New Roman",
-    code_font = font_google("JetBrains Mono")),
+
+    shinythemes::themeSelector(),
+    theme = shinytheme("cerulean"),
+  
+   #  bg = "#FFFFFF", 
+   #  fg = "#000000", 
+   #  primary = "#000000",
+   # base_font = "Times New Roman",
+   #  code_font = font_google("JetBrains Mono")
+    
   #End of theme
 
   titlePanel("US Labor Demand and Energy Analysis app"),
@@ -159,7 +164,7 @@ ui <- fluidPage(
       ),
       mainPanel(fluidRow(
         
-        column(8,
+        column(8,  
                plotOutput("density"), 
                plotOutput("histogram"))
       ))
@@ -248,10 +253,12 @@ ui <- fluidPage(
         checkboxInput("all_states",
                       "All states?")
       ),
-      mainPanel(plotOutput("time_series_plot_1")),
+      mainPanel(column(8,
+                       plotOutput("time_series_plot_1"))), 
+      
       conditionalPanel(condition = "input.all_states",
-                       mainPanel(column(
-                         width = 12, plotOutput("time_series_plot_2")
+                       mainPanel(column(8
+                                        , plotOutput("time_series_plot_2")
                        )))
     ),
     # tab 6: Spreadsheet
@@ -278,7 +285,7 @@ server <- function(input, output, session) {
       filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>%
       ggplot(aes(x = !!input$univariate_var)) +
       geom_density(color = "#018571")+
-      theme_bw()+
+      theme_economist_white()+
       labs(title = paste("[ PLOT 1 ] Density plot of ", input$univariate_var, "in", input$univariate_filt2))
  
   })
@@ -289,7 +296,7 @@ server <- function(input, output, session) {
       filter(!!input$univariate_filt1 == !!input$univariate_filt2) %>%
       ggplot(aes(x = !!input$univariate_var)) + 
       geom_histogram(bins = input$bins, color = "hot pink", fill = "light blue")  +
-      theme_bw()+
+      theme_economist_white()+
       labs(title = paste("[ PLOT 2 ] Histogram of ", input$univariate_var, "in", input$univariate_filt2))
     
   })
@@ -319,7 +326,7 @@ server <- function(input, output, session) {
       filter(!!input$bivariate_filt1 == !!input$bivariate_filt2) %>%
       ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2)) +
       geom_point() +
-      theme_bw() +
+      theme_economist_white() +
       labs(title = paste("[ PLOT 1 ]", input$bivariate_var2, " VS ", input$bivariate_var1, "(", input$bivariate_filt2 , ")"))
     
     if (input$OLSselect) {
@@ -338,7 +345,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2)) +
       geom_point() +
       labs(title = paste("[ PLOT 2 ]",input$bivariate_var2, " VS ", input$bivariate_var1, "(all data)")) +
-      theme_bw()
+      theme_economist_white()
   
     if (input$OLSselect_2) {
       biv_plot2 +
@@ -379,7 +386,7 @@ server <- function(input, output, session) {
       filter(year>=2008 & year <= 2017) %>% 
       select(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) -> new_data
     pairs(new_data)+ 
-      theme_bw()
+      theme_economist_white()
   })
   # tab 4: Daily load   
   observe({
@@ -402,7 +409,7 @@ server <- function(input, output, session) {
       filter(region == !!input$daily_load_var1) %>%
       ggplot(aes(x = date_local, y = MWh)) +
       geom_line(color = "#FC4E07", size = 0.7)+
-      theme_bw()+
+      theme_economist_white()+
       labs(title = paste("[ PLOT 1 ] ",input$daily_load_var1, "electricity"))
   })
   # Daily load second plot(second choice of the state)
@@ -412,7 +419,7 @@ server <- function(input, output, session) {
       filter(region == !!input$daily_load_var2) %>%
       ggplot(aes(x = date_local, y = MWh)) +
       geom_line(color = "#FC4E07", size = 0.7)+
-      theme_bw()+
+      theme_economist_white()+
       labs(title = paste("[ PLOT 2 ] ",input$daily_load_var2, "electricity"))
   })
   # tab 5: Time series
@@ -429,7 +436,7 @@ server <- function(input, output, session) {
       filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
       ggplot(aes(x = !!input$time_series_var1, y = !!input$time_series_var2)) +
       geom_line(color = "#FC4E07", size = 0.7) +
-      theme_minimal() +
+      theme_economist_white() +
       labs(title = paste("[ PLOT 1 ] ",input$time_series_var2, "vs year (", input$time_series_filt2, ")"))
     
     if (input$smooth_line) {
@@ -455,7 +462,7 @@ server <- function(input, output, session) {
           color = state
         )) +
         geom_line() +
-        theme_minimal() +
+        theme_bw() +
         labs(title = paste("[ PLOT 2 ] ",input$time_series_var2, "vs year (all data)"))
     }
     else{
