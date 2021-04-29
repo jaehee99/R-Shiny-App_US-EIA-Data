@@ -201,11 +201,12 @@ ui <- fluidPage(
     tabPanel(
       "Multivariate",
       mainPanel(
-        
         tabsetPanel(
           tabPanel("Correlation", 
-                   plotOutput("correlation_plot")), 
+                   mainPanel( 'Correlation Matrix Heatmap (2008 ~ 2017)',
+                   plotOutput("correlation_plot"))), 
           tabPanel("Pairs",
+                   mainPanel('Scatter plot Matrices (2008 ~ 2017)'),
                    plotOutput("pair_plot")))
         
       )
@@ -245,10 +246,11 @@ ui <- fluidPage(
                       "Add trend smooth line?"),
         checkboxInput("all_states",
                       "All states by states (color)?")),
-      mainPanel( column(8,
+      mainPanel(column(8,
                         plotOutput("time_series_plot_1"), 
                        plotOutput("time_series_plot_2"), 
-                       plotOutput("time_series_plot_3")
+                       plotOutput("time_series_plot_3"), 
+                       plotOutput("time_series_plot_4")
                        ))
       )),
     
@@ -463,12 +465,28 @@ server <- function(input, output, session) {
       Full_data %>%
         ggplot(aes(
           x = year,
+          y = !!input$time_series_var1,
+          color = state
+        )) +
+        geom_line() +
+        theme_bw() +
+        labs(title = paste("[ PLOT 3 ] ",input$time_series_var1, "vs year (all data)"))
+    }
+    else{
+      print("")
+    }
+  })
+  output$time_series_plot_4 <- renderPlot({
+    if (input$all_states) {
+      Full_data %>%
+        ggplot(aes(
+          x = year,
           y = !!input$time_series_var2,
           color = state
         )) +
         geom_line() +
         theme_bw() +
-        labs(title = paste("[ PLOT 3 ] ",input$time_series_var2, "vs year (all data)"))
+        labs(title = paste("[ PLOT 4 ] ",input$time_series_var2, "vs year (all data)"))
     }
     else{
       print("")
