@@ -238,11 +238,12 @@ For example, the user may see that there is a trend that carbon emissions are go
 There are three references from either academic papers or widely available authoritative sources that are relevant to this app. See below: 
 
 
-1. https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf
+1. Dhawan, R., & Jeske, K. (2006). How resilient is the modern economy to energy price shocks? Economic Review (Atlanta, Ga.), 91(3), 21–.
 
-2. https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html
+1. Edelstein, P., &amp; Kilian, L. (2007, November 7). The Response of Business Fixed Investment to Changes in Energy Prices: A Test of Some Hypotheses about the Transmission of Energy Price Shocks. De Gruyter. https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html. 
 
-3. https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871
+1. Kilian, L. (n.d.). The Economic Effects of Energy Price Shocks. Journal of Economic Literature. https://www.aeaweb.org/articles?id=10.1257%2Fjel.46.4.871. 
+
 
 
 
