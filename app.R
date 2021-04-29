@@ -212,18 +212,11 @@ ui <- fluidPage(
       mainPanel(
                 verticalLayout(
                   plotOutput("time_series_plot_1"),
-                  plotOutput("time_series_plot_2")
+                  plotOutput("time_series_plot_2"),
+                  plotOutput("time_series_plot_3"),
+                  plotOutput("time_series_plot_4")
                 ))
-      ),
-      conditionalPanel(condition = "input.all_states",
-      mainPanel( 
-                fluidRow(
-                  column(width = 6),
-                  splitLayout(cellWidths = c("50%", "50%"), 
-                              plotOutput("time_series_plot_3"),
-                              plotOutput("time_series_plot_4"))
-                )  ))
-      ),
+      )),
     
     # tab 6: Spreadsheet
     tabPanel("Spreadsheet",
@@ -442,9 +435,9 @@ server <- function(input, output, session) {
           y = !!input$time_series_var1,
           color = State
         )) +
-        geom_line() +
+        geom_line(show.legend = FALSE) +
         theme_bw() +
-        labs(title = paste("[ PLOT 3 ] ",input$time_series_var1, "vs year (all data)"))
+        labs(title = paste(input$time_series_var1, "vs year (all data)"))
     }
     else{
       print("")
@@ -458,9 +451,9 @@ server <- function(input, output, session) {
           y = !!input$time_series_var2,
           color = State
         )) +
-        geom_line() +
+        geom_line(show.legend = FALSE) +
         theme_bw() +
-        labs(title = paste("[ PLOT 4 ] ",input$time_series_var2, "vs year (all data)"))
+        labs(title = paste(input$time_series_var2, "vs year (all data)"))
     }
     else{
       print("")
