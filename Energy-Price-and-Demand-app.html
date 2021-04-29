@@ -52,13 +52,28 @@
 
 <div id="use-case" class="section level1">
 <h1>Use Case</h1>
-<p>This app has been designed in order to analyze the demand as well as the price for energy inputs across different states.</p>
+<p>This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as other business sectors, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions with statistical and graphical information.</p>
 <div id="who-is-the-expected-typical-user" class="section level2">
 <h2>Who is the expected typical user?</h2>
 <p>This app may be used by business analysts, economists, policymakers, or general public who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as the business sector, a large fraction of costs pertain to energy alone. Therefore, this app uses data from the EIA in order to provide those who want to make energy related business decisions, policymaking, or public understanding. This app will help improve the understanding of the interaction with the economy and environment.</p>
 </div>
 <div id="typical-questions-that-this-app-should-help-the-user-answer." class="section level2">
 <h2>Typical questions that this app should help the user answer.</h2>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>677de5201203db6a00bd8bbf7737318e60c7c7fc</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 </div>
 </div>
 <div id="required-packages" class="section level1">
@@ -109,9 +124,6 @@
 <h1>Data Source and Structure</h1>
 <div id="data-source" class="section level2">
 <h2>Data Source</h2>
-<<<<<<< HEAD
-<p>The data was gathered from the eia API <a href="https://www.eia.gov/opendata/" class="uri">https://www.eia.gov/opendata/</a> . In order to access the data, we used the eia package. The data that is used in the app consists of yearly and monthly and daily…</p>
-=======
 <p>Data was collected from Energy Information Administration(EIA) -&gt; <a href="https://www.eia.gov/opendata/" class="uri">https://www.eia.gov/opendata/</a></p>
 <p>Get access to EIA API query browser -&gt; <a href="https://www.eia.gov/opendata/qb.php" class="uri">https://www.eia.gov/opendata/qb.php</a></p>
 <p>Five Data that is used in this app are:</p>
@@ -126,7 +138,6 @@
 </ol>
 <p>Use eia package to have an API access to data from EIA</p>
 <p>There were yearly, monthly, quarterly for each data but this app only uses yearly data</p>
->>>>>>> 677de5201203db6a00bd8bbf7737318e60c7c7fc
 </div>
 <div id="data-structure" class="section level2">
 <h2>Data Structure</h2>
@@ -134,20 +145,11 @@
 </div>
 <div id="eda-inputs-controls-and-outputs" class="section level1">
 <h1>EDA Inputs, Controls, and Outputs</h1>
-<<<<<<< HEAD
-</div>
-<div id="statistical-analysis-inputs-controls-and-outputs" class="section level1">
-<h1>Statistical Analysis Inputs, Controls, and Outputs</h1>
-=======
-<div id="eda-inputs" class="section level2">
-<h2>EDA Inputs</h2>
-</div>
-<div id="controls" class="section level2">
-<h2>Controls</h2>
-</div>
-<div id="outputs" class="section level2">
-<h2>Outputs</h2>
-</div>
+<p>In order to perform EDA, the data needed to be cleaned. Given that two data frames were used, we give the scope for the user to make analysis from different perspectives. These data set along with the commands in the app allow the user to conduct an effective EDA that includes 6 different tabs of which 5 include graphical information and 4 are interactive.</p>
+<p>The <strong>univariate</strong> tab allows the user to see the distribution for each of the variables. This allows the user to see how different energy sources or energy prices are distributed in each state. Also, this tab allows the user to choose between a frequency polygon, a histogram, and a density plot so the user may visualize the variables as preferred.</p>
+<p>The <strong>bivariate</strong> tab allows the user to make comparisons between variables in the data set. That is, by allowing the user select variables of interest to display a linear regression model so that the user may make predictions based of the data. For example, the user may see that there is trend that carbon emissions are going up with time. The user may then switch to the bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions.</p>
+<p>The <strong>multivariate</strong> tab allows the user to see simultaneous correlations between different variables of interest. This tab was added to provide the user with additional information regarding association between variables.</p>
+<p>The <strong>time-series</strong> tab allows the user to see the fluctuations and trends for variables through time. This tab is meant to be complemented with bivariate tab in order to analyze a question of interest. This tab outputs a linear model with time on the x axis so that the user may see how energy prices, retail sales, carbon emissions vary with time and also, see how much that variable is estimated to change in the future. For example, a manufacturing business looking to open up next year may be interested in the trends and the predicted prices for electricity in order to save costs.</p>
 </div>
 <div id="statistical-analysis-inputs-controls-and-outputs" class="section level1">
 <h1>Statistical Analysis Inputs, Controls, and Outputs</h1>
@@ -155,23 +157,11 @@
 <div id="refrences" class="section level1">
 <h1>Refrences</h1>
 <p>There are three references from either academic papers or widely available authoritative sources that are relevant to this app. See below:</p>
-<div id="first-reference" class="section level2">
-<h2>First Reference</h2>
-<p><a href="https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf" class="uri">https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf</a></p>
-</div>
-<div id="second-reference" class="section level2">
-<h2>Second Reference</h2>
-<p><a href="https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html" class="uri">https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html</a></p>
-</div>
-<div id="third-reference" class="section level2">
-<h2>Third Reference</h2>
-<p>Missing</p>
->>>>>>> 677de5201203db6a00bd8bbf7737318e60c7c7fc
-</div>
-<div id="refrences" class="section level1">
-<h1>Refrences</h1>
-<p><a href="https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf" class="uri">https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf</a></p>
-<p><a href="https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html" class="uri">https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html</a></p>
+<ol style="list-style-type: decimal">
+<li><p><a href="https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf" class="uri">https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf</a></p></li>
+<li><p><a href="https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html" class="uri">https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html</a></p></li>
+<li><p><a href="https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871" class="uri">https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871</a></p></li>
+</ol>
 </div>
 
 

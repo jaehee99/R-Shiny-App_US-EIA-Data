@@ -96,22 +96,20 @@ There were yearly, monthly, quarterly for each data but this app only uses yearl
 # EDA Inputs, Controls, and Outputs
 
 
-In order to perform EDA, the data needed to be cleaned. Given that two data frames were used, we will explain how each data set along with the commands in the app allow the user to conduct an effective EDA.
+In order to perform EDA, the data needed to be cleaned. Given that two data frames were used, we give the scope for the user to make analysis from different perspectives. These data set along with the commands in the app allow the user to conduct an effective EDA that includes 6 different tabs of which 5 include graphical information and 4 are interactive.
 
 The **univariate** tab allows the user to see the distribution for each of the variables. This allows the user to see how different energy sources or energy prices are distributed in each state. Also, this tab allows the user to choose between a frequency polygon, a histogram, and a density plot so the user may visualize the variables as preferred.
 
 The **bivariate** tab allows the user to make comparisons between variables in the data set. That is, by allowing the user select variables of interest to display a linear regression model so that the user may make predictions based of the data. For example, the user may see that there is trend that carbon emissions are going up with time. The user may then switch to the bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
 
-The **multivariate** tab allows the user 
+The **multivariate** tab allows the user to see simultaneous correlations between different variables of interest. This tab was added to provide the user with additional information regarding association between variables.
 
-
-
-    Data cleaning
-    Initial / descriptive data analyses
-    Question finding / hypothesis generation
+The **time-series** tab allows the user to see the fluctuations and trends for variables through time. This tab is meant to be complemented with bivariate tab in order to analyze a question of interest. This tab outputs a linear model with time on the x axis so that the user may see how energy prices, retail sales, carbon emissions vary with time and also, see how much that variable is estimated to change in the future. For example, a manufacturing business looking to open up next year may be interested in the trends and the predicted prices for electricity in order to save costs.
 
 
 # Statistical Analysis Inputs, Controls, and Outputs
+
+
 
 # Refrences
 
