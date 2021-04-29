@@ -210,9 +210,9 @@ ui <- fluidPage(
         checkboxInput("all_states",
                       "Compare All States by Color")),
       mainPanel(
-                fluidRow(
-                  splitLayout(cellWidths = c("50%", "50%"), plotOutput("time_series_plot_1"),
-                              plotOutput("time_series_plot_2"))
+                verticalLayout(
+                  plotOutput("time_series_plot_1"),
+                  plotOutput("time_series_plot_2")
                 ))
       ),
       conditionalPanel(condition = "input.all_states",
@@ -255,7 +255,7 @@ server <- function(input, output, session) {
       ) +
       theme_bw()+
       labs(title = paste(input$univariate_var, "in", input$univariate_filt2))
-  })
+  }, width = 500)
   # Univariate t test table
   output$t_test <- renderTable({
      Full_data %>%
