@@ -324,10 +324,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="show-summary" class="section level2">
 <h2>Show summary?</h2>
 <p>If the ‘Show summary?’ is requested, add a summary below [PLOT 2] from running a linear model based on [PLOT2].</p>
+<div id="warning-1" class="section level3">
+<h3>Warning</h3>
+<p>Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for ‘carbon emissions’(2018 ~ 2020) &amp; ‘customers’(2001 ~ 2007). So if the users choose these options they cannot see the graph.</p>
+</div>
 </div>
 <div id="tab-3-multivariate-analysis" class="section level2">
 <h2>Tab 3: Multivariate Analysis</h2>
-<p>The <strong>multivariate</strong> tab allows the user</p>
+<p>The <strong>multivariate</strong> tab allows the user to see analysis based on more than two variables.This tab will provide the users better understanding of the relationships between the several variables. Then, users can see in one glance all of the relationships and compare which one has strong positive correlation or negative correlation.</p>
+<p>Since there is no data for ‘carbon emissions’(2018 ~ 2020) &amp; ‘customers’(2001 ~ 2007), the rows(observations) of all five variables doesn’t match. Therefore, we selected the overlapping years from 2008~2017 in order to make the rows same to conduct correlation and pairs plot.</p>
+<div id="correlation" class="section level3">
+<h3>Correlation</h3>
+<p>This tab will output the correlation matrix heatmap from 2008~ 2017 across all states. If the number is close to 1, it will be strong positive correlation, but if the number is close to -1, it will be strong negative correlation. This is not interactive plot with the users but will provide overall correlations between the variables.</p>
+</div>
+<div id="pairs" class="section level3">
+<h3>Pairs</h3>
+<p>This tab will output the scatter plot matrices from 2008 ~ 2017 across all states. Shows all of the scatterplots between variables in one glance, also this is not interactive plot, but will provide overall relationships between the variables.</p>
+</div>
 </div>
 <div id="tab-4-daily-load" class="section level2">
 <h2>Tab 4: Daily Load</h2>

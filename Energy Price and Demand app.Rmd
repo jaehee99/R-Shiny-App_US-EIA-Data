@@ -157,8 +157,21 @@ Allows the user to see a display of linear regression model of [PLOT 2], so that
 ## Show summary? 
 If the 'Show summary?' is requested, add a summary below [PLOT 2] from running a linear model based on [PLOT2].
 
+### Warning
+Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007). So if the users choose these options they cannot see the graph.
+
 ## Tab 3: Multivariate Analysis 
-The **multivariate** tab allows the user 
+The **multivariate** tab allows the user to see analysis based on more than two variables.This tab will provide the users better understanding of the relationships between the several variables. Then, users can see in one glance all of the relationships and compare which one has strong positive correlation or negative correlation. 
+
+Since there is no data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007), the rows(observations) of all five variables doesn't match. Therefore, we selected the overlapping years from 2008~2017 in order to make the rows same to conduct correlation and pairs plot.   
+
+### Correlation 
+This tab will output the correlation matrix heatmap from 2008~ 2017 across all states. 
+If the number is close to 1, it will be strong positive correlation, but if the number is close to -1, it will be strong negative correlation. This is not interactive plot with the users but will provide overall correlations between the variables. 
+
+### Pairs
+This tab will output the scatter plot matrices from 2008 ~ 2017 across all states.
+Shows all of the scatterplots between variables in one glance, also this is not interactive plot, but will provide overall relationships between the variables. 
 
 
 ## Tab 4: Daily Load
