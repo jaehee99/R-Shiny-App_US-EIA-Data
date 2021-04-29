@@ -13,7 +13,6 @@ library(broom)
 library(shinythemes)
 library(bslib)
 
-
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
 
 Full_data <- readRDS("./data/yearly_data.rds")
@@ -174,17 +173,29 @@ ui <- fluidPage(
     # tab 4: Daily load
     tabPanel(
       "Daily Load",
-      sidebarPanel(
+      # sidebarPanel(
+      #   selectInput("daily_load_var1", "Select State 1:",
+      #               choices = ""),
+      #   selectInput("daily_load_var2", "Select State 2:",
+      #               choices = ""),
+      #   dateInput("daily_load_date", "Select Date to Compare:"),
+      # ),
+      # mainPanel(
+      #   column(8, 
+      #          plotOutput("daily_load_plot1"),
+      #          plotOutput("daily_load_plot2")))
+      inputPanel(
         selectInput("daily_load_var1", "Select State 1:",
                     choices = ""),
-        selectInput("daily_load_var2", "Select State 2:",
-                    choices = ""),
         dateInput("daily_load_date", "Select Date to Compare:"),
+        selectInput("daily_load_var2", "Select State 2:",
+                    choices = "")
       ),
-      mainPanel(
-        column(8, 
-               plotOutput("daily_load_plot1"),
-               plotOutput("daily_load_plot2")))
+      fluidRow(
+        column(6, 
+               plotOutput("daily_load_plot1")
+               ),
+        column(6, plotOutput("daily_load_plot2")))
     ),
     
     # tab 5: Time Series
