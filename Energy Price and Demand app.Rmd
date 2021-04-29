@@ -129,9 +129,10 @@ Output the results of the one-sample t.test. The results of the test changes dep
 Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007). So if the users choose these options they cannot see the graph. 
 
 
-
 ## Tab 2: Bivariate Analysis
-The **bivariate** tab allows the user to make comparisons between variables in the data set. That is, by allowing the user select variables of interest to display a linear regression model so that the user may make predictions based of the data. For example, the user may see that there is trend that carbon emissions are going up with time. The user may then switch to the bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
+The **bivariate** tab allows the user to make comparisons between two variables in the data set. 
+
+That is, by allowing the user select variables of interest to display a linear regression model so that the user may make predictions based of the data. For example, the user may see that there is trend that carbon emissions are going up with time. The user may then switch to the bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
 
 ## Tab 3: Multivariate Analysis 
 The **multivariate** tab allows the user 

@@ -15,72 +15,26 @@ library(shinythemes)
 
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
 
-# First, create a tibble with the api start, the state abbreviation, and the api end
-# Next, we create an id for each state based on that tibble, which we will use in the api call
-# Next, we select only the ID and convert it to a list, using the magrittr::extract to keep it in the pipe
-# Next, we pipe that ID into the api call
-# Next, we select only the "data" column, which originally is a dataframe containing the value, date, and year for every state
-# Next, we add on the states (so each row is a state, then the dataframe of its data) and unnest() into a longer dataframe
-# Finally, we filter for the years all dataframes have in common
-pull_data <- function(api_start, api_end) {
-  tibble(start = api_start,
-         abrv = state.abb,
-         end = api_end) %>%
-    mutate(id = str_c(start, abrv, end)) %>%
-    select(id) %>%
-    as.list() %>%
-    # magrittr:extract2(x, 1) is equivalent to x[[1]]
-    magrittr::extract2(1) %>%
-    eia_series() %>%
-    select(data) %>%
-    mutate(state = state.name) %>%
-    select(state, everything()) %>%
-    unnest(data)
-}
-# call function for each variable we want and rename the standard "value" column to the more descriptive name we want in the final data
-avg_elec <-
-  pull_data(api_start = "ELEC.PRICE.", api_end = "-IND.A") %>%
-  rename("electricity_price" = value)
-emission <-
-  pull_data(api_start = "EMISS.CO2-TOTV-EC-TO-", api_end = ".A") %>%
-  rename("carbon_emissions" = value)
-customers <-
-  pull_data(api_start = "ELEC.CUSTOMERS.", api_end = "-ALL.A") %>%
-  rename("customers" = value)
-retail_sales <-
-  pull_data(api_start = "ELEC.SALES.", api_end = "-ALL.A") %>%
-  rename("retail_sales" = value)
-total_electricity <-
-  pull_data(api_start = "ELEC.GEN.ALL-", api_end = "-99.A") %>%
-  rename("total_electricity" = value)
-# join tibbles together using the state, date, and year columns
-Full_data <-
-  left_join(avg_elec, emission, by = c("state", "date", "year")) %>%
-  left_join(customers, by = c("state", "date", "year")) %>%
-  left_join(retail_sales, by = c("state", "date", "year")) %>%
-  left_join(total_electricity, by = c("state", "date", "year")) %>%
-  select(
-    state,
-    year,
-    electricity_price,
-    carbon_emissions,
-    customers,
-    retail_sales,
-    total_electricity
-  )
-rm(avg_elec, customers, emission, retail_sales, total_electricity)
-# Create list of API calls for hourly electricity demand data using str_c
-# Manually add electric grid regions, since they don't align with states
-# Unnest and select relevant data
-# Create list of API calls for hourly electricity demand data using str_c
-# Manually add electric grid regions, since they don't align with states
-# Unnest and select relevant data
-# Create local time variable (rather than UTC) so plots are easier to intepret
-str_c("EBA.",
-      c("CAL", "CAR", "CENT", "FLA", "MIDA", "MIDW", "NE", "NY", "NW", "SE", "SW", "TEN", "TEX"),
-      "-ALL.D.H") %>%
-  eia_series() %>%
-  mutate(
+Full_data <- readRDS("./data/yearly_data.rds")
+
+# List of regional electric grids and their abbreviations to make syntax clearer when pulling data
+region_list <-
+  tibble(
+    abbr = c(
+      "CAL",
+      "CAR",
+      "CENT",
+      "FLA",
+      "MIDA",
+      "MIDW",
+      "NE",
+      "NY",
+      "NW",
+      "SE",
+      "SW",
+      "TEN",
+      "TEX"
+    ),
     region = c(
       "California",
       "Carolinas",
@@ -96,7 +50,17 @@ str_c("EBA.",
       "Tennessee",
       "Texas"
     )
-  ) %>%
+  )
+
+# Create list of API calls for hourly electricity demand data using str_c
+# Add electric grid regions, since they don't align with states
+# Unnest and select relevant data
+# Create local time variable (rather than UTC) so plots are easier to intepret
+str_c("EBA.",
+      region_list$abbr,
+      "-ALL.D.H") %>%
+  eia_series() %>%
+  mutate(region = region_list$region) %>%
   unnest(data) %>%
   select(region, "MWh" = value, "date_utc" = date) %>%
   mutate(
@@ -120,6 +84,7 @@ str_c("EBA.",
   filter(date_local >= ymd("2020-04-26")) -> load_data
 
 plot_choices = c("Density Plot", "Histogram", "Frequency Polygon")
+
 # Create UI 
 ui <- fluidPage(
    #Add theme, make it interactive to the users
