@@ -57,7 +57,7 @@ The use of the app requires that the user must have the following packages insta
  
 
 ## Data Source 
-The data was gathered from the eia API https://www.eia.gov/opendata/ . In order to access the data, we used the eia package. The data that is used in the app consists of yearly and monthly...
+The data was gathered from the eia API https://www.eia.gov/opendata/ . In order to access the data, we used the eia package. The data that is used in the app consists of yearly and monthly and daily...
 
 
 ## Data Structure
