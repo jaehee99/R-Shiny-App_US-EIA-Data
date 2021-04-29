@@ -1,6 +1,6 @@
 ---
 title: "Energy Price and Demand app"
-author: "Group cdjs (Chris,David,Jaehee,Santiago)"
+author: "Group cdjs (Chris, David, Jaehee, Santiago)"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -19,21 +19,19 @@ knitr::opts_chunk$set(
 
 # Use Case
 
-This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states/years. We know that for the manufacturing sector as well as other business sectors, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions with statistical and graphical information.   
-
+This app has been designed in order to explore the differences in energy systems across different states and over time. This app may be used by businesses and economists who may want to analyze both the "outputs" of the energy system, like the total amount of electricity produced or the total carbon emissions generated, as well as the "inputs" of the energy system, like the average price of electricity or the number of customer accounts. In addition, we know that for some kinds of businesses, like the manufacturing sector, a large fraction of operating costs pertain to energy alone; for these individuals, it would be useful to be able to compare electricity prices both over time and over geography to understand 1) what their future costs might look like in the states they are currently located in, and 2) where might be the best places to build other factories based on electricity costs.
 
 ### Who is the expected typical user? 
 
-Business analysts, economists, Government policymakers, businesses or general public who may want to analyze the usage of different sources of energy as well as the price by different states. 
-
+As mentioned above, this was primarily designed for those with a stake in the energy system. This might be someone on the regulatory side, such as an employee of the Federal Energy Regulatory Commission or a state lawmaker, or it could also be someone on the business side, like a factory owner interested in understanding their future costs. However, we also built in a few features that could be interesting for students or everyday Americans interested in the energy sector. Since we don't "see" -- or even think about -- the energy system very often, this audience might be interested in learning that electricity prices vary across the day, and might be interested in visualizing that relationship.
 
 ### Typical questions that this app should help the user answer.
 
-    * Question 1 - What states are prefered in order to open up factories and drive down business costs for energy. 
+* Question 1 - Which states have the highest and lowest electricity costs? Have they always, or is this something new?
 
-    * Question 2 - What are the possible 
+* Question 2 - How does electricity demand vary depending on the time of day, and do different states have different patterns of demand?
 
-    * Question 3 - 
+* Question 3 - How do a state's carbon emissions relate to its price of electricity? How has that changed over time?
 
 # Required Packages
 
@@ -46,10 +44,7 @@ The use of the app requires that the user must have the following packages insta
 * `shiny` - shiny helps to build interactive web applications with R
 * `tidyverse` -  tidyverse is an opinionated collection of R packages
 * `lubridate`- lubridate helps to make it easier to manipulate and parse dates.
-* `ggplot2` - ggplot2 helps to create graphics
-* `ggthemes` - ggthemes provides extra themes such as theme_bw()
 * `ggcorrplot` - ggcorrplot is a graphical display of a correlation matrix using ggplot2
-* `GGally`- GGally is an extension to ggplot2 and it includes pairwise plot matrix
 * `broom`- broom can convert statistical analysis objects from R into tidy tibbles
 * `shinythemes` - shinythemes helps to change the overall appearance of the Shiny application
 
@@ -66,21 +61,22 @@ The use of the app requires that the user must have the following packages insta
 # Data Source and Structure
 
  
-
 ## Data Source 
 * Data was collected from Energy Information Administration(EIA) -> https://www.eia.gov/opendata/ 
 
 * Get access to EIA API query browser ->  https://www.eia.gov/opendata/qb.php
 
-* Five Data that is used in this app are: 
+* For the main data, we track five variables by year:
 
     * Average retail electricity price
     * Number of customer accounts 
-    * Carbon Emissions
-    * Net Electricity generation
+    * Carbon emissions
+    * Net electricity generation
     * Revenue from retail sales of electricity
+    
+* We also track the demand for electricity in each grid region, although this is by hour.
 
-* In order to find each data fast, here is the guideline to find each data from the API query browser: 
+* Here is the guideline to find each data from the API query browser. After navigating to the page, the user will be able to see the series prefix used in the API calls. 
 
     * Average retail electricity price: EIA Data Sets -> Electricity -> Average retail price of electricity -> Industrial
     * Number of customer accounts: EIA Data Sets -> Electricity -> Number of customer accounts
@@ -88,18 +84,17 @@ The use of the app requires that the user must have the following packages insta
     * Net Electricity generation: EIA Data Sets -> Electricity -> Net generation
     * Revenue from retail sales of electricity: EIA Data Sets -> Electricity -> Retail sales of electricity
 
-* Use eia package to have an API access to data from EIA 
+* We use the package "eia" as a wrapper to facilitate our api calls to the EIA database.
 
-* There were yearly, monthly, quarterly for each data but this app only uses yearly data
+* There were yearly, monthly, quarterly for some, but not all, data. As a result, this app interpolates data to track by year, the most granular timeframe all variables have in common. The exception is daily demand, which is tracked separately by hour.
 
 ## Data Structure
 After cleaning the data, we combined them into one dataframe which is Full_data
 ```{r}
 library(readr)
-Full_data <- read_csv("Full_data.csv")
+Full_data <- readRDS("./data/yearly_data.rds")
 str(Full_data)
 ```
-
 
 
 # EDA Inputs, Controls, and Outputs
@@ -107,28 +102,31 @@ str(Full_data)
 In order to perform EDA, the data needed to be cleaned. Here is the explanation on how each tab get along with the app and will allow the user to conduct an effective EDA.
 
 ## Tab 1: Univariate Analysis
-The **univariate** tab allows the user to see the distribution for each of the variable. This allows the user to see how different energy sources or energy prices are distributed in each state/year. 
+The **univariate** tab allows the user to see the distribution for each of the variable. This allows the user to see how each variable is distributed by state or year. 
 
-1. Filter state or year? 
-    * User can interactively choose between state or year. 
+1. Filter by State or Year: 
+    * User can interactively choose between state or year. Because the data is time-series, we have to filter once (as we do here) before we can plot distributions.
 
-1. Filter which state? Filter what year? 
+1. Select State or Year: 
     * If the user chose state, then this filter will automatically give the users options on 50 states. 
-    * If the user chose year, then this filter will automatically give the users options on year(2001-2020)
+    * If the user chose year, then this filter will automatically give the users options on year (2008-2020)
 
-1. Variable? 
+1. Choose Variable: 
     * The variable of interest
 
-1. Choose a plot type?
-    * This tab allows the user to choose between a "Density Plot", "Histogram", "Frequency Polygon", in order to make the user may choose the type of the plot to visualize better/preferred
+1. Choose a plot type:
+    * This tab allows the user to choose between a "Density Plot", "Histogram", "Frequency Polygon", in order to make the user may choose the type of the plot to visualize better/preferred.
 
-1. Histogram: Number of Bins? 
-    * Users can interactively change the number of bins(min =1, max = 100) in the histogram if they want 
+1. Number of Bins for Histogram: 
+    * Users can interactively change the number of bins (min =1, max = 100) in the histogram.
+    
+1. T-test Null Value:
+    * Users can select the null value against which their selected variable will be compared in a t-test.
 
 1. t.test? 
     * Output the results of the one-sample t.test. The results of the test changes depending on the variables(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) that users choose.
 
-1. Warning
+1. NB
     * Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007). So if the users choose these options they cannot see the graph. 
 
 ## Tab 2: Bivariate Analysis
