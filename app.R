@@ -246,19 +246,27 @@ ui <- fluidPage(
                       "Add trend smooth line?"),
         checkboxInput("all_states",
                       "All states by states (color)?")),
-      mainPanel(column(8,
-                        plotOutput("time_series_plot_1"), 
-                       plotOutput("time_series_plot_2"), 
-                       plotOutput("time_series_plot_3"), 
-                       plotOutput("time_series_plot_4")
-                       ))
-      )),
+      mainPanel(
+                fluidRow(
+                  splitLayout(cellWidths = c("50%", "50%"), plotOutput("time_series_plot_1"),
+                              plotOutput("time_series_plot_2"))
+                ))
+      ),
+      conditionalPanel(condition = "input.all_states",
+      mainPanel( 
+                fluidRow(
+                  column(width = 6),
+                  splitLayout(cellWidths = c("50%", "50%"), 
+                              plotOutput("time_series_plot_3"),
+                              plotOutput("time_series_plot_4"))
+                )  ))
+      ),
     
     # tab 6: Spreadsheet
     tabPanel("spreadsheet",
              fluidPage(DT::dataTableOutput("spreadsheet_table")))
-  )
-)
+  ))
+
 # Create Server
 server <- function(input, output, session) {
   
