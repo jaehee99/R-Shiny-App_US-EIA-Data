@@ -391,8 +391,8 @@ server <- function(input, output, session) {
   output$time_series_plot_1 <- renderPlot({
     p1 <- Full_data %>%
       filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
-      ggplot(aes(x = year, y = !!input$time_series_var1)) +
-      geom_line(color = "#FC4E07", size = 0.7) +
+      ggplot(aes(x = Year, y = !!input$time_series_var1)) +
+      geom_line(color = "#FC4E07", size = 1) +
       theme_bw() +
       labs(title = paste("[ PLOT 1 ] ",input$time_series_var1, "vs year (", input$time_series_filt2, ")"))
     
@@ -412,8 +412,8 @@ server <- function(input, output, session) {
   output$time_series_plot_2 <- renderPlot({
     p2 <- Full_data %>%
       filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
-      ggplot(aes(x = year, y = !!input$time_series_var2)) +
-      geom_line(color = "#FC4E07", size = 0.7) +
+      ggplot(aes(x = Year, y = !!input$time_series_var2)) +
+      geom_line(color = "#FC4E07", size = 1) +
       theme_bw() +
       labs(title = paste("[ PLOT 2 ] ",input$time_series_var2, "vs year (", input$time_series_filt2, ")"))
     
@@ -435,9 +435,9 @@ server <- function(input, output, session) {
     if (input$all_states) {
       Full_data %>%
         ggplot(aes(
-          x = year,
+          x = Year,
           y = !!input$time_series_var1,
-          color = state
+          color = State
         )) +
         geom_line() +
         theme_bw() +
@@ -451,9 +451,9 @@ server <- function(input, output, session) {
     if (input$all_states) {
       Full_data %>%
         ggplot(aes(
-          x = year,
+          x = Year,
           y = !!input$time_series_var2,
-          color = state
+          color = State
         )) +
         geom_line() +
         theme_bw() +
