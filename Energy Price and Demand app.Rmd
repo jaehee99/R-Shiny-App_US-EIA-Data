@@ -76,6 +76,9 @@ The data was gathered from the eia API https://www.eia.gov/opendata/ . In order 
 
 https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf
 
+https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html
+
+
 
 
 
