@@ -102,7 +102,20 @@
 <h1>Data Source and Structure</h1>
 <div id="data-source" class="section level2">
 <h2>Data Source</h2>
-<p>The data was gathered from the eia API <a href="https://www.eia.gov/opendata/" class="uri">https://www.eia.gov/opendata/</a> . In order to access the data, we used the eia package. The data that is used in the app consists of yearly and monthly and daily…</p>
+<p>Data was collected from Energy Information Administration(EIA) -&gt; <a href="https://www.eia.gov/opendata/" class="uri">https://www.eia.gov/opendata/</a></p>
+<p>Get access to EIA API query browser -&gt; <a href="https://www.eia.gov/opendata/qb.php" class="uri">https://www.eia.gov/opendata/qb.php</a></p>
+<p>Five Data that is used in this app are:</p>
+<p>Electricity Price, Customers, Carbon Emissions, Total Electricity, Retail Sales.</p>
+<p>In order to find each data fast, here is the guideline to find each data from the API query browser:</p>
+<ol style="list-style-type: decimal">
+<li>Electricity Price: EIA Data Sets -&gt; Electricity -&gt; Average retail price of electricity -&gt; Industrial</li>
+<li>Customers: EIA Data Sets -&gt; Electricity -&gt; Number of customer accounts</li>
+<li>Carbon Emissions: EIA Data Sets -&gt; CO2 Emissions -&gt; by State</li>
+<li>Total Electricity: EIA Data Sets -&gt; Electricity -&gt; Net generation</li>
+<li>Retail Sales: EIA Data Sets -&gt; Electricity -&gt; Retail sales of electricity</li>
+</ol>
+<p>Use eia package to have an API access to data from EIA</p>
+<p>There were yearly, monthly, quarterly for each data but this app only uses yearly data</p>
 </div>
 <div id="data-structure" class="section level2">
 <h2>Data Structure</h2>

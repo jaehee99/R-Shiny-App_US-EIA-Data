@@ -57,8 +57,25 @@ The use of the app requires that the user must have the following packages insta
  
 
 ## Data Source 
-The data was gathered from the eia API https://www.eia.gov/opendata/ . In order to access the data, we used the eia package. The data that is used in the app consists of yearly and monthly and daily...
+Data was collected from Energy Information Administration(EIA) -> https://www.eia.gov/opendata/ 
 
+Get access to EIA API query browser ->  https://www.eia.gov/opendata/qb.php
+
+Five Data that is used in this app are: 
+
+Electricity Price, Customers, Carbon Emissions, Total Electricity, Retail Sales.
+
+In order to find each data fast, here is the guideline to find each data from the API query browser: 
+
+ 1. Electricity Price: EIA Data Sets -> Electricity -> Average retail price of electricity -> Industrial
+ 2. Customers: EIA Data Sets -> Electricity -> Number of customer accounts
+ 3. Carbon Emissions: EIA Data Sets -> CO2 Emissions -> by State
+ 4. Total Electricity: EIA Data Sets -> Electricity -> Net generation
+ 5. Retail Sales: EIA Data Sets -> Electricity -> Retail sales of electricity
+
+Use eia package to have an API access to data from EIA 
+
+There were yearly, monthly, quarterly for each data but this app only uses yearly data
 
 ## Data Structure
 
