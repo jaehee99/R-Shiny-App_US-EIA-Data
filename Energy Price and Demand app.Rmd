@@ -43,28 +43,28 @@ We know that for the manufacturing sector as well as the business sector, a larg
 The use of the app requires that the user must have the following packages installed:
 
 ## Description of the required packages
-1. `eia`- eia provides API access to data from the US Energy Information Administraion
-2. `shiny` - shiny helps to build interactive web applications with R
-3. `tidyverse` -  tidyverse is an opinionated collection of R packages
-4. `lubridate`- lubridate helps to make it easier to manipulate and parse dates.
-5. `ggplot2` - ggplot2 helps to create graphics
-6. `ggthemes` - ggthemes provides extra themes such as theme_bw()
-7. `ggcorrplot` - ggcorrplot is a graphical display of a correlation matrix using ggplot2
-8. `GGally`- GGally is an extension to ggplot2 and it includes pairwise plot matrix
-9. `broom`- broom can convert statistical analysis objects from R into tidy tibbles
-10. `shinythemes` - shinythemes helps to change the overall appearance of the Shiny application
+* `eia`- eia provides API access to data from the US Energy Information Administraion
+* `shiny` - shiny helps to build interactive web applications with R
+* `tidyverse` -  tidyverse is an opinionated collection of R packages
+* `lubridate`- lubridate helps to make it easier to manipulate and parse dates.
+* `ggplot2` - ggplot2 helps to create graphics
+* `ggthemes` - ggthemes provides extra themes such as theme_bw()
+* `ggcorrplot` - ggcorrplot is a graphical display of a correlation matrix using ggplot2
+* `GGally`- GGally is an extension to ggplot2 and it includes pairwise plot matrix
+* `broom`- broom can convert statistical analysis objects from R into tidy tibbles
+* `shinythemes` - shinythemes helps to change the overall appearance of the Shiny application
 
 ## Version used in the app
-1. `eia` - In order to run the app the use of version >=0.3.7 is suggested and >=0.1.0 is required.  
-2. `shiny` - In order to run the app the use of version >= 1.0.0 is required.  
-3. `tidyverse` - In order to run the app the use of version >= 3.3.3 is required.  
-4. `lubridate` - In order to run the app the use of version >= 1.7.1 is suggested and >=1.7.0 is required.  
-5. `ggplot2` - In order to run the app the use of version >= 3.0.0 is required.  
-6. `ggthemes` - In order to run the app the use of version >= .  
-7. `ggcorrplot` - In order to run the app the use of version >= 0.1.3 is suggested.  
-8. `GGally` - In order to run the app the use of version >= . 
-9. `broom` - In order to run the app the use of version >=0.3 is required. 
-10. `shinythemes` - In order to run the app the use of version >=1.1.1.  
+* `eia` - In order to run the app the use of version >=0.3.7 is suggested and >=0.1.0 is required.  
+* `shiny` - In order to run the app the use of version >= 1.0.0 is required.  
+* `tidyverse` - In order to run the app the use of version >= 3.3.3 is required.  
+* `lubridate` - In order to run the app the use of version >= 1.7.1 is suggested and >=1.7.0 is required.  
+* `ggplot2` - In order to run the app the use of version >= 3.0.0 is required.  
+* `ggthemes` - In order to run the app the use of version >= .  
+* `ggcorrplot` - In order to run the app the use of version >= 0.1.3 is suggested.  
+* `GGally` - In order to run the app the use of version >= . 
+* `broom` - In order to run the app the use of version >=0.3 is required. 
+* `shinythemes` - In order to run the app the use of version >=1.1.1.  
 
 
 # Data Source and Structure
@@ -72,25 +72,29 @@ The use of the app requires that the user must have the following packages insta
  
 
 ## Data Source 
-Data was collected from Energy Information Administration(EIA) -> https://www.eia.gov/opendata/ 
+* Data was collected from Energy Information Administration(EIA) -> https://www.eia.gov/opendata/ 
 
-Get access to EIA API query browser ->  https://www.eia.gov/opendata/qb.php
+* Get access to EIA API query browser ->  https://www.eia.gov/opendata/qb.php
 
-Five Data that is used in this app are: 
+* Five Data that is used in this app are: 
 
-Electricity Price, Customers, Carbon Emissions, Total Electricity, Retail Sales.
+    * Average retail electricity price
+    * Number of customer accounts 
+    * Carbon Emissions
+    * Net Electricity generation
+    * Revenue from retail sales of electricity
 
-In order to find each data fast, here is the guideline to find each data from the API query browser: 
+* In order to find each data fast, here is the guideline to find each data from the API query browser: 
 
- 1. Electricity Price: EIA Data Sets -> Electricity -> Average retail price of electricity -> Industrial
- 2. Customers: EIA Data Sets -> Electricity -> Number of customer accounts
- 3. Carbon Emissions: EIA Data Sets -> CO2 Emissions -> by State
- 4. Total Electricity: EIA Data Sets -> Electricity -> Net generation
- 5. Retail Sales: EIA Data Sets -> Electricity -> Retail sales of electricity
+    * Average retail electricity price: EIA Data Sets -> Electricity -> Average retail price of electricity -> Industrial
+    * Number of customer accounts: EIA Data Sets -> Electricity -> Number of customer accounts
+    * Carbon Emissions: EIA Data Sets -> CO2 Emissions -> by State
+    * Net Electricity generation: EIA Data Sets -> Electricity -> Net generation
+    * Revenue from retail sales of electricity: EIA Data Sets -> Electricity -> Retail sales of electricity
 
-Use eia package to have an API access to data from EIA 
+* Use eia package to have an API access to data from EIA 
 
-There were yearly, monthly, quarterly for each data but this app only uses yearly data
+* There were yearly, monthly, quarterly for each data but this app only uses yearly data
 
 ## Data Structure
 After cleaning the data, we combined them into one dataframe which is Full_data
@@ -227,7 +231,7 @@ This tab will show all of the data
 Users can interact with this spreadsheet. They can search or choose entries that they want to see. 
 
 
-# How to use interactively between tabs?
+## How to use interactively between tabs?
 
 For example, the user may see that there is a trend that carbon emissions are going up with time in Time series tab. Then the user may switch to the Bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
 
