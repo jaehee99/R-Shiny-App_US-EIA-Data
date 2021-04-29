@@ -171,28 +171,38 @@ If the number is close to 1, it will be strong positive correlation, but if the 
 
 ### Pairs
 This tab will output the scatter plot matrices from 2008 ~ 2017 across all states.
-Shows all of the scatterplots between variables in one glance, also this is not interactive plot, but will provide overall relationships between the variables. 
+Shows all of the scatter plots between variables in one glance, also this is not interactive plot, but will provide overall relationships between the variables. 
 
 
 ## Tab 4: Daily Load
+This tab will help users to compare two regions based on demand for electricity throughout the day. This tab used local time variable rather than UTC
+
+### Choose 1? 
+Select one region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas
+
+### Choose 2?
+Select another region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas
+
+### Date to Compare?
+This will help users to choose the date that they want to see.
 
 
 ## Tab 5: Time Series
 
 ## Tab 6: Spreadsheet
 
-    Data cleaning
-    Initial / descriptive data analyses
-    Question finding / hypothesis generation
+### This tab will show all of the data
+Users can interact with this spreadsheet. They can search or choose entries that they want to see. 
 
-### Example of how to use?
+
+## Example of how to use?
 For example, let's say that the user chose for filters state, California and chose X axis for carbon emissions and Y axis for electricity price
 
 For example, the user may see that there is trend that carbon emissions are going up with time. The user may then switch to the bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
 
-#3 output
 
-# Refrences
+
+# References
 
 There are three references from either academic papers or widely available authoritative sources that are relevant to this app. See below: 
 
@@ -204,11 +214,6 @@ There are three references from either academic papers or widely available autho
 3. https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871
 
 
-
-
-
-
-# >>>>>>> 677de5201203db6a00bd8bbf7737318e60c7c7fc
 
 
 
