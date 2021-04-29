@@ -248,7 +248,7 @@ server <- function(input, output, session) {
       ) +
       theme_bw()+
       labs(title = paste(input$univariate_var, "in", input$univariate_filt2))
-  }, width = 500)
+  }, width = 720)
   # Univariate t test table
   output$t_test <- renderTable({
      Full_data %>%
@@ -287,7 +287,7 @@ server <- function(input, output, session) {
       biv_plot1
     }
     
-  }, width = 500)
+  }, width = 720)
   # Bivariate tab, second plot
   # scatter plot based on two variables (with no filter, all data)
   output$bivariate_plot2 <- renderPlot({
@@ -306,7 +306,7 @@ server <- function(input, output, session) {
     else{
       biv_plot2
     }
-  }, width = 500)
+  }, width = 720)
   # Bivarate tab, summary table 
   output$bivariate_table <- renderPrint({
     if (input$summary_summary) {
@@ -404,7 +404,7 @@ server <- function(input, output, session) {
     else{
       p1
     }
-  })
+  }, width = 720)
   output$time_series_plot_2 <- renderPlot({
     p2 <- Full_data %>%
       filter(State == !!input$time_series_filt2) %>%
@@ -425,7 +425,7 @@ server <- function(input, output, session) {
     else{
       p2
     }
-  })
+  }, width = 720)
   # Time series second plot
   output$time_series_plot_3 <- renderPlot({
     if (input$all_states) {
@@ -435,14 +435,14 @@ server <- function(input, output, session) {
           y = !!input$time_series_var1,
           color = State
         )) +
-        geom_line(show.legend = FALSE) +
+        geom_line() +
         theme_bw() +
         labs(title = paste(input$time_series_var1, "vs year (all data)"))
     }
     else{
       print("")
     }
-  })
+  }, width = 1000)
   output$time_series_plot_4 <- renderPlot({
     if (input$all_states) {
       Full_data %>%
@@ -451,14 +451,14 @@ server <- function(input, output, session) {
           y = !!input$time_series_var2,
           color = State
         )) +
-        geom_line(show.legend = FALSE) +
+        geom_line() +
         theme_bw() +
         labs(title = paste(input$time_series_var2, "vs year (all data)"))
     }
     else{
       print("")
     }
-  })
+  }, width = 1000)
 
   # tab 6: Spreadsheet   
   output$spreadsheet_table <- DT::renderDataTable({
