@@ -180,10 +180,10 @@ ui <- fluidPage(
       #          plotOutput("daily_load_plot1"),
       #          plotOutput("daily_load_plot2")))
       inputPanel(
-        selectInput("daily_load_var1", "Select State 1:",
+        selectInput("daily_load_var1", "Select Region 1:",
                     choices = ""),
         dateInput("daily_load_date", "Select Date to Compare:"),
-        selectInput("daily_load_var2", "Select State 2:",
+        selectInput("daily_load_var2", "Select Region 2:",
                     choices = "")
       ),
       fluidRow(
