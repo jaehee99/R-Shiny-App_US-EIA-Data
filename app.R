@@ -111,6 +111,9 @@ ui <- fluidPage(
                     min = 1,
                     max = 100,
                     value = 40),
+        numericInput("t_null",
+                     "T-Test Null Value",
+                     value = 0),
         tableOutput("t_test"), 
         helpText("NB: No data is available for Carbon Emissions from 2018-2020 and for Number of Customer Accounts from 2001-2007). Plots will not show for inputs in these ranges.")
         
@@ -265,7 +268,7 @@ server <- function(input, output, session) {
   output$t_test <- renderTable({
      Full_data %>%
        select(input$univariate_var) %>%
-      t.test(alternative = "two.sided", mu = 0, conf.level = 0.95) %>% 
+      t.test(alternative = "two.sided", mu = input$t_null, conf.level = 0.95) %>% 
        tidy() %>%
       select(p.value,estimate, conf.low, conf.high) %>%
       rename(c('P-Value' = p.value, 'Estimate' = estimate, '95% Lower' = conf.low, '95% Higher' = conf.high))
@@ -373,7 +376,8 @@ server <- function(input, output, session) {
       ggplot(aes(x = date_local, y = MWh)) +
       geom_line(color = "#00BFC4", size = 1)+
       theme_bw() +
-      labs(title = paste("[ PLOT 1 ] ",input$daily_load_var1, "electricity"))
+      labs(title = paste(input$daily_load_var1, "Hourly Electricity Demand"),
+           x = str_c(input$daily_load_var1, " Local Time"))
   })
   # Daily load second plot(second choice of the state)
   output$daily_load_plot2 <- renderPlot({
@@ -383,7 +387,8 @@ server <- function(input, output, session) {
       ggplot(aes(x = date_local, y = MWh)) +
       geom_line(color = "#00BFC4", size = 1)+
       theme_bw() +
-      labs(title = paste("[ PLOT 2 ] ",input$daily_load_var2, "electricity"))
+      labs(title = paste(input$daily_load_var2, "Hourly Electricity Demand"),
+           x = str_c(input$daily_load_var2, " Local Time"))
   })
   # tab 5: Time series
   observe({
