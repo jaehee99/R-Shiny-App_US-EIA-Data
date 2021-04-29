@@ -79,6 +79,8 @@ There were yearly, monthly, quarterly for each data but this app only uses yearl
 
 ## Data Structure
 
+
+
 # EDA Inputs, Controls, and Outputs
 
 ## EDA Inputs
@@ -90,10 +92,19 @@ There were yearly, monthly, quarterly for each data but this app only uses yearl
 # Statistical Analysis Inputs, Controls, and Outputs
 
 # Refrences
+There are three references from either academic papers or widely available authoritative sources that are relevant to this app. See below: 
+
+## First Reference 
 
 https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf
 
+## Second Reference
+
 https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html
+
+## Third Reference 
+
+Missing
 
 
 
