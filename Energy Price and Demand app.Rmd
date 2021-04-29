@@ -1,6 +1,6 @@
 ---
 title: "Energy Price and Demand app"
-author: "Group cdjs (Chris,David,Jaehee,Santiago)"
+author: "Group cdjs (Chris, David, Jaehee, Santiago)"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
