@@ -19,16 +19,14 @@ knitr::opts_chunk$set(
 
 # Use Case
 
-
 This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states/years. We know that for the manufacturing sector as well as other business sectors, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions with statistical and graphical information.   
 
+### Who is the expected typical user? 
 
-* Who is the expected typical user? 
+Business analysts, economists, policymakers, or general public who may want to analyze the usage of different sources of energy as well as the price by different states. 
 
-This app may be used by business analysts, economists, policymakers, or general public who may want to analyze the usage of different sources of energy as well as the price by different states. 
-We know that for the manufacturing sector as well as the business sector, a large fraction of costs pertain to energy alone. Therefore, this app uses data from the EIA in order to provide those who want to make energy related business decisions, policymaking, or public understanding. This app will help improve the understanding of the interaction with the economy and environment.
 
-* Typical questions that this app should help the user answer.
+### Typical questions that this app should help the user answer.
 
     1. Question 1 - 
 
@@ -231,7 +229,7 @@ This tab will show all of the data
 Users can interact with this spreadsheet. They can search or choose entries that they want to see. 
 
 
-## How to use interactively between tabs?
+# How to use interactively between tabs?
 
 For example, the user may see that there is a trend that carbon emissions are going up with time in Time series tab. Then the user may switch to the Bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
 
