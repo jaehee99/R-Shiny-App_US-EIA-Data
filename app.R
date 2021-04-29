@@ -3,7 +3,6 @@ library(eia)
 library(lubridate)
 library(shiny)
 library(ggcorrplot)
-library(GGally)
 library(broom)
 library(shinythemes)
 
