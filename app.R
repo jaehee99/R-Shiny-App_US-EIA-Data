@@ -395,7 +395,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = Year, y = !!input$time_series_var1)) +
       geom_line(color = "#FC4E07", size = 1) +
       theme_bw() +
-      labs(title = paste("[ PLOT 1 ] ",input$time_series_var1, "vs year (", input$time_series_filt2, ")"))
+      labs(title = paste(input$time_series_var1, "vs year (", input$time_series_filt2, ")"))
     
     if (input$smooth_line) {
       p1 +
@@ -416,7 +416,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = Year, y = !!input$time_series_var2)) +
       geom_line(color = "#FC4E07", size = 1) +
       theme_bw() +
-      labs(title = paste("[ PLOT 2 ] ",input$time_series_var2, "vs year (", input$time_series_filt2, ")"))
+      labs(title = paste(input$time_series_var2, "vs year (", input$time_series_filt2, ")"))
     
     if (input$smooth_line) {
       p2 +
