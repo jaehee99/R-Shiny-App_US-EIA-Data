@@ -127,7 +127,7 @@ ui <- fluidPage(
     shinythemes::themeSelector(),
     theme = shinytheme("cerulean"),
  
-     titlePanel("US Labor Demand and Energy Analysis app"),
+     titlePanel("US EIA Data Analysis"),
   # EIA stands for Energy Information Administration
   tabsetPanel(
     # tab 1: Univariate
