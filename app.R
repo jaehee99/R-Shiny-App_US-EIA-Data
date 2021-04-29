@@ -11,7 +11,6 @@ library(ggcorrplot)
 library(GGally)
 library(broom)
 library(shinythemes)
-library(bslib)
 
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
 
