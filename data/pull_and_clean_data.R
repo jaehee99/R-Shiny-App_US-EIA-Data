@@ -38,7 +38,13 @@ yearly_data <- left_join(avg_elec, emission, by = c("state", "date", "year")) %>
   left_join(customers, by = c("state", "date", "year")) %>% 
   left_join(retail_sales, by = c("state", "date", "year")) %>% 
   left_join(total_electricity, by = c("state", "date", "year")) %>% 
-  select(state, year, electricity_price, carbon_emissions, customers, retail_sales, total_electricity)
+  select("State" = state,
+         "Year" = year,
+         "Average Retail Electricity Price" = electricity_price,
+         "Carbon Emissions" = carbon_emissions,
+         "Number of Customer Accounts" = customers,
+         "Revenue from Retail Sales of Electricity" = retail_sales,
+         "Net Electricity Generation" = total_electricity)
 
 saveRDS(yearly_data, file = "./data/yearly_data.rds")
 
