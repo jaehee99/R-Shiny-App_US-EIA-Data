@@ -226,7 +226,7 @@ ui <- fluidPage(
       ),
     
     # tab 6: Spreadsheet
-    tabPanel("spreadsheet",
+    tabPanel("Spreadsheet",
              fluidPage(DT::dataTableOutput("spreadsheet_table")))
   ))
 
@@ -336,7 +336,8 @@ server <- function(input, output, session) {
     ggcorrplot(cor(new_data, use="complete.obs"), 
                hc.order = TRUE,
                lab = TRUE)
-  })
+  },
+  width = 600)
   # Multivariate second tab: pairs 
   output$pair_plot <- renderPlot({
     Full_data %>%  
