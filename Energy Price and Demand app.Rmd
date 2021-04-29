@@ -1,6 +1,6 @@
 ---
 title: "Energy Price and Demand app"
-author: "Group cdjs"
+author: "Group cdjs (Chris,David,Jaehee,Santiago)"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -27,19 +27,19 @@ This app has been designed in order to analyze the demand as well as the price f
 
 The use of the app requires that the user must have the following packages installed:
 
-1. `eia`
-2. `shiny`
-3. `tidyverse`
-4. `lubridate`
-5. `ggplot2`
-6. `ggthemes`
-7. `ggcorrplot`
-8. `GGally`
-9. `broom`
-10. `shinythemes`
+## Description of the required packages
+1. `eia`- eia provides API access to data from the US Energy Information Administraion
+2. `shiny` - shiny helps to build interactive web applications with R
+3. `tidyverse` -  tidyverse is an opinionated collection of R packages
+4. `lubridate`- lubridate helps to make it easier to manipulate and parse dates.
+5. `ggplot2` - ggplot2 helps to create graphics
+6. `ggthemes` - ggthemes provides extra themes such as theme_bw()
+7. `ggcorrplot` - ggcorrplot is a graphical display of a correlation matrix using ggplot2
+8. `GGally`- GGally is an extension to ggplot2 and it includes pairwise plot matrix
+9. `broom`- broom can convert statistical analysis objects from R into tidy tibbles
+10. `shinythemes` - shinythemes helps to change the overall appearance of the Shiny application
 
-## Version Used in the app
-
+## Version used in the app
 1. `eia` - In order to run the app the use of version >=0.3.7 is suggested and >=0.1.0 is required.  
 2. `shiny` - In order to run the app the use of version >= 1.0.0 is required.  
 3. `tidyverse` - In order to run the app the use of version >= 3.3.3 is required.  
