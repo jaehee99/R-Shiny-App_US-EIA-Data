@@ -19,7 +19,16 @@ knitr::opts_chunk$set(
 
 # Use Case
 
-This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as the business sector, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions.   
+This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. 
+
+## Who is the expected typical user? 
+
+This app may be used by business analysts, economists, policymakers, or general public who may want to analyze the usage of different sources of energy as well as the price by different states. 
+We know that for the manufacturing sector as well as the business sector, a large fraction of costs pertain to energy alone. Therefore, this app uses data from the EIA in order to provide those who want to make energy related business decisions, policymaking, or public understanding. This app will help improve the understanding of the interaction with the economy and environment.
+
+## Typical questions that this app should help the user answer.
+
+
 
 # Required Packages
 
