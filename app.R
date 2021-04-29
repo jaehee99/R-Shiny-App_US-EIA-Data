@@ -330,8 +330,8 @@ server <- function(input, output, session) {
   # filtered years(2008~2017), this is because in order to create correlation plot we have to have same rows
   output$correlation_plot <- renderPlot({
     Full_data %>%  
-      filter(year>=2008 & year <= 2017) %>% 
-      select(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) -> new_data
+      filter(Year>=2008 & Year <= 2017) %>% 
+      select(-Year, -State) -> new_data
     
     ggcorrplot(cor(new_data, use="complete.obs"), 
                hc.order = TRUE,
@@ -340,8 +340,8 @@ server <- function(input, output, session) {
   # Multivariate second tab: pairs 
   output$pair_plot <- renderPlot({
     Full_data %>%  
-      filter(year>=2008 & year <= 2017) %>% 
-      select(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) -> new_data
+      filter(Year>=2008 & Year <= 2017) %>% 
+      select(-Year, -State) -> new_data
     pairs(new_data)+ 
       theme_bw()
   })
@@ -365,7 +365,7 @@ server <- function(input, output, session) {
       filter(floor_date(date_local, unit = "day") == !!input$daily_load_date) %>%
       filter(region == !!input$daily_load_var1) %>%
       ggplot(aes(x = date_local, y = MWh)) +
-      geom_line(color = "#FC4E07", size = 0.7)+
+      geom_line(color = "#00BFC4", size = 1)+
       theme_bw() +
       labs(title = paste("[ PLOT 1 ] ",input$daily_load_var1, "electricity"))
   })
@@ -375,7 +375,7 @@ server <- function(input, output, session) {
       filter(floor_date(date_local, unit = "day") == !!input$daily_load_date) %>%
       filter(region == !!input$daily_load_var2) %>%
       ggplot(aes(x = date_local, y = MWh)) +
-      geom_line(color = "#FC4E07", size = 0.7)+
+      geom_line(color = "#00BFC4", size = 1)+
       theme_bw() +
       labs(title = paste("[ PLOT 2 ] ",input$daily_load_var2, "electricity"))
   })
@@ -391,8 +391,8 @@ server <- function(input, output, session) {
   output$time_series_plot_1 <- renderPlot({
     p1 <- Full_data %>%
       filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
-      ggplot(aes(x = year, y = !!input$time_series_var1)) +
-      geom_line(color = "#FC4E07", size = 0.7) +
+      ggplot(aes(x = Year, y = !!input$time_series_var1)) +
+      geom_line(color = "#FC4E07", size = 1) +
       theme_bw() +
       labs(title = paste("[ PLOT 1 ] ",input$time_series_var1, "vs year (", input$time_series_filt2, ")"))
     
@@ -412,8 +412,8 @@ server <- function(input, output, session) {
   output$time_series_plot_2 <- renderPlot({
     p2 <- Full_data %>%
       filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
-      ggplot(aes(x = year, y = !!input$time_series_var2)) +
-      geom_line(color = "#FC4E07", size = 0.7) +
+      ggplot(aes(x = Year, y = !!input$time_series_var2)) +
+      geom_line(color = "#FC4E07", size = 1) +
       theme_bw() +
       labs(title = paste("[ PLOT 2 ] ",input$time_series_var2, "vs year (", input$time_series_filt2, ")"))
     
@@ -435,9 +435,9 @@ server <- function(input, output, session) {
     if (input$all_states) {
       Full_data %>%
         ggplot(aes(
-          x = year,
+          x = Year,
           y = !!input$time_series_var1,
-          color = state
+          color = State
         )) +
         geom_line() +
         theme_bw() +
@@ -451,9 +451,9 @@ server <- function(input, output, session) {
     if (input$all_states) {
       Full_data %>%
         ggplot(aes(
-          x = year,
+          x = Year,
           y = !!input$time_series_var2,
-          color = state
+          color = State
         )) +
         geom_line() +
         theme_bw() +
