@@ -299,7 +299,7 @@ server <- function(input, output, session) {
   # scatter plot based on two variables (with no filter, all data)
   output$bivariate_plot2 <- renderPlot({
    biv_plot2 <- Full_data %>%
-      ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2, color = state)) +
+      ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2, color = State)) +
       geom_point() +
       labs(title = paste("[ PLOT 2 ]",input$bivariate_var2, " VS ", input$bivariate_var1, "(all data)")) +
       theme_bw()
