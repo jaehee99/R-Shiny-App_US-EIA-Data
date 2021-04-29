@@ -146,16 +146,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="use-case" class="section level1">
 <h1>Use Case</h1>
-<p>This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as other business sectors, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions with statistical and graphical information.</p>
-<div id="who-is-the-expected-typical-user" class="section level2">
-<h2>Who is the expected typical user?</h2>
-<p>This app may be used by business analysts, economists, policymakers, or general public who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as the business sector, a large fraction of costs pertain to energy alone. Therefore, this app uses data from the EIA in order to provide those who want to make energy related business decisions, policymaking, or public understanding. This app will help improve the understanding of the interaction with the economy and environment.</p>
+<p>This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states/years. We know that for the manufacturing sector as well as other business sectors, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions with statistical and graphical information.</p>
+<div id="who-is-the-expected-typical-user" class="section level3">
+<h3>Who is the expected typical user?</h3>
+<p>Business analysts, economists, Government policymakers, businesses or general public who may want to analyze the usage of different sources of energy as well as the price by different states.</p>
 </div>
-<div id="typical-questions-that-this-app-should-help-the-user-answer." class="section level2">
-<h2>Typical questions that this app should help the user answer.</h2>
-<p>Question 1 -</p>
-<p>Question 2 -</p>
-<p>Question 3 -</p>
+<div id="typical-questions-that-this-app-should-help-the-user-answer." class="section level3">
+<h3>Typical questions that this app should help the user answer.</h3>
+<pre><code>* Question 1 - 
+
+* Question 2 - 
+
+* Question 3 - </code></pre>
 </div>
 </div>
 <div id="required-packages" class="section level1">
@@ -166,7 +168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="description-of-the-required-packages" class="section level2">
 <h2>Description of the required packages</h2>
-<ol style="list-style-type: decimal">
+<ul>
 <li><code>eia</code>- eia provides API access to data from the US Energy Information Administraion</li>
 <li><code>shiny</code> - shiny helps to build interactive web applications with R</li>
 <li><code>tidyverse</code> - tidyverse is an opinionated collection of R packages</li>
@@ -177,11 +179,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>GGally</code>- GGally is an extension to ggplot2 and it includes pairwise plot matrix</li>
 <li><code>broom</code>- broom can convert statistical analysis objects from R into tidy tibbles</li>
 <li><code>shinythemes</code> - shinythemes helps to change the overall appearance of the Shiny application</li>
-</ol>
+</ul>
 </div>
 <div id="version-used-in-the-app" class="section level2">
 <h2>Version used in the app</h2>
-<ol style="list-style-type: decimal">
+<ul>
 <li><code>eia</code> - In order to run the app the use of version &gt;=0.3.7 is suggested and &gt;=0.1.0 is required.<br />
 </li>
 <li><code>shiny</code> - In order to run the app the use of version &gt;= 1.0.0 is required.<br />
@@ -196,66 +198,75 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
 <li><code>ggcorrplot</code> - In order to run the app the use of version &gt;= 0.1.3 is suggested.<br />
 </li>
-<li><code>GGally</code> - In order to run the app the use of version &gt;= .</li>
+<li><code>GGally</code> - In order to run the app the use of version &gt;=<br />
+</li>
 <li><code>broom</code> - In order to run the app the use of version &gt;=0.3 is required.</li>
 <li><code>shinythemes</code> - In order to run the app the use of version &gt;=1.1.1.</li>
-</ol>
+</ul>
 </div>
 </div>
 <div id="data-source-and-structure" class="section level1">
 <h1>Data Source and Structure</h1>
 <div id="data-source" class="section level2">
 <h2>Data Source</h2>
-<p>Data was collected from Energy Information Administration(EIA) -&gt; <a href="https://www.eia.gov/opendata/" class="uri">https://www.eia.gov/opendata/</a></p>
-<p>Get access to EIA API query browser -&gt; <a href="https://www.eia.gov/opendata/qb.php" class="uri">https://www.eia.gov/opendata/qb.php</a></p>
-<p>Five Data that is used in this app are:</p>
-<p>Electricity Price, Customers, Carbon Emissions, Total Electricity, Retail Sales.</p>
-<p>In order to find each data fast, here is the guideline to find each data from the API query browser:</p>
-<ol style="list-style-type: decimal">
-<li>Electricity Price: EIA Data Sets -&gt; Electricity -&gt; Average retail price of electricity -&gt; Industrial</li>
-<li>Customers: EIA Data Sets -&gt; Electricity -&gt; Number of customer accounts</li>
+<ul>
+<li><p>Data was collected from Energy Information Administration(EIA) -&gt; <a href="https://www.eia.gov/opendata/" class="uri">https://www.eia.gov/opendata/</a></p></li>
+<li><p>Get access to EIA API query browser -&gt; <a href="https://www.eia.gov/opendata/qb.php" class="uri">https://www.eia.gov/opendata/qb.php</a></p></li>
+<li><p>Five Data that is used in this app are:</p>
+<ul>
+<li>Average retail electricity price</li>
+<li>Number of customer accounts</li>
+<li>Carbon Emissions</li>
+<li>Net Electricity generation</li>
+<li>Revenue from retail sales of electricity</li>
+</ul></li>
+<li><p>In order to find each data fast, here is the guideline to find each data from the API query browser:</p>
+<ul>
+<li>Average retail electricity price: EIA Data Sets -&gt; Electricity -&gt; Average retail price of electricity -&gt; Industrial</li>
+<li>Number of customer accounts: EIA Data Sets -&gt; Electricity -&gt; Number of customer accounts</li>
 <li>Carbon Emissions: EIA Data Sets -&gt; CO2 Emissions -&gt; by State</li>
-<li>Total Electricity: EIA Data Sets -&gt; Electricity -&gt; Net generation</li>
-<li>Retail Sales: EIA Data Sets -&gt; Electricity -&gt; Retail sales of electricity</li>
-</ol>
-<p>Use eia package to have an API access to data from EIA</p>
-<p>There were yearly, monthly, quarterly for each data but this app only uses yearly data</p>
+<li>Net Electricity generation: EIA Data Sets -&gt; Electricity -&gt; Net generation</li>
+<li>Revenue from retail sales of electricity: EIA Data Sets -&gt; Electricity -&gt; Retail sales of electricity</li>
+</ul></li>
+<li><p>Use eia package to have an API access to data from EIA</p></li>
+<li><p>There were yearly, monthly, quarterly for each data but this app only uses yearly data</p></li>
+</ul>
 </div>
 <div id="data-structure" class="section level2">
 <h2>Data Structure</h2>
 <p>After cleaning the data, we combined them into one dataframe which is Full_data</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Full_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;Full_data.csv&quot;</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cols(</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   state = col_character(),</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   year = col_double(),</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   electricity_price = col_double(),</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   carbon_emissions = col_double(),</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   customers = col_double(),</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   retail_sales = col_double(),</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   total_electricity = col_double()</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; )</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Full_data)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; spec_tbl_df[,7] [1,000 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ state            : chr [1:1000] &quot;Alabama&quot; &quot;Alabama&quot; &quot;Alabama&quot; &quot;Alabama&quot; ...</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ year             : num [1:1000] 2020 2019 2018 2017 2016 ...</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ electricity_price: num [1:1000] 5.91 5.95 6.01 6.16 6.04 6.03 6.15 5.95 6.22 6.25 ...</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ carbon_emissions : num [1:1000] NA NA NA 51 55.6 ...</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ customers        : num [1:1000] 2694064 2626467 2607909 2591621 2574851 ...</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ retail_sales     : num [1:1000] 83449 88095 90280 86242 88225 ...</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ total_electricity: num [1:1000] 135871 142679 145058 139964 142385 ...</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - attr(*, &quot;spec&quot;)=</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. cols(</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   state = col_character(),</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   year = col_double(),</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   electricity_price = col_double(),</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   carbon_emissions = col_double(),</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   customers = col_double(),</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   retail_sales = col_double(),</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   total_electricity = col_double()</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. )</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Full_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;Full_data.csv&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cols(</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   state = col_character(),</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   year = col_double(),</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   electricity_price = col_double(),</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   carbon_emissions = col_double(),</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   customers = col_double(),</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   retail_sales = col_double(),</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   total_electricity = col_double()</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; )</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Full_data)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; spec_tbl_df[,7] [1,000 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ state            : chr [1:1000] &quot;Alabama&quot; &quot;Alabama&quot; &quot;Alabama&quot; &quot;Alabama&quot; ...</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ year             : num [1:1000] 2020 2019 2018 2017 2016 ...</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ electricity_price: num [1:1000] 5.91 5.95 6.01 6.16 6.04 6.03 6.15 5.95 6.22 6.25 ...</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ carbon_emissions : num [1:1000] NA NA NA 51 55.6 ...</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ customers        : num [1:1000] 2694064 2626467 2607909 2591621 2574851 ...</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ retail_sales     : num [1:1000] 83449 88095 90280 86242 88225 ...</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ total_electricity: num [1:1000] 135871 142679 145058 139964 142385 ...</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - attr(*, &quot;spec&quot;)=</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. cols(</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   state = col_character(),</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   year = col_double(),</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   electricity_price = col_double(),</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   carbon_emissions = col_double(),</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   customers = col_double(),</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   retail_sales = col_double(),</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   total_electricity = col_double()</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. )</span></span></code></pre></div>
 </div>
 </div>
 <div id="eda-inputs-controls-and-outputs" class="section level1">
@@ -264,123 +275,170 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="tab-1-univariate-analysis" class="section level2">
 <h2>Tab 1: Univariate Analysis</h2>
 <p>The <strong>univariate</strong> tab allows the user to see the distribution for each of the variable. This allows the user to see how different energy sources or energy prices are distributed in each state/year.</p>
-<div id="filter-state-or-year" class="section level3">
-<h3>Filter state or year?</h3>
-<p>User can interactively choose between state or year.</p>
-</div>
-<div id="filter-which-state-filter-what-year" class="section level3">
-<h3>Filter which state? Filter what year?</h3>
-<p>If the user chose state, then this filter will automatically give the users options on 50 states. If the user chose year, then this filter will automatically give the users options on year(2001-2020)</p>
-</div>
-<div id="variable" class="section level3">
-<h3>Variable?</h3>
-<p>The variable of interest</p>
-</div>
-<div id="choose-a-plot-type" class="section level3">
-<h3>Choose a plot type?</h3>
-<p>This tab allows the user to choose between a “Density Plot”, “Histogram”, “Frequency Polygon”, in order to make the user may choose the type of the plot to visualize better/preferred</p>
-</div>
-<div id="histogram-number-of-bins" class="section level3">
-<h3>Histogram: Number of Bins?</h3>
-<p>Users can interactively change the number of bins(min =1, max = 100) in the histogram if they want</p>
-</div>
-<div id="t.test" class="section level3">
-<h3>t.test?</h3>
-<p>Output the results of the one-sample t.test. The results of the test changes depending on the variables(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) that users choose.</p>
-</div>
-<div id="warning" class="section level3">
-<h3>Warning</h3>
-<p>Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for ‘carbon emissions’(2018 ~ 2020) &amp; ‘customers’(2001 ~ 2007). So if the users choose these options they cannot see the graph.</p>
-</div>
+<ol style="list-style-type: decimal">
+<li>How to interpret results? / Breifly walks through ‘Use case’ describing how to solve the problem?
+<ul>
+<li>MISSING</li>
+</ul></li>
+<li>Filter state or year?
+<ul>
+<li>User can interactively choose between state or year.</li>
+</ul></li>
+<li>Filter which state? Filter what year?
+<ul>
+<li>If the user chose state, then this filter will automatically give the users options on 50 states.</li>
+<li>If the user chose year, then this filter will automatically give the users options on year(2001-2020)</li>
+</ul></li>
+<li>Variable?
+<ul>
+<li>The variable of interest</li>
+</ul></li>
+<li>Choose a plot type?
+<ul>
+<li>This tab allows the user to choose between a “Density Plot”, “Histogram”, “Frequency Polygon”, in order to make the user may choose the type of the plot to visualize better/preferred</li>
+</ul></li>
+<li>Histogram: Number of Bins?
+<ul>
+<li>Users can interactively change the number of bins(min =1, max = 100) in the histogram if they want</li>
+</ul></li>
+<li>t.test?
+<ul>
+<li>Output the results of the one-sample t.test. The results of the test changes depending on the variables(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) that users choose.</li>
+</ul></li>
+<li>Warning
+<ul>
+<li>Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for ‘carbon emissions’(2018 ~ 2020) &amp; ‘customers’(2001 ~ 2007). So if the users choose these options they cannot see the graph.</li>
+</ul></li>
+</ol>
 </div>
 <div id="tab-2-bivariate-analysis" class="section level2">
 <h2>Tab 2: Bivariate Analysis</h2>
 <p>The <strong>bivariate</strong> tab allows the user to make comparisons between two variables in the data set.</p>
-<div id="filter-state-or-year-1" class="section level3">
-<h3>Filter state or year?</h3>
-<p>User can interactively choose between state or year.</p>
-</div>
-<div id="filter-which-state-filter-what-year-1" class="section level3">
-<h3>Filter which state? Filter what year?</h3>
-<p>If the user chose state, then this filter will automatically give the users options on 50 states. If the user chose year, then this filter will automatically give the users options on year(2001-2020)</p>
-</div>
-<div id="variables" class="section level3">
-<h3>Variables?</h3>
-<p>The variable of interest for the X axis and the Y axis</p>
-</div>
-<div id="whether-to-add-an-ols-line-in-plot-1" class="section level3">
-<h3>Whether to add an OLS line in [PLOT 1]?</h3>
-<p>Allows the user to see a display of linear regression model of [PLOT 1], so that the user may make analyze based of the data.</p>
-</div>
-<div id="all-states-all-year" class="section level3">
-<h3>All states? All year?</h3>
-<p>This checkboxInput will help user to see all the data regarding two variables(X axis, Y axis) that the user chose. Also, it will be colored by state.</p>
-</div>
-<div id="wheter-to-add-an-ols-line-in-plot-2" class="section level3">
-<h3>Wheter to add an OLS line in [PLOT 2]?</h3>
-<p>Allows the user to see a display of linear regression model of [PLOT 2], so that the user may make analyze based of the data.</p>
-</div>
-</div>
-<div id="show-summary" class="section level2">
-<h2>Show summary?</h2>
-<p>If the ‘Show summary?’ is requested, add a summary below [PLOT 2] from running a linear model based on [PLOT2].</p>
-<div id="warning-1" class="section level3">
-<h3>Warning</h3>
-<p>Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for ‘carbon emissions’(2018 ~ 2020) &amp; ‘customers’(2001 ~ 2007). So if the users choose these options they cannot see the graph.</p>
-</div>
+<ol style="list-style-type: decimal">
+<li>How to interpret results? / Breifly walks through ‘Use case’ describing how to solve the problem?
+<ul>
+<li>MISSING</li>
+</ul></li>
+<li>Filter state or year?
+<ul>
+<li>User can interactively choose between state or year.</li>
+</ul></li>
+<li>Filter which state? Filter what year?
+<ul>
+<li>If the user chose state, then this filter will automatically give the users options on 50 states.</li>
+<li>If the user chose year, then this filter will automatically give the users options on year(2001-2020)</li>
+</ul></li>
+<li>Variables?
+<ul>
+<li>The variable of interest for the X axis and the Y axis</li>
+</ul></li>
+<li>Whether to add an OLS line in [PLOT 1]?
+<ul>
+<li>Allows the user to see a display of linear regression model of [PLOT 1], so that the user may make analyze based of the data.</li>
+</ul></li>
+<li>All states? All year?
+<ul>
+<li>This checkboxInput will help user to see all the data regarding two variables(X axis, Y axis) that the user chose. Also, it will be colored by state.</li>
+</ul></li>
+<li>Wheter to add an OLS line in [PLOT 2]?
+<ul>
+<li>Allows the user to see a display of linear regression model of [PLOT 2], so that the user may make analyze based of the data.</li>
+</ul></li>
+<li>Show summary?
+<ul>
+<li>If the ‘Show summary?’ is requested, add a summary below [PLOT 2] from running a linear model based on [PLOT2].</li>
+</ul></li>
+<li>Warning
+<ul>
+<li>Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for ‘carbon emissions’(2018 ~ 2020) &amp; ‘customers’(2001 ~ 2007). So if the users choose these options they cannot see the graph.</li>
+</ul></li>
+</ol>
 </div>
 <div id="tab-3-multivariate-analysis" class="section level2">
 <h2>Tab 3: Multivariate Analysis</h2>
 <p>The <strong>multivariate</strong> tab allows the user to see analysis based on more than two variables.This tab will provide the users better understanding of the relationships between the several variables. Then, users can see in one glance all of the relationships and compare which one has strong positive correlation or negative correlation.</p>
 <p>Since there is no data for ‘carbon emissions’(2018 ~ 2020) &amp; ‘customers’(2001 ~ 2007), the rows(observations) of all five variables doesn’t match. Therefore, we selected the overlapping years from 2008~2017 in order to make the rows same to conduct correlation and pairs plot.</p>
-<div id="correlation" class="section level3">
-<h3>Correlation</h3>
-<p>This tab will output the correlation matrix heatmap from 2008~ 2017 across all states. If the number is close to 1, it will be strong positive correlation, but if the number is close to -1, it will be strong negative correlation. This is not interactive plot with the users but will provide overall correlations between the variables.</p>
-</div>
-<div id="pairs" class="section level3">
-<h3>Pairs</h3>
-<p>This tab will output the scatter plot matrices from 2008 ~ 2017 across all states. Shows all of the scatter plots between variables in one glance, also this is not interactive plot, but will provide overall relationships between the variables.</p>
-</div>
+<ol style="list-style-type: decimal">
+<li><p>How to interpret results? / Breifly walks through ‘Use case’ describing how to solve the problem? MISSING</p></li>
+<li><p>Correlation</p>
+<ul>
+<li>This tab will output the correlation matrix heatmap from 2008~ 2017 across all states. If the number is close to 1, it will be strong positive correlation, but if the number is close to -1, it will be strong negative correlation. This is not interactive plot with the users but will provide overall correlations between the variables.</li>
+</ul></li>
+<li><p>Pairs</p>
+<ul>
+<li>This tab will output the scatter plot matrices from 2008 ~ 2017 across all states. Shows all of the scatter plots between variables in one glance, also this is not interactive plot, but will provide overall relationships between the variables.</li>
+</ul></li>
+</ol>
 </div>
 <div id="tab-4-daily-load" class="section level2">
 <h2>Tab 4: Daily Load</h2>
 <p>This tab will help users to compare two regions based on demand for electricity throughout the day. This tab used local time variable rather than UTC</p>
-<div id="choose-1" class="section level3">
-<h3>Choose 1?</h3>
-<p>Select one region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas</p>
-</div>
-<div id="choose-2" class="section level3">
-<h3>Choose 2?</h3>
-<p>Select another region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas</p>
-</div>
-<div id="date-to-compare" class="section level3">
-<h3>Date to Compare?</h3>
-<p>This will help users to choose the date that they want to see.</p>
-</div>
+<ol style="list-style-type: decimal">
+<li>How to interpret results? / Breifly walks through ‘Use case’ describing how to solve the problem?
+<ul>
+<li>MISSING</li>
+</ul></li>
+<li>Choose 1?
+<ul>
+<li>Select one region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas</li>
+</ul></li>
+<li>Choose 2?
+<ul>
+<li>Select another region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas</li>
+</ul></li>
+<li>Date to Compare?
+<ul>
+<li>This will help users to choose the date that they want to see.</li>
+</ul></li>
+</ol>
 </div>
 <div id="tab-5-time-series" class="section level2">
 <h2>Tab 5: Time Series</h2>
+<p>This tab allows user to interactively see the trend of variables. Four plots in this tab X-axis is automatically year variable(time), since time series plot is dealing with the trend over time. User can choose a state first, and then choose two variables to compare trends. PLOT 3 and PLOT 4 will show the users the trend of the variables over time regarding all of the states data.</p>
+<ol style="list-style-type: decimal">
+<li>How to interpret results? / Breifly walks through ‘Use case’ describing how to solve the problem?
+<ul>
+<li>MISSING</li>
+</ul></li>
+<li>Choose state?
+<ul>
+<li>User can choose from 50 states</li>
+</ul></li>
+<li>What variable trend do you want to see(choice 1)?
+<ul>
+<li>User can choose from ‘Average retail electricity price’, ‘carbon emissions’, ‘number of customer accounts’, ‘revenue from retail sales of electricity’, ‘net electricity generation’</li>
+</ul></li>
+<li>What variable trend do you want to see(choice 2)?
+<ul>
+<li>User can choose from ‘Average retail electricity price’, ‘carbon emissions’, ‘number of customer accounts’, ‘revenue from retail sales of electricity’, ‘net electricity generation’</li>
+</ul></li>
+<li>Add trend smooth line?
+<ul>
+<li>This request to show trend of the variable that user chose</li>
+</ul></li>
+<li>All states?
+<ul>
+<li>Show the trend of the variable regarding all of the data regardless of state filter.</li>
+<li>User can compare two variables trend with PLOT 3 and PLOT 4</li>
+</ul></li>
+</ol>
 </div>
 <div id="tab-6-spreadsheet" class="section level2">
 <h2>Tab 6: Spreadsheet</h2>
-<div id="this-tab-will-show-all-of-the-data" class="section level3">
-<h3>This tab will show all of the data</h3>
-<p>Users can interact with this spreadsheet. They can search or choose entries that they want to see.</p>
+<p>This tab will show all of the data Users can interact with this spreadsheet. They can search or choose entries that they want to see.</p>
 </div>
 </div>
-<div id="example-of-how-to-use" class="section level2">
-<h2>Example of how to use?</h2>
-<p>For example, let’s say that the user chose for filters state, California and chose X axis for carbon emissions and Y axis for electricity price</p>
-<p>For example, the user may see that there is trend that carbon emissions are going up with time. The user may then switch to the bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions.</p>
-</div>
+<div id="how-to-use-interactively-between-tabs" class="section level1">
+<h1>How to use interactively between tabs?</h1>
+<p>For example, the user may see that there is a trend that carbon emissions are going up with time in Time series tab. Then the user may switch to the Bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions.</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
 <p>There are three references from either academic papers or widely available authoritative sources that are relevant to this app. See below:</p>
 <ol style="list-style-type: decimal">
-<li><p><a href="https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf" class="uri">https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf</a></p></li>
-<li><p><a href="https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html" class="uri">https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html</a></p></li>
-<li><p><a href="https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871" class="uri">https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871</a></p></li>
+<li><p>Dhawan, R., &amp; Jeske, K. (2006). How resilient is the modern economy to energy price shocks? Economic Review (Atlanta, Ga.), 91(3), 21–.</p></li>
+<li><p>Edelstein, P., &amp; Kilian, L. (2007, November 7). The Response of Business Fixed Investment to Changes in Energy Prices: A Test of Some Hypotheses about the Transmission of Energy Price Shocks. De Gruyter. <a href="https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html" class="uri">https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html</a>.</p></li>
+<li><p>Kilian, L. (n.d.). The Economic Effects of Energy Price Shocks. Journal of Economic Literature. <a href="https://www.aeaweb.org/articles?id=10.1257%2Fjel.46.4.871" class="uri">https://www.aeaweb.org/articles?id=10.1257%2Fjel.46.4.871</a>.</p></li>
 </ol>
 </div>
 
