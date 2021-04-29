@@ -99,22 +99,21 @@ ui <- fluidPage(
       sidebarPanel(
         
         varSelectInput("univariate_filt1",
-                       "Filter Variable",
+                       "Filter by State or Year:",
                        data = Full_data[c(1:2)]),
-        selectInput("univariate_filt2", "Select Filter",
+        selectInput("univariate_filt2", "Select State or Year:",
                     choices = ""),
         varSelectInput("univariate_var",
-                       "Choose Variable?",
+                       "Choose Variable:",
                        data = Full_data[3:7]), 
-        radioButtons("Choices", "Choose a plot type?", choices = plot_choices),
+        radioButtons("Choices", "Choose a Plot Type:", choices = plot_choices),
         sliderInput("bins",
-                    "Histogram: Number of Bins?:",
+                    "Number of Bins for Histogram:",
                     min = 1,
                     max = 100,
                     value = 40),
         tableOutput("t_test"), 
-        helpText("Warning: No data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007).
-                        That is why we cannot see the graphs when we click these options. ")
+        helpText("NB: No data is available for Carbon Emissions from 2018-2020 and for Number of Customer Accounts from 2001-2007). Plots will not show for inputs in these ranges.")
         
       ),
       mainPanel(fluidRow(
@@ -129,27 +128,25 @@ ui <- fluidPage(
       "Bivariate",
       sidebarPanel(
         varSelectInput("bivariate_filt1",
-                       "Filter Variable",
+                       "Filter by State or Year:",
                        data = Full_data[c(1:2)]),
-        selectInput("bivariate_filt2", "Select Filter",
+        selectInput("bivariate_filt2", "Select State or Year",
                     choices = ""),
         varSelectInput("bivariate_var1",
-                       "X axis",
+                       "Variable for X Axis",
                        data = Full_data[3:7]),
         varSelectInput("bivariate_var2",
-                       "Y axis",
+                       "Variable for Y Axis",
                        data = Full_data[3:7]),
         checkboxInput("OLSselect",
-                      "Add OLS to [ PLOT 1 ]? "),
+                      "Add OLS to Main Plot?"),
         checkboxInput("all_states0",
-                      "All states? & All year?"), 
+                      "Show All States or All Years?"), 
         checkboxInput("OLSselect_2",
-                      "Add OLS to [ PLOT 2 ]? "),
+                      "Add OLS to All States or All Years? "),
         checkboxInput("summary_summary", 
-                      "Show summary?"), 
-        helpText("Warning: No data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007).
-                        That is why we cannot see the graphs when we click these options. ")
-      ),
+                      "Show Summary?"), 
+        helpText("NB: No data is available for Carbon Emissions from 2018-2020 and for Number of Customer Accounts from 2001-2007). Plots will not show for inputs in these ranges.")),
       mainPanel(column(8,
         plotOutput("bivariate_plot1")
         )),
@@ -166,10 +163,10 @@ ui <- fluidPage(
       mainPanel(
         tabsetPanel(
           tabPanel("Correlation", 
-                   mainPanel( 'Correlation Matrix Heatmap (2008 ~ 2017)',
+                   mainPanel( 'Correlation Matrix Heatmap (2008-2017)',
                    plotOutput("correlation_plot"))), 
           tabPanel("Pairs",
-                   mainPanel('Scatter plot Matrices (2008 ~ 2017)'),
+                   mainPanel('Matrix of Bivariate Scatter Plots (2008-2017)'),
                    plotOutput("pair_plot")))
         
       )
@@ -178,11 +175,11 @@ ui <- fluidPage(
     tabPanel(
       "Daily Load",
       sidebarPanel(
-        selectInput("daily_load_var1", "Choose State 1? ",
+        selectInput("daily_load_var1", "Select State 1:",
                     choices = ""),
-        selectInput("daily_load_var2", "Choose State 2?",
+        selectInput("daily_load_var2", "Select State 2:",
                     choices = ""),
-        dateInput("daily_load_date", "Date to Compare"),
+        dateInput("daily_load_date", "Select Date to Compare:"),
       ),
       mainPanel(
         column(8, 
@@ -194,21 +191,18 @@ ui <- fluidPage(
     tabPanel(
       "Time Series",
       sidebarLayout(position = "left", 
-        sidebarPanel(varSelectInput("time_series_filt1",
-                       "Filter Variable",
-                       data = Full_data[1]),
-        selectInput("time_series_filt2", "Choose state",
+        sidebarPanel(selectInput("time_series_filt2", "Select State:",
                     choices = ""),
         varSelectInput("time_series_var1",
-                       "What variable trend do you want to see (choice1)?",
+                       "Select First Variable to Track?",
                        data = Full_data[3:7]),
         varSelectInput("time_series_var2",
-                       "What variable trend do you want to see (choice2)?",
+                       "Select Second Variable to Track",
                        data = Full_data[3:7]),
         checkboxInput("smooth_line",
-                      "Add trend smooth line?"),
+                      "Add Trend Smooth Line?"),
         checkboxInput("all_states",
-                      "All states by states (color)?")),
+                      "Compare All States by Color")),
       mainPanel(
                 fluidRow(
                   splitLayout(cellWidths = c("50%", "50%"), plotOutput("time_series_plot_1"),
@@ -385,13 +379,13 @@ server <- function(input, output, session) {
     updateSelectInput(session,
                       "time_series_filt2",
                       choices = Full_data %>%
-                        select(!!input$time_series_filt1) %>%
-                        distinct(!!input$time_series_filt1))
+                        select(State) %>%
+                        distinct(State))
   })
   # Time series first plot
   output$time_series_plot_1 <- renderPlot({
     p1 <- Full_data %>%
-      filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
+      filter(State == !!input$time_series_filt2) %>%
       ggplot(aes(x = Year, y = !!input$time_series_var1)) +
       geom_line(color = "#FC4E07", size = 1) +
       theme_bw() +
@@ -412,7 +406,7 @@ server <- function(input, output, session) {
   })
   output$time_series_plot_2 <- renderPlot({
     p2 <- Full_data %>%
-      filter(!!input$time_series_filt1 == !!input$time_series_filt2) %>%
+      filter(State == !!input$time_series_filt2) %>%
       ggplot(aes(x = Year, y = !!input$time_series_var2)) +
       geom_line(color = "#FC4E07", size = 1) +
       theme_bw() +
