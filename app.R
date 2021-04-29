@@ -180,10 +180,10 @@ ui <- fluidPage(
       #          plotOutput("daily_load_plot1"),
       #          plotOutput("daily_load_plot2")))
       inputPanel(
-        selectInput("daily_load_var1", "Select State 1:",
+        selectInput("daily_load_var1", "Select Region 1:",
                     choices = ""),
         dateInput("daily_load_date", "Select Date to Compare:"),
-        selectInput("daily_load_var2", "Select State 2:",
+        selectInput("daily_load_var2", "Select Region 2:",
                     choices = "")
       ),
       fluidRow(
@@ -210,20 +210,13 @@ ui <- fluidPage(
         checkboxInput("all_states",
                       "Compare All States by Color")),
       mainPanel(
-                fluidRow(
-                  splitLayout(cellWidths = c("50%", "50%"), plotOutput("time_series_plot_1"),
-                              plotOutput("time_series_plot_2"))
+                verticalLayout(
+                  plotOutput("time_series_plot_1"),
+                  plotOutput("time_series_plot_2"),
+                  plotOutput("time_series_plot_3"),
+                  plotOutput("time_series_plot_4")
                 ))
-      ),
-      conditionalPanel(condition = "input.all_states",
-      mainPanel( 
-                fluidRow(
-                  column(width = 6),
-                  splitLayout(cellWidths = c("50%", "50%"), 
-                              plotOutput("time_series_plot_3"),
-                              plotOutput("time_series_plot_4"))
-                )  ))
-      ),
+      )),
     
     # tab 6: Spreadsheet
     tabPanel("Spreadsheet",
@@ -255,7 +248,7 @@ server <- function(input, output, session) {
       ) +
       theme_bw()+
       labs(title = paste(input$univariate_var, "in", input$univariate_filt2))
-  })
+  }, width = 500)
   # Univariate t test table
   output$t_test <- renderTable({
      Full_data %>%
@@ -397,7 +390,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = Year, y = !!input$time_series_var1)) +
       geom_line(color = "#FC4E07", size = 1) +
       theme_bw() +
-      labs(title = paste("[ PLOT 1 ] ",input$time_series_var1, "vs year (", input$time_series_filt2, ")"))
+      labs(title = paste(input$time_series_var1, "vs year (", input$time_series_filt2, ")"))
     
     if (input$smooth_line) {
       p1 +
@@ -418,7 +411,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = Year, y = !!input$time_series_var2)) +
       geom_line(color = "#FC4E07", size = 1) +
       theme_bw() +
-      labs(title = paste("[ PLOT 2 ] ",input$time_series_var2, "vs year (", input$time_series_filt2, ")"))
+      labs(title = paste(input$time_series_var2, "vs year (", input$time_series_filt2, ")"))
     
     if (input$smooth_line) {
       p2 +
@@ -442,9 +435,9 @@ server <- function(input, output, session) {
           y = !!input$time_series_var1,
           color = State
         )) +
-        geom_line() +
+        geom_line(show.legend = FALSE) +
         theme_bw() +
-        labs(title = paste("[ PLOT 3 ] ",input$time_series_var1, "vs year (all data)"))
+        labs(title = paste(input$time_series_var1, "vs year (all data)"))
     }
     else{
       print("")
@@ -458,9 +451,9 @@ server <- function(input, output, session) {
           y = !!input$time_series_var2,
           color = State
         )) +
-        geom_line() +
+        geom_line(show.legend = FALSE) +
         theme_bw() +
-        labs(title = paste("[ PLOT 4 ] ",input$time_series_var2, "vs year (all data)"))
+        labs(title = paste(input$time_series_var2, "vs year (all data)"))
     }
     else{
       print("")
