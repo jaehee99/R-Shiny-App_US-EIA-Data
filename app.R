@@ -147,9 +147,8 @@ ui <- fluidPage(
         )),
       conditionalPanel(condition = "input.all_states0",
                        mainPanel(
-                         column(8,
-                                plotOutput("bivariate_plot2"),
-                                verbatimTextOutput("bivariate_table"))
+                         column(4,plotOutput("bivariate_plot2")),
+                         column(12, verbatimTextOutput("bivariate_table"))
                        ))
     ),
     # tab 3: Multivariate
@@ -285,7 +284,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2)) +
       geom_point() +
       theme_bw() +
-      labs(title = paste("[ PLOT 1 ]", input$bivariate_var2, " VS ", input$bivariate_var1, "(", input$bivariate_filt2 , ")"))
+      labs(title = paste(input$bivariate_var2, " vs. ", input$bivariate_var1))
     
     if (input$OLSselect) {
       biv_plot1 +
@@ -295,14 +294,14 @@ server <- function(input, output, session) {
       biv_plot1
     }
     
-  })
+  }, width = 500)
   # Bivariate tab, second plot
   # scatter plot based on two variables (with no filter, all data)
   output$bivariate_plot2 <- renderPlot({
    biv_plot2 <- Full_data %>%
       ggplot(aes(x = !!input$bivariate_var1, y = !!input$bivariate_var2, color = State)) +
-      geom_point() +
-      labs(title = paste("[ PLOT 2 ]",input$bivariate_var2, " VS ", input$bivariate_var1, "(all data)")) +
+      geom_point(show.legend = FALSE) +
+      labs(title = paste(input$bivariate_var2, " vs. ", input$bivariate_var1, "(All Data)")) +
       theme_bw()
   
     if (input$OLSselect_2) {
@@ -314,7 +313,7 @@ server <- function(input, output, session) {
     else{
       biv_plot2
     }
-  })
+  }, width = 500)
   # Bivarate tab, summary table 
   output$bivariate_table <- renderPrint({
     if (input$summary_summary) {
@@ -323,7 +322,7 @@ server <- function(input, output, session) {
       print(summary(lmout))
     }
     else {
-      print("If you want to see the summary of [ PLOT2 ], click 'Show summary'")
+      print("If you want to see the summary of the All States plot, click 'Show summary'")
     }
   })
   # tab 3: Multivariate
