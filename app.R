@@ -15,7 +15,7 @@ library(shinythemes)
 
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
 
-full_data <- readRDS("./data/yearly_data.rds")
+Full_data <- readRDS("./data/yearly_data.rds")
 
 # List of regional electric grids and their abbreviations to make syntax clearer when pulling data
 region_list <-
