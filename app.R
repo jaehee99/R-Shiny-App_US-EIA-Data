@@ -330,7 +330,7 @@ server <- function(input, output, session) {
                hc.order = TRUE,
                lab = TRUE)
   },
-  width = 600)
+  width = 800, height = 700)
   # Multivariate second tab: pairs 
   output$pair_plot <- renderPlot({
     Full_data %>%  
