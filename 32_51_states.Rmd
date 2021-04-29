@@ -11,27 +11,125 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(tidyverse)
-library(httr)
-library(keyring)
-library(devtools)
+library(eia) 
 library(blsAPI) #BLS API
-library(rjson)
-library(eia) #Energy API
-library(lubridate)
 ```
+
+``` {r}
+eia_set_key("8a87a727635f5c834e2799cd76fcb820")
+# First, create a tibble with the api start, the state abbreviation, and the api end
+# Next, we create an id for each state based on that tibble, which we will use in the api call
+# Next, we select only the ID and convert it to a list, using the magrittr::extract to keep it in the pipe
+# Next, we pipe that ID into the api call
+# Next, we select only the "data" column, which originally is a dataframe containing the value, date, and year for every state
+# Next, we add on the states (so each row is a state, then the dataframe of its data) and unnest() into a longer dataframe
+# Finally, we filter for the years all dataframes have in common
+
+pull_data <- function(api_start, api_end) {
+  str_c(api_start, state.abb, api_end) %>% 
+  eia_series() %>% 
+  select(data) %>% 
+  mutate(state = state.name) %>% 
+  select(state, everything()) %>% 
+  unnest(data) 
+}
+```
+
+```{r}
+# call function for each variable we want and rename the standard "value" column to the more descriptive name we want in the final data
+avg_elec <- pull_data(api_start = "ELEC.PRICE.", api_end = "-IND.A") %>% 
+  rename("electricity_price" = value)
+emission <- pull_data(api_start = "EMISS.CO2-TOTV-EC-TO-", api_end = ".A") %>% 
+  rename("carbon_emissions" = value)
+customers <- pull_data(api_start = "ELEC.CUSTOMERS.", api_end = "-ALL.A") %>% 
+  rename("customers" = value)
+retail_sales <- pull_data(api_start = "ELEC.SALES.", api_end = "-ALL.A") %>% 
+  rename("retail_sales" = value)
+total_electricity <- pull_data(api_start = "ELEC.GEN.ALL-", api_end = "-99.A") %>% 
+  rename("total_electricity" = value)
+```
+
+
+
+```{r}
+# join tibbles together using the state, date, and year columns
+full_data <- left_join(avg_elec, emission, by = c("state", "date", "year")) %>% 
+  left_join(customers, by = c("state", "date", "year")) %>% 
+  left_join(retail_sales, by = c("state", "date", "year")) %>% 
+  left_join(total_electricity, by = c("state", "date", "year")) %>% 
+  select(state, year, electricity_price, carbon_emissions, customers, retail_sales, total_electricity)
+rm(avg_elec, customers, emission, retail_sales, total_electricity)
+```
+
 *For bls data  
 ```{r}
-#BLS dataframe
-data_1 <-list(seriesid = c("LAUST360000000000003","LAUST370000000000003", "LAUST380000000000003", "LAUST390000000000003","LAUST400000000000003","LAUST410000000000003","LAUST420000000000003","LAUST440000000000003","LAUST450000000000003","LAUST460000000000003","LAUST470000000000003","LAUST480000000000003","LAUST490000000000003","LAUST500000000000003","LAUST510000000000003","LAUST530000000000003","LAUST540000000000003","LAUST550000000000003","LAUST560000000000003"))
-blsAPI(data_1 , 2, TRUE) -> test_1
-test_1
+#Creating a tibble of state name, state abrv and BLS state code
+#This is a list of the state codes for the BLS database
+state_code <-c(1:2,4:6, 8:13, 15:42, 44:51,54:56)
+states <-tibble(state_name = state.name, state_abrv = state.abb, state_code = state_code)
 
-#Example of how to clean BLS dataframe
-test_1 %>% 
-  mutate(seriesID = case_when(
+states %>% 
+  mutate(state_code = case_when(
+    state_code<10 ~ str_c("0",as.character(state_code)),
+    state_code>=10 ~ str_c(as.character(state_code))
+  ))->states
+
+
+#Creating IDs BLS
+BLS_id <- tibble (start = c("LAUST", "TEST"), state = list(states$state_code), end = "0000000000003")
+unnest(BLS_id)->BLS_id
+BLS_id %>% 
+  mutate(seriesID = str_c(start, state, end))->BLS_id
+
+
+#Data set name i.e. Unemployment rate, Employment rate, etc.
+BLS_id %>% 
+  mutate(type = case_when(
+    start == "LAUST" ~ "Unemployment Rate"
+  ))->BLS_id
+
+data<-list(seriesid = BLS_id$seriesID)
+data
+
+blsAPI(data , 2, TRUE)-> Unemployment
+
+Unemployment %>% 
+mutate(seriesID = case_when(
+    str_detect(seriesID, "LAUST010000000000003") ~ "Alabama-Unemployment",
+    str_detect(seriesID, "LAUST020000000000003") ~ "Alaska-Unemployment",
+    str_detect(seriesID, "LAUST040000000000003") ~ "Arizona-Unemployment",
+    str_detect(seriesID, "LAUST050000000000003") ~ "Arkansas-Unemployment",
+    str_detect(seriesID, "LAUST060000000000003") ~ "California-Unemployment",
+    str_detect(seriesID, "LAUST080000000000003") ~ "Colorado-Unemployment",
+    str_detect(seriesID, "LAUST090000000000003") ~ "Connecticut-Unemployment",
+    str_detect(seriesID, "LAUST100000000000003") ~ "Delaware-Unemployment",
+    str_detect(seriesID, "LAUST110000000000003") ~ "District of Columbia - Unemployment",
+    str_detect(seriesID, "LAUST120000000000003") ~ "Florida - Unemployment",
+    str_detect(seriesID, "LAUST130000000000003") ~ "Georgia -Unemployment",
+    str_detect(seriesID, "LAUST150000000000003") ~ "Hawaii-Unemployment",
+    str_detect(seriesID, "LAUST160000000000003") ~ "Idaho-Unemployment",
+    str_detect(seriesID, "LAUST170000000000003") ~ "Illinois-Unemployment",
+    str_detect(seriesID, "LAUST180000000000003") ~ "Indiana-Unemployment",
+    str_detect(seriesID, "LAUST190000000000003") ~ "Iowa-Unemployment",
+    str_detect(seriesID, "LAUST200000000000003") ~ "Kansas-Unemployment",
+    str_detect(seriesID, "LAUST210000000000003") ~ "Kentucky-Unemployment",
+    str_detect(seriesID, "LAUST220000000000003") ~ "Louisiana-Unemployment",
+    str_detect(seriesID, "LAUST230000000000003") ~ "Maine-Unemployment",
+    str_detect(seriesID, "LAUST240000000000003") ~ "Maryland-Unemployment",
+    str_detect(seriesID, "LAUST250000000000003") ~ "Massachusetts-Unemployment",
+    str_detect(seriesID, "LAUST260000000000003") ~ "Michigan-Unemployment",
+    str_detect(seriesID, "LAUST270000000000003") ~ "Minnesota-Unemployment",
+    str_detect(seriesID, "LAUST280000000000003") ~ "Mississippi-Unemployment",
+    str_detect(seriesID, "LAUST290000000000003") ~ "Missouri-Unemployment",
+    str_detect(seriesID, "LAUST300000000000003") ~ "Montana-Unemployment",
+    str_detect(seriesID, "LAUST310000000000003") ~ "Nebraska-Unemployment",
+    str_detect(seriesID, "LAUST320000000000003") ~ "Nevada-Unemployment",
+    str_detect(seriesID, "LAUST330000000000003") ~ "NewHampshire-Unemployment",
+    str_detect(seriesID, "LAUST340000000000003") ~ "New Jersey -Unemployment",
+    str_detect(seriesID, "LAUST350000000000003") ~ "New Mexico -Unemployment",
     str_detect(seriesID, "LAUST360000000000003") ~ "New York-Unemployment",
     str_detect(seriesID, "LAUST370000000000003") ~ "North Carolina-Unemployment",
-    str_detect(seriesID, "LAUST380000000000003") ~ "North Dakota-Unemployment", 
+    str_detect(seriesID, "LAUST380000000000003") ~ "North Dakota-Unemployment",
     str_detect(seriesID, "LAUST390000000000003") ~ "Ohio-Unemployment",
     str_detect(seriesID, "LAUST400000000000003") ~ "Oklahoma-Unemployment",
     str_detect(seriesID, "LAUST410000000000003") ~ "Oregon-Unemployment",
@@ -48,61 +146,27 @@ test_1 %>%
     str_detect(seriesID, "LAUST540000000000003") ~ "West Virginia-Unemployment",
     str_detect(seriesID, "LAUST550000000000003") ~ "Wisconsin-Unemployment",
     str_detect(seriesID, "LAUST560000000000003") ~ "Wyoming-Unemployment"
-  )) %>% 
-  separate(seriesID, c("State", "Type"), sep = "-") %>% 
+  )) %>%
+  separate(seriesID, c("State", "Type"), sep = "-") %>%
   pivot_wider(names_from = "Type",
-              values_from = "value") -> bls_1
+              values_from = "value") %>%  
+  select(year, State, Unemployment)-> Unemployment
 
+rename(Unemployment, "state" = State) -> Unemployment
 
-# EIA dataframe
-eia_set_key("8a87a727635f5c834e2799cd76fcb820")
-eia_data <- c("ELEC.PRICE.NY-IND.M","ELEC.PRICE.NC-IND.M", "ELEC.PRICE.ND-ALL.M","ELEC.PRICE.OH-ALL.M","ELEC.PRICE.OK-ALL.M","ELEC.PRICE.OR-ALL.M","ELEC.PRICE.PA-ALL.M","ELEC.PRICE.RI-ALL.M","ELEC.PRICE.SC-ALL.M","ELEC.PRICE.SD-ALL.M","ELEC.PRICE.TN-ALL.M","ELEC.PRICE.TX-ALL.M","ELEC.PRICE.UT-ALL.M","ELEC.PRICE.VT-ALL.M","ELEC.PRICE.VA-ALL.M","ELEC.PRICE.WA-ALL.M","ELEC.PRICE.WV-ALL.M","ELEC.PRICE.WI-ALL.M", "ELEC.PRICE.WY-ALL.M")
-eia_series(eia_data)->df
-df$data
-
-
-#Example of how to clean EIA dataframe
-state_names <- c("New York","North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah","Vermont", "Virginia", "Washington", "West Virginia","Wisconsin", "Wyoming")
-
-df %>%
-  select(data)->df
-
-df %>%
-  mutate(data = map(df$data, ~.x %>%
-  mutate(
-         month = month(month, label = TRUE))))->df
-
-df %>%
-  mutate(data = Map(cbind, df$data, state=state_names))->df
-
-df$data
-
-# combine two data together
-df%>%  
-  unnest() -> energy
-
-unemployment <- bls_1
-
-energy %>%  
-  mutate(periodName = month(energy$date, label = TRUE, abbr = FALSE)) -> energy
-
-rename(energy, c("State" = state, "Energy_value" = value)) -> energy
-
-merge(energy, unemployment, by = c("year", "State", "periodName")) -> full_data
+as.numeric(Unemployment$year) -> Unemployment$year
+merge(Unemployment, full_data, by = c("state")) %>%  
+  select(state, Unemployment, electricity_price)-> data
+data %>%  
+  filter(state == "Alabama") %>% 
+ggplot(aes(x = electricity_price, y = Unemployment)) +
+geom_point()
+# merge(energy, unemployment, by = c("year", "State", "periodName")) -> full_data
 # change to numeric
-as.numeric(full_data$Unemployment) -> full_data$Unemployment
-str(full_data)
+#as.numeric(full_data$Unemployment) -> full_data$Unemployment
+#str(full_data)
 # load libraries
-library(ggplot2)
-library(dplyr)
 
-# plot time series (energy_value, time)
-ggplot(full_data, aes(x=year, y=Energy_value, color = State)) +
-  geom_line() 
-
-# plot time series (Unemployment, time)
-ggplot(full_data, aes(x=date, y=Unemployment, color = State)) +
-  geom_line() 
 
 
 ```

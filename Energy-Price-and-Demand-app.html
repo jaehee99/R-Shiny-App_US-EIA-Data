@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Group cdjs (Chris,David,Jaehee,Santiago)" />
+
+<meta name="date" content="2021-04-30" />
+
+<title>Energy Price and Demand app</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Energy Price and Demand app</h1>
+<h4 class="author">Group cdjs (Chris,David,Jaehee,Santiago)</h4>
+<h4 class="date">2021-04-30</h4>
+
+
+
+<div id="use-case" class="section level1">
+<h1>Use Case</h1>
+<p>This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as other business sectors, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions with statistical and graphical information.</p>
+<div id="who-is-the-expected-typical-user" class="section level2">
+<h2>Who is the expected typical user?</h2>
+<p>This app may be used by business analysts, economists, policymakers, or general public who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as the business sector, a large fraction of costs pertain to energy alone. Therefore, this app uses data from the EIA in order to provide those who want to make energy related business decisions, policymaking, or public understanding. This app will help improve the understanding of the interaction with the economy and environment.</p>
+</div>
+<div id="typical-questions-that-this-app-should-help-the-user-answer." class="section level2">
+<h2>Typical questions that this app should help the user answer.</h2>
+<p>Question 1 -</p>
+<p>Question 2 -</p>
+<p>Question 3 -</p>
+</div>
+</div>
+<div id="required-packages" class="section level1">
+<h1>Required Packages</h1>
+<div id="what-packages-to-download" class="section level2">
+<h2>What Packages to Download</h2>
+<p>The use of the app requires that the user must have the following packages installed:</p>
+</div>
+<div id="description-of-the-required-packages" class="section level2">
+<h2>Description of the required packages</h2>
+<ol style="list-style-type: decimal">
+<li><code>eia</code>- eia provides API access to data from the US Energy Information Administraion</li>
+<li><code>shiny</code> - shiny helps to build interactive web applications with R</li>
+<li><code>tidyverse</code> - tidyverse is an opinionated collection of R packages</li>
+<li><code>lubridate</code>- lubridate helps to make it easier to manipulate and parse dates.</li>
+<li><code>ggplot2</code> - ggplot2 helps to create graphics</li>
+<li><code>ggthemes</code> - ggthemes provides extra themes such as theme_bw()</li>
+<li><code>ggcorrplot</code> - ggcorrplot is a graphical display of a correlation matrix using ggplot2</li>
+<li><code>GGally</code>- GGally is an extension to ggplot2 and it includes pairwise plot matrix</li>
+<li><code>broom</code>- broom can convert statistical analysis objects from R into tidy tibbles</li>
+<li><code>shinythemes</code> - shinythemes helps to change the overall appearance of the Shiny application</li>
+</ol>
+</div>
+<div id="version-used-in-the-app" class="section level2">
+<h2>Version used in the app</h2>
+<ol style="list-style-type: decimal">
+<li><code>eia</code> - In order to run the app the use of version &gt;=0.3.7 is suggested and &gt;=0.1.0 is required.<br />
+</li>
+<li><code>shiny</code> - In order to run the app the use of version &gt;= 1.0.0 is required.<br />
+</li>
+<li><code>tidyverse</code> - In order to run the app the use of version &gt;= 3.3.3 is required.<br />
+</li>
+<li><code>lubridate</code> - In order to run the app the use of version &gt;= 1.7.1 is suggested and &gt;=1.7.0 is required.<br />
+</li>
+<li><code>ggplot2</code> - In order to run the app the use of version &gt;= 3.0.0 is required.<br />
+</li>
+<li><code>ggthemes</code> - In order to run the app the use of version &gt;= .<br />
+</li>
+<li><code>ggcorrplot</code> - In order to run the app the use of version &gt;= 0.1.3 is suggested.<br />
+</li>
+<li><code>GGally</code> - In order to run the app the use of version &gt;= .</li>
+<li><code>broom</code> - In order to run the app the use of version &gt;=0.3 is required.</li>
+<li><code>shinythemes</code> - In order to run the app the use of version &gt;=1.1.1.</li>
+</ol>
+</div>
+</div>
+<div id="data-source-and-structure" class="section level1">
+<h1>Data Source and Structure</h1>
+<div id="data-source" class="section level2">
+<h2>Data Source</h2>
+<p>Data was collected from Energy Information Administration(EIA) -&gt; <a href="https://www.eia.gov/opendata/" class="uri">https://www.eia.gov/opendata/</a></p>
+<p>Get access to EIA API query browser -&gt; <a href="https://www.eia.gov/opendata/qb.php" class="uri">https://www.eia.gov/opendata/qb.php</a></p>
+<p>Five Data that is used in this app are:</p>
+<p>Electricity Price, Customers, Carbon Emissions, Total Electricity, Retail Sales.</p>
+<p>In order to find each data fast, here is the guideline to find each data from the API query browser:</p>
+<ol style="list-style-type: decimal">
+<li>Electricity Price: EIA Data Sets -&gt; Electricity -&gt; Average retail price of electricity -&gt; Industrial</li>
+<li>Customers: EIA Data Sets -&gt; Electricity -&gt; Number of customer accounts</li>
+<li>Carbon Emissions: EIA Data Sets -&gt; CO2 Emissions -&gt; by State</li>
+<li>Total Electricity: EIA Data Sets -&gt; Electricity -&gt; Net generation</li>
+<li>Retail Sales: EIA Data Sets -&gt; Electricity -&gt; Retail sales of electricity</li>
+</ol>
+<p>Use eia package to have an API access to data from EIA</p>
+<p>There were yearly, monthly, quarterly for each data but this app only uses yearly data</p>
+</div>
+<div id="data-structure" class="section level2">
+<h2>Data Structure</h2>
+<p>After cleaning the data, we combined them into one dataframe which is Full_data</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Full_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;Full_data.csv&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cols(</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   state = col_character(),</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   year = col_double(),</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   electricity_price = col_double(),</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   carbon_emissions = col_double(),</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   customers = col_double(),</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   retail_sales = col_double(),</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   total_electricity = col_double()</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; )</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Full_data)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; spec_tbl_df[,7] [1,000 × 7] (S3: spec_tbl_df/tbl_df/tbl/data.frame)</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ state            : chr [1:1000] &quot;Alabama&quot; &quot;Alabama&quot; &quot;Alabama&quot; &quot;Alabama&quot; ...</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ year             : num [1:1000] 2020 2019 2018 2017 2016 ...</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ electricity_price: num [1:1000] 5.91 5.95 6.01 6.16 6.04 6.03 6.15 5.95 6.22 6.25 ...</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ carbon_emissions : num [1:1000] NA NA NA 51 55.6 ...</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ customers        : num [1:1000] 2694064 2626467 2607909 2591621 2574851 ...</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ retail_sales     : num [1:1000] 83449 88095 90280 86242 88225 ...</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ total_electricity: num [1:1000] 135871 142679 145058 139964 142385 ...</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - attr(*, &quot;spec&quot;)=</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. cols(</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   state = col_character(),</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   year = col_double(),</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   electricity_price = col_double(),</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   carbon_emissions = col_double(),</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   customers = col_double(),</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   retail_sales = col_double(),</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..   total_electricity = col_double()</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. )</span></span></code></pre></div>
+</div>
+</div>
+<div id="eda-inputs-controls-and-outputs" class="section level1">
+<h1>EDA Inputs, Controls, and Outputs</h1>
+<p>In order to perform EDA, the data needed to be cleaned. Here is the explanation on how each tab get along with the app and will allow the user to conduct an effective EDA.</p>
+<div id="tab-1-univariate-analysis" class="section level2">
+<h2>Tab 1: Univariate Analysis</h2>
+<p>The <strong>univariate</strong> tab allows the user to see the distribution for each of the variable. This allows the user to see how different energy sources or energy prices are distributed in each state/year.</p>
+<div id="filter-state-or-year" class="section level3">
+<h3>Filter state or year?</h3>
+<p>User can interactively choose between state or year.</p>
+</div>
+<div id="filter-which-state-filter-what-year" class="section level3">
+<h3>Filter which state? Filter what year?</h3>
+<p>If the user chose state, then this filter will automatically give the users options on 50 states. If the user chose year, then this filter will automatically give the users options on year(2001-2020)</p>
+</div>
+<div id="variable" class="section level3">
+<h3>Variable?</h3>
+<p>The variable of interest</p>
+</div>
+<div id="choose-a-plot-type" class="section level3">
+<h3>Choose a plot type?</h3>
+<p>This tab allows the user to choose between a “Density Plot”, “Histogram”, “Frequency Polygon”, in order to make the user may choose the type of the plot to visualize better/preferred</p>
+</div>
+<div id="histogram-number-of-bins" class="section level3">
+<h3>Histogram: Number of Bins?</h3>
+<p>Users can interactively change the number of bins(min =1, max = 100) in the histogram if they want</p>
+</div>
+<div id="t.test" class="section level3">
+<h3>t.test?</h3>
+<p>Output the results of the one-sample t.test. The results of the test changes depending on the variables(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) that users choose.</p>
+</div>
+<div id="warning" class="section level3">
+<h3>Warning</h3>
+<p>Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for ‘carbon emissions’(2018 ~ 2020) &amp; ‘customers’(2001 ~ 2007). So if the users choose these options they cannot see the graph.</p>
+</div>
+</div>
+<div id="tab-2-bivariate-analysis" class="section level2">
+<h2>Tab 2: Bivariate Analysis</h2>
+<p>The <strong>bivariate</strong> tab allows the user to make comparisons between two variables in the data set.</p>
+<div id="filter-state-or-year-1" class="section level3">
+<h3>Filter state or year?</h3>
+<p>User can interactively choose between state or year.</p>
+</div>
+<div id="filter-which-state-filter-what-year-1" class="section level3">
+<h3>Filter which state? Filter what year?</h3>
+<p>If the user chose state, then this filter will automatically give the users options on 50 states. If the user chose year, then this filter will automatically give the users options on year(2001-2020)</p>
+</div>
+<div id="variables" class="section level3">
+<h3>Variables?</h3>
+<p>The variable of interest for the X axis and the Y axis</p>
+</div>
+<div id="whether-to-add-an-ols-line-in-plot-1" class="section level3">
+<h3>Whether to add an OLS line in [PLOT 1]?</h3>
+<p>Allows the user to see a display of linear regression model of [PLOT 1], so that the user may make analyze based of the data.</p>
+</div>
+<div id="all-states-all-year" class="section level3">
+<h3>All states? All year?</h3>
+<p>This checkboxInput will help user to see all the data regarding two variables(X axis, Y axis) that the user chose. Also, it will be colored by state.</p>
+</div>
+<div id="wheter-to-add-an-ols-line-in-plot-2" class="section level3">
+<h3>Wheter to add an OLS line in [PLOT 2]?</h3>
+<p>Allows the user to see a display of linear regression model of [PLOT 2], so that the user may make analyze based of the data.</p>
+</div>
+</div>
+<div id="show-summary" class="section level2">
+<h2>Show summary?</h2>
+<p>If the ‘Show summary?’ is requested, add a summary below [PLOT 2] from running a linear model based on [PLOT2].</p>
+<div id="warning-1" class="section level3">
+<h3>Warning</h3>
+<p>Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for ‘carbon emissions’(2018 ~ 2020) &amp; ‘customers’(2001 ~ 2007). So if the users choose these options they cannot see the graph.</p>
+</div>
+</div>
+<div id="tab-3-multivariate-analysis" class="section level2">
+<h2>Tab 3: Multivariate Analysis</h2>
+<p>The <strong>multivariate</strong> tab allows the user to see analysis based on more than two variables.This tab will provide the users better understanding of the relationships between the several variables. Then, users can see in one glance all of the relationships and compare which one has strong positive correlation or negative correlation.</p>
+<p>Since there is no data for ‘carbon emissions’(2018 ~ 2020) &amp; ‘customers’(2001 ~ 2007), the rows(observations) of all five variables doesn’t match. Therefore, we selected the overlapping years from 2008~2017 in order to make the rows same to conduct correlation and pairs plot.</p>
+<div id="correlation" class="section level3">
+<h3>Correlation</h3>
+<p>This tab will output the correlation matrix heatmap from 2008~ 2017 across all states. If the number is close to 1, it will be strong positive correlation, but if the number is close to -1, it will be strong negative correlation. This is not interactive plot with the users but will provide overall correlations between the variables.</p>
+</div>
+<div id="pairs" class="section level3">
+<h3>Pairs</h3>
+<p>This tab will output the scatter plot matrices from 2008 ~ 2017 across all states. Shows all of the scatter plots between variables in one glance, also this is not interactive plot, but will provide overall relationships between the variables.</p>
+</div>
+</div>
+<div id="tab-4-daily-load" class="section level2">
+<h2>Tab 4: Daily Load</h2>
+<p>This tab will help users to compare two regions based on demand for electricity throughout the day. This tab used local time variable rather than UTC</p>
+<div id="choose-1" class="section level3">
+<h3>Choose 1?</h3>
+<p>Select one region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas</p>
+</div>
+<div id="choose-2" class="section level3">
+<h3>Choose 2?</h3>
+<p>Select another region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas</p>
+</div>
+<div id="date-to-compare" class="section level3">
+<h3>Date to Compare?</h3>
+<p>This will help users to choose the date that they want to see.</p>
+</div>
+</div>
+<div id="tab-5-time-series" class="section level2">
+<h2>Tab 5: Time Series</h2>
+</div>
+<div id="tab-6-spreadsheet" class="section level2">
+<h2>Tab 6: Spreadsheet</h2>
+<div id="this-tab-will-show-all-of-the-data" class="section level3">
+<h3>This tab will show all of the data</h3>
+<p>Users can interact with this spreadsheet. They can search or choose entries that they want to see.</p>
+</div>
+</div>
+<div id="example-of-how-to-use" class="section level2">
+<h2>Example of how to use?</h2>
+<p>For example, let’s say that the user chose for filters state, California and chose X axis for carbon emissions and Y axis for electricity price</p>
+<p>For example, the user may see that there is trend that carbon emissions are going up with time. The user may then switch to the bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions.</p>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p>There are three references from either academic papers or widely available authoritative sources that are relevant to this app. See below:</p>
+<ol style="list-style-type: decimal">
+<li><p><a href="https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf" class="uri">https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf</a></p></li>
+<li><p><a href="https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html" class="uri">https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html</a></p></li>
+<li><p><a href="https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871" class="uri">https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871</a></p></li>
+</ol>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

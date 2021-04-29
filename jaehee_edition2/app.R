@@ -124,6 +124,7 @@ str_c("EBA.",
 
 # Create UI 
 ui <- fluidPage(
+
   titlePanel("US EIA Data Project"),
   # EIA stands for Energy Information Administration
   tabsetPanel(
@@ -145,7 +146,7 @@ ui <- fluidPage(
                     min = 1, 
                     max = 100, 
                     value = 40),
-       tableOutput("t_test")
+        tableOutput("t_test")
         
       ),
       mainPanel(fluidRow(
@@ -261,6 +262,7 @@ server <- function(input, output, session) {
                         select(!!input$univariate_filt1) %>%
                         distinct(!!input$univariate_filt1))
   })
+
   # Univariate tab first plot 
   #density plot
   output$density <- renderPlot({
@@ -270,7 +272,7 @@ server <- function(input, output, session) {
       geom_density(color = "#018571")+
       theme_bw()+
       labs(title = paste("[ PLOT 1 ] Density plot of ", input$univariate_var, "in", input$univariate_filt2))
-    
+ 
   })
   # Univariate tab second plot
   # histogram
