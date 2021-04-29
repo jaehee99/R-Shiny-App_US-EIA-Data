@@ -1,6 +1,6 @@
 ---
 title: "Energy Price and Demand app"
-author: "Group cdjs"
+author: "Group cdjs (Chris,David,Jaehee,Santiago)"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -19,7 +19,20 @@ knitr::opts_chunk$set(
 
 # Use Case
 
+<<<<<<< HEAD
 This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as other business sectors, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions with statistical and graphical information.   
+=======
+This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. 
+
+## Who is the expected typical user? 
+
+This app may be used by business analysts, economists, policymakers, or general public who may want to analyze the usage of different sources of energy as well as the price by different states. 
+We know that for the manufacturing sector as well as the business sector, a large fraction of costs pertain to energy alone. Therefore, this app uses data from the EIA in order to provide those who want to make energy related business decisions, policymaking, or public understanding. This app will help improve the understanding of the interaction with the economy and environment.
+
+## Typical questions that this app should help the user answer.
+
+
+>>>>>>> 677de5201203db6a00bd8bbf7737318e60c7c7fc
 
 # Required Packages
 
@@ -27,19 +40,19 @@ This app has been designed in order to analyze the demand as well as the price f
 
 The use of the app requires that the user must have the following packages installed:
 
-1. `eia`
-2. `shiny`
-3. `tidyverse`
-4. `lubridate`
-5. `ggplot2`
-6. `ggthemes`
-7. `ggcorrplot`
-8. `GGally`
-9. `broom`
-10. `shinythemes`
+## Description of the required packages
+1. `eia`- eia provides API access to data from the US Energy Information Administraion
+2. `shiny` - shiny helps to build interactive web applications with R
+3. `tidyverse` -  tidyverse is an opinionated collection of R packages
+4. `lubridate`- lubridate helps to make it easier to manipulate and parse dates.
+5. `ggplot2` - ggplot2 helps to create graphics
+6. `ggthemes` - ggthemes provides extra themes such as theme_bw()
+7. `ggcorrplot` - ggcorrplot is a graphical display of a correlation matrix using ggplot2
+8. `GGally`- GGally is an extension to ggplot2 and it includes pairwise plot matrix
+9. `broom`- broom can convert statistical analysis objects from R into tidy tibbles
+10. `shinythemes` - shinythemes helps to change the overall appearance of the Shiny application
 
-## Version Used in the app
-
+## Version used in the app
 1. `eia` - In order to run the app the use of version >=0.3.7 is suggested and >=0.1.0 is required.  
 2. `shiny` - In order to run the app the use of version >= 1.0.0 is required.  
 3. `tidyverse` - In order to run the app the use of version >= 3.3.3 is required.  
@@ -57,10 +70,29 @@ The use of the app requires that the user must have the following packages insta
  
 
 ## Data Source 
-The data was gathered from the eia API https://www.eia.gov/opendata/ . In order to access the data, we used the eia package. The data that is used in the app consists of yearly and monthly and daily...
+Data was collected from Energy Information Administration(EIA) -> https://www.eia.gov/opendata/ 
 
+Get access to EIA API query browser ->  https://www.eia.gov/opendata/qb.php
+
+Five Data that is used in this app are: 
+
+Electricity Price, Customers, Carbon Emissions, Total Electricity, Retail Sales.
+
+In order to find each data fast, here is the guideline to find each data from the API query browser: 
+
+ 1. Electricity Price: EIA Data Sets -> Electricity -> Average retail price of electricity -> Industrial
+ 2. Customers: EIA Data Sets -> Electricity -> Number of customer accounts
+ 3. Carbon Emissions: EIA Data Sets -> CO2 Emissions -> by State
+ 4. Total Electricity: EIA Data Sets -> Electricity -> Net generation
+ 5. Retail Sales: EIA Data Sets -> Electricity -> Retail sales of electricity
+
+Use eia package to have an API access to data from EIA 
+
+There were yearly, monthly, quarterly for each data but this app only uses yearly data
 
 ## Data Structure
+
+
 
 # EDA Inputs, Controls, and Outputs
 
@@ -80,11 +112,21 @@ The bivariate tab allows the user to
 
 # Refrences
 
-https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf
+There are three references from either academic papers or widely available authoritative sources that are relevant to this app. See below: 
 
-https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html
 
-https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871
+1. https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf
+
+
+
+2. https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html
+
+
+3. https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871
+
+
+
+
 
 
 

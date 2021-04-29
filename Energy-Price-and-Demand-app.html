@@ -10,7 +10,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Group cdjs" />
+<meta name="author" content="Group cdjs (Chris,David,Jaehee,Santiago)" />
 
 <meta name="date" content="2021-04-29" />
 
@@ -45,35 +45,45 @@
 
 
 <h1 class="title toc-ignore">Energy Price and Demand app</h1>
-<h4 class="author">Group cdjs</h4>
+<h4 class="author">Group cdjs (Chris,David,Jaehee,Santiago)</h4>
 <h4 class="date">2021-04-29</h4>
 
 
 
 <div id="use-case" class="section level1">
 <h1>Use Case</h1>
-<p>This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as the business sector, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions.</p>
+<p>This app has been designed in order to analyze the demand as well as the price for energy inputs across different states.</p>
+<div id="who-is-the-expected-typical-user" class="section level2">
+<h2>Who is the expected typical user?</h2>
+<p>This app may be used by business analysts, economists, policymakers, or general public who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as the business sector, a large fraction of costs pertain to energy alone. Therefore, this app uses data from the EIA in order to provide those who want to make energy related business decisions, policymaking, or public understanding. This app will help improve the understanding of the interaction with the economy and environment.</p>
+</div>
+<div id="typical-questions-that-this-app-should-help-the-user-answer." class="section level2">
+<h2>Typical questions that this app should help the user answer.</h2>
+</div>
 </div>
 <div id="required-packages" class="section level1">
 <h1>Required Packages</h1>
 <div id="what-packages-to-download" class="section level2">
 <h2>What Packages to Download</h2>
 <p>The use of the app requires that the user must have the following packages installed:</p>
+</div>
+<div id="description-of-the-required-packages" class="section level2">
+<h2>Description of the required packages</h2>
 <ol style="list-style-type: decimal">
-<li><code>eia</code></li>
-<li><code>shiny</code></li>
-<li><code>tidyverse</code></li>
-<li><code>lubridate</code></li>
-<li><code>ggplot2</code></li>
-<li><code>ggthemes</code></li>
-<li><code>ggcorrplot</code></li>
-<li><code>GGally</code></li>
-<li><code>broom</code></li>
-<li><code>shinythemes</code></li>
+<li><code>eia</code>- eia provides API access to data from the US Energy Information Administraion</li>
+<li><code>shiny</code> - shiny helps to build interactive web applications with R</li>
+<li><code>tidyverse</code> - tidyverse is an opinionated collection of R packages</li>
+<li><code>lubridate</code>- lubridate helps to make it easier to manipulate and parse dates.</li>
+<li><code>ggplot2</code> - ggplot2 helps to create graphics</li>
+<li><code>ggthemes</code> - ggthemes provides extra themes such as theme_bw()</li>
+<li><code>ggcorrplot</code> - ggcorrplot is a graphical display of a correlation matrix using ggplot2</li>
+<li><code>GGally</code>- GGally is an extension to ggplot2 and it includes pairwise plot matrix</li>
+<li><code>broom</code>- broom can convert statistical analysis objects from R into tidy tibbles</li>
+<li><code>shinythemes</code> - shinythemes helps to change the overall appearance of the Shiny application</li>
 </ol>
 </div>
 <div id="version-used-in-the-app" class="section level2">
-<h2>Version Used in the app</h2>
+<h2>Version used in the app</h2>
 <ol style="list-style-type: decimal">
 <li><code>eia</code> - In order to run the app the use of version &gt;=0.3.7 is suggested and &gt;=0.1.0 is required.<br />
 </li>
@@ -99,7 +109,24 @@
 <h1>Data Source and Structure</h1>
 <div id="data-source" class="section level2">
 <h2>Data Source</h2>
+<<<<<<< HEAD
 <p>The data was gathered from the eia API <a href="https://www.eia.gov/opendata/" class="uri">https://www.eia.gov/opendata/</a> . In order to access the data, we used the eia package. The data that is used in the app consists of yearly and monthly and daily…</p>
+=======
+<p>Data was collected from Energy Information Administration(EIA) -&gt; <a href="https://www.eia.gov/opendata/" class="uri">https://www.eia.gov/opendata/</a></p>
+<p>Get access to EIA API query browser -&gt; <a href="https://www.eia.gov/opendata/qb.php" class="uri">https://www.eia.gov/opendata/qb.php</a></p>
+<p>Five Data that is used in this app are:</p>
+<p>Electricity Price, Customers, Carbon Emissions, Total Electricity, Retail Sales.</p>
+<p>In order to find each data fast, here is the guideline to find each data from the API query browser:</p>
+<ol style="list-style-type: decimal">
+<li>Electricity Price: EIA Data Sets -&gt; Electricity -&gt; Average retail price of electricity -&gt; Industrial</li>
+<li>Customers: EIA Data Sets -&gt; Electricity -&gt; Number of customer accounts</li>
+<li>Carbon Emissions: EIA Data Sets -&gt; CO2 Emissions -&gt; by State</li>
+<li>Total Electricity: EIA Data Sets -&gt; Electricity -&gt; Net generation</li>
+<li>Retail Sales: EIA Data Sets -&gt; Electricity -&gt; Retail sales of electricity</li>
+</ol>
+<p>Use eia package to have an API access to data from EIA</p>
+<p>There were yearly, monthly, quarterly for each data but this app only uses yearly data</p>
+>>>>>>> 677de5201203db6a00bd8bbf7737318e60c7c7fc
 </div>
 <div id="data-structure" class="section level2">
 <h2>Data Structure</h2>
@@ -107,9 +134,39 @@
 </div>
 <div id="eda-inputs-controls-and-outputs" class="section level1">
 <h1>EDA Inputs, Controls, and Outputs</h1>
+<<<<<<< HEAD
 </div>
 <div id="statistical-analysis-inputs-controls-and-outputs" class="section level1">
 <h1>Statistical Analysis Inputs, Controls, and Outputs</h1>
+=======
+<div id="eda-inputs" class="section level2">
+<h2>EDA Inputs</h2>
+</div>
+<div id="controls" class="section level2">
+<h2>Controls</h2>
+</div>
+<div id="outputs" class="section level2">
+<h2>Outputs</h2>
+</div>
+</div>
+<div id="statistical-analysis-inputs-controls-and-outputs" class="section level1">
+<h1>Statistical Analysis Inputs, Controls, and Outputs</h1>
+</div>
+<div id="refrences" class="section level1">
+<h1>Refrences</h1>
+<p>There are three references from either academic papers or widely available authoritative sources that are relevant to this app. See below:</p>
+<div id="first-reference" class="section level2">
+<h2>First Reference</h2>
+<p><a href="https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf" class="uri">https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf</a></p>
+</div>
+<div id="second-reference" class="section level2">
+<h2>Second Reference</h2>
+<p><a href="https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html" class="uri">https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html</a></p>
+</div>
+<div id="third-reference" class="section level2">
+<h2>Third Reference</h2>
+<p>Missing</p>
+>>>>>>> 677de5201203db6a00bd8bbf7737318e60c7c7fc
 </div>
 <div id="refrences" class="section level1">
 <h1>Refrences</h1>
