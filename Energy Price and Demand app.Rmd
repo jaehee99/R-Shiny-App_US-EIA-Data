@@ -90,6 +90,12 @@ Use eia package to have an API access to data from EIA
 There were yearly, monthly, quarterly for each data but this app only uses yearly data
 
 ## Data Structure
+After cleaning the data, we combined them into one dataframe which is Full_data
+```{r}
+library(readr)
+Full_data <- read_csv("Full_data.csv")
+str(Full_data)
+```
 
 
 
