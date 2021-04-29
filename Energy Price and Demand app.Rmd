@@ -20,21 +20,21 @@ knitr::opts_chunk$set(
 # Use Case
 
 
-This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as other business sectors, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions with statistical and graphical information.   
+This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states/years. We know that for the manufacturing sector as well as other business sectors, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions with statistical and graphical information.   
 
 
-## Who is the expected typical user? 
+* Who is the expected typical user? 
 
 This app may be used by business analysts, economists, policymakers, or general public who may want to analyze the usage of different sources of energy as well as the price by different states. 
 We know that for the manufacturing sector as well as the business sector, a large fraction of costs pertain to energy alone. Therefore, this app uses data from the EIA in order to provide those who want to make energy related business decisions, policymaking, or public understanding. This app will help improve the understanding of the interaction with the economy and environment.
 
-## Typical questions that this app should help the user answer.
+* Typical questions that this app should help the user answer.
 
-Question 1 - 
+    1. Question 1 - 
 
-Question 2 - 
+    1. Question 2 - 
 
-Question 3 - 
+    1. Question 3 - 
 
 # Required Packages
 
@@ -109,96 +109,124 @@ In order to perform EDA, the data needed to be cleaned. Here is the explanation 
 ## Tab 1: Univariate Analysis
 The **univariate** tab allows the user to see the distribution for each of the variable. This allows the user to see how different energy sources or energy prices are distributed in each state/year. 
 
-### Filter state or year? 
-User can interactively choose between state or year. 
+1. How to interpret results? / Breifly walks through 'Use case' describing how to solve the problem?
+    * MISSING 
 
-### Filter which state? Filter what year? 
-If the user chose state, then this filter will automatically give the users options on 50 states. 
-If the user chose year, then this filter will automatically give the users options on year(2001-2020)
+1. Filter state or year? 
+    * User can interactively choose between state or year. 
 
-### Variable? 
-The variable of interest
+1. Filter which state? Filter what year? 
+    * If the user chose state, then this filter will automatically give the users options on 50 states. 
+    * If the user chose year, then this filter will automatically give the users options on year(2001-2020)
 
-### Choose a plot type?
-This tab allows the user to choose between a "Density Plot", "Histogram", "Frequency Polygon", in order to make the user may choose the type of the plot to visualize better/preferred
+1. Variable? 
+    * The variable of interest
 
-### Histogram: Number of Bins? 
-Users can interactively change the number of bins(min =1, max = 100) in the histogram if they want 
+1. Choose a plot type?
+    * This tab allows the user to choose between a "Density Plot", "Histogram", "Frequency Polygon", in order to make the user may choose the type of the plot to visualize better/preferred
 
-### t.test? 
-Output the results of the one-sample t.test. The results of the test changes depending on the variables(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) that users choose.
+1. Histogram: Number of Bins? 
+    * Users can interactively change the number of bins(min =1, max = 100) in the histogram if they want 
 
-### Warning
-Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007). So if the users choose these options they cannot see the graph. 
+1. t.test? 
+    * Output the results of the one-sample t.test. The results of the test changes depending on the variables(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) that users choose.
 
+1. Warning
+    * Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007). So if the users choose these options they cannot see the graph. 
 
 ## Tab 2: Bivariate Analysis
 The **bivariate** tab allows the user to make comparisons between two variables in the data set. 
 
-### Filter state or year? 
-User can interactively choose between state or year. 
+1. How to interpret results? / Breifly walks through 'Use case' describing how to solve the problem?
+    * MISSING 
 
-### Filter which state? Filter what year? 
-If the user chose state, then this filter will automatically give the users options on 50 states. 
-If the user chose year, then this filter will automatically give the users options on year(2001-2020)
+1. Filter state or year? 
+    * User can interactively choose between state or year. 
 
-### Variables?
-The variable of interest for the X axis and the Y axis 
+1. Filter which state? Filter what year? 
+    * If the user chose state, then this filter will automatically give the users options on 50 states. 
+    * If the user chose year, then this filter will automatically give the users options on year(2001-2020)
 
-### Whether to add an OLS line in [PLOT 1]? 
-Allows the user to see a display of linear regression model of [PLOT 1], so that the user may make analyze based of the data. 
+1. Variables?
+    * The variable of interest for the X axis and the Y axis 
 
-### All states? All year? 
-This checkboxInput will help user to see all the data regarding two variables(X axis, Y axis) that the user chose. Also, it will be colored by state. 
+1. Whether to add an OLS line in [PLOT 1]? 
+    * Allows the user to see a display of linear regression model of [PLOT 1], so that the user may make analyze based of the data. 
 
-### Wheter to add an OLS line in [PLOT 2]? 
-Allows the user to see a display of linear regression model of [PLOT 2], so that the user may make analyze based of the data.
+1. All states? All year? 
+    * This checkboxInput will help user to see all the data regarding two variables(X axis, Y axis) that the user chose. Also, it will be colored by state. 
 
-## Show summary? 
-If the 'Show summary?' is requested, add a summary below [PLOT 2] from running a linear model based on [PLOT2].
+1. Wheter to add an OLS line in [PLOT 2]? 
+    * Allows the user to see a display of linear regression model of [PLOT 2], so that the user may make analyze based of the data.
 
-### Warning
-Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007). So if the users choose these options they cannot see the graph.
+1. Show summary? 
+    * If the 'Show summary?' is requested, add a summary below [PLOT 2] from running a linear model based on [PLOT2].
+
+1. Warning
+    * Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007). So if the users choose these options they cannot see the graph.
+
 
 ## Tab 3: Multivariate Analysis 
 The **multivariate** tab allows the user to see analysis based on more than two variables.This tab will provide the users better understanding of the relationships between the several variables. Then, users can see in one glance all of the relationships and compare which one has strong positive correlation or negative correlation. 
 
 Since there is no data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007), the rows(observations) of all five variables doesn't match. Therefore, we selected the overlapping years from 2008~2017 in order to make the rows same to conduct correlation and pairs plot.   
 
-### Correlation 
-This tab will output the correlation matrix heatmap from 2008~ 2017 across all states. 
+1. How to interpret results? / Breifly walks through 'Use case' describing how to solve the problem?
+MISSING 
+
+1. Correlation 
+    * This tab will output the correlation matrix heatmap from 2008~ 2017 across all states. 
 If the number is close to 1, it will be strong positive correlation, but if the number is close to -1, it will be strong negative correlation. This is not interactive plot with the users but will provide overall correlations between the variables. 
 
-### Pairs
-This tab will output the scatter plot matrices from 2008 ~ 2017 across all states.
+1. Pairs
+    * This tab will output the scatter plot matrices from 2008 ~ 2017 across all states.
 Shows all of the scatter plots between variables in one glance, also this is not interactive plot, but will provide overall relationships between the variables. 
 
 
 ## Tab 4: Daily Load
 This tab will help users to compare two regions based on demand for electricity throughout the day. This tab used local time variable rather than UTC
 
-### Choose 1? 
-Select one region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas
+1. How to interpret results? / Breifly walks through 'Use case' describing how to solve the problem?
+    * MISSING 
 
-### Choose 2?
-Select another region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas
+1. Choose 1? 
+    * Select one region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas
 
-### Date to Compare?
-This will help users to choose the date that they want to see.
+1. Choose 2?
+    * Select another region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas
 
+1. Date to Compare?
+    * This will help users to choose the date that they want to see.
 
 ## Tab 5: Time Series
 
+1. Choose state? 
+    * User can choose from 50 states
+
+1. What variable trend do you want to see(choice 1)?
+    * User can choose from 'Average retail electricity price', 'carbon emissions', 'number of customer accounts', 'revenue from retail sales of electricity', 'net electricity generation'
+
+1. What variable trend do you want to see(choice 2)? 
+    * User can choose from 'Average retail electricity price', 'carbon emissions', 'number of customer accounts', 'revenue from retail sales of electricity', 'net electricity generation'
+
+1. Add trend smooth line?
+    * This request to show trend of the variable that user chose
+
+1. All states? 
+
+
+1. How to interpret results? / Breifly walks through 'Use case' describing how to solve the problem?
+
+
 ## Tab 6: Spreadsheet
 
-### This tab will show all of the data
+This tab will show all of the data
 Users can interact with this spreadsheet. They can search or choose entries that they want to see. 
 
 
-## Example of how to use?
-For example, let's say that the user chose for filters state, California and chose X axis for carbon emissions and Y axis for electricity price
+# Example of how to use interactively between tabs?
 
-For example, the user may see that there is trend that carbon emissions are going up with time. The user may then switch to the bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
+For example, the user may see that there is a trend that carbon emissions are going up with time in Time series tab. Then the user may switch to the Bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
 
 
 
