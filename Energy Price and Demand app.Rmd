@@ -31,7 +31,7 @@ We know that for the manufacturing sector as well as the business sector, a larg
 ## Typical questions that this app should help the user answer.
 
 
->>>>>>> 677de5201203db6a00bd8bbf7737318e60c7c7fc
+# >>>>>>> 677de5201203db6a00bd8bbf7737318e60c7c7fc
 
 # Required Packages
 
@@ -101,16 +101,24 @@ str(Full_data)
 
 # EDA Inputs, Controls, and Outputs
 
+In order to perform EDA, the data needed to be cleaned. Here is the explanation on how each tab get along with the app and will allow the user to conduct an effective EDA.
 
-In order to perform EDA, the data needed to be cleaned. Given that two data frames were used, we will explain how each data set along with the commands in the app allow the user to conduct an effective EDA.
-
+## Tab 1: Univariate Analysis
 The **univariate** tab allows the user to see the distribution for each of the variables. This allows the user to see how different energy sources or energy prices are distributed in each state. Also, this tab allows the user to choose between a frequency polygon, a histogram, and a density plot so the user may visualize the variables as preferred.
 
+## Tab 2: Bivariate Analysis
 The **bivariate** tab allows the user to make comparisons between variables in the data set. That is, by allowing the user select variables of interest to display a linear regression model so that the user may make predictions based of the data. For example, the user may see that there is trend that carbon emissions are going up with time. The user may then switch to the bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
 
+## Tab 3: Multivariate Analysis 
 The **multivariate** tab allows the user 
 
 
+## Tab 4: Daily Load
+
+
+## Tab 5: Time Series
+
+## Tab 6: Spreadsheet
 
     Data cleaning
     Initial / descriptive data analyses
