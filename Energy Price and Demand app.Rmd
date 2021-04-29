@@ -54,8 +54,32 @@ The use of the app requires that the user must have the following packages insta
 
 # Data Source and Structure
 
-The data was gathered from the eia API. In order to acces the data, we used the eia package. 
+ 
 
-## Data
+## Data Source 
+The data was gathered from the eia API https://www.eia.gov/opendata/ . In order to access the data, we used the eia package. The data that is used in the app consists of yearly and monthly...
+
+
+## Data Structure
+
+# EDA Inputs, Controls, and Outputs
+
+## EDA Inputs
+
+## Controls
+
+## Outputs
+
+# Statistical Analysis Inputs, Controls, and Outputs
+
+# Refrences
+
+https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf
+
+
+
+
+
+
 
 
