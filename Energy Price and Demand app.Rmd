@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 # Use Case
 
-This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as the business sector, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions.   
+This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states. We know that for the manufacturing sector as well as other business sectors, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions with statistical and graphical information.   
 
 # Required Packages
 
@@ -64,11 +64,17 @@ The data was gathered from the eia API https://www.eia.gov/opendata/ . In order 
 
 # EDA Inputs, Controls, and Outputs
 
-## EDA Inputs
 
-## Controls
+In order to perform EDA, the data needed to be cleaned. Given that two data frames were used, we will explain how each data set along with the commands in the app allow the user to conduct an effective EDA.
 
-## Outputs
+The univariate tab allows the user to see the distribution for each of the variables. This allows the user to see how different energy sources or energy prices are demanded in each state. Also, this tab allows the user to choose between a frequency polygon, a histogram and a density plot so the user may visualize the variables as prefered.
+
+The bivariate tab allows the user to
+
+    Data cleaning
+    Initial / descriptive data analyses
+    Question finding / hypothesis generation
+
 
 # Statistical Analysis Inputs, Controls, and Outputs
 
@@ -77,6 +83,9 @@ The data was gathered from the eia API https://www.eia.gov/opendata/ . In order 
 https://www.frbatlanta.org/-/media/documents/research/publications/economic-review/2006/vol91no3_dhawan-jeske.pdf
 
 https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html
+
+https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871
+
 
 
 
