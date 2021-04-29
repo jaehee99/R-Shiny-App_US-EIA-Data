@@ -11,6 +11,7 @@ library(ggcorrplot)
 library(GGally)
 library(broom)
 library(shinythemes)
+library(bslib)
 
 
 eia_set_key("8a87a727635f5c834e2799cd76fcb820")
@@ -88,9 +89,7 @@ plot_choices = c("Density Plot", "Histogram", "Frequency Polygon")
 # Create UI 
 ui <- fluidPage(
    #Add theme, make it interactive to the users
-    shinythemes::themeSelector(),
-    theme = shinytheme("cerulean"),
- 
+    theme = shinytheme("yeti"),
      titlePanel("US EIA Data Analysis"),
   # EIA stands for Energy Information Administration
   tabsetPanel(
@@ -367,7 +366,7 @@ server <- function(input, output, session) {
       filter(region == !!input$daily_load_var1) %>%
       ggplot(aes(x = date_local, y = MWh)) +
       geom_line(color = "#FC4E07", size = 0.7)+
-      theme_bw()+
+      theme_bw() +
       labs(title = paste("[ PLOT 1 ] ",input$daily_load_var1, "electricity"))
   })
   # Daily load second plot(second choice of the state)
@@ -377,7 +376,7 @@ server <- function(input, output, session) {
       filter(region == !!input$daily_load_var2) %>%
       ggplot(aes(x = date_local, y = MWh)) +
       geom_line(color = "#FC4E07", size = 0.7)+
-      theme_bw()+
+      theme_bw() +
       labs(title = paste("[ PLOT 2 ] ",input$daily_load_var2, "electricity"))
   })
   # tab 5: Time series
