@@ -153,10 +153,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="typical-questions-that-this-app-should-help-the-user-answer." class="section level2">
 <h2>Typical questions that this app should help the user answer.</h2>
+<p>Question 1 -</p>
+<p>Question 2 -</p>
+<p>Question 3 -</p>
 </div>
-</div>
-<div id="de5201203db6a00bd8bbf7737318e60c7c7fc" class="section level1">
-<h1>&gt;&gt;&gt;&gt;&gt;&gt;&gt; 677de5201203db6a00bd8bbf7737318e60c7c7fc</h1>
 </div>
 <div id="required-packages" class="section level1">
 <h1>Required Packages</h1>
@@ -263,7 +263,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In order to perform EDA, the data needed to be cleaned. Here is the explanation on how each tab get along with the app and will allow the user to conduct an effective EDA.</p>
 <div id="tab-1-univariate-analysis" class="section level2">
 <h2>Tab 1: Univariate Analysis</h2>
-<p>The <strong>univariate</strong> tab allows the user to see the distribution for each of the variables. This allows the user to see how different energy sources or energy prices are distributed in each state. Also, this tab allows the user to choose between a frequency polygon, a histogram, and a density plot so the user may visualize the variables as preferred.</p>
+<p>The <strong>univariate</strong> tab allows the user to see the distribution for each of the variable. This allows the user to see how different energy sources or energy prices are distributed in each state/year.</p>
+<div id="filter-state-or-year" class="section level3">
+<h3>Filter state or year?</h3>
+<p>User can interactively choose between state or year.</p>
+</div>
+<div id="filter-which-state-filter-what-year" class="section level3">
+<h3>Filter which state? Filter what year?</h3>
+<p>If the user chose state, then this filter will automatically give the users options on 50 states. If the user chose year, then this filter will automatically give the users options on year(2001-2020)</p>
+</div>
+<div id="choose-a-plot-type" class="section level3">
+<h3>Choose a plot type?</h3>
+<p>This tab allows the user to choose between a “Density Plot”, “Histogram”, “Frequency Polygon”, in order to make the user may choose the type of the plot to visualize better/preferred</p>
+</div>
+<div id="histogram-number-of-bins" class="section level3">
+<h3>Histogram: Number of Bins?</h3>
+<p>Users can interactively change the number of bins(min =1, max = 100) in the histogram if they want</p>
+</div>
+<div id="t.test" class="section level3">
+<h3>t.test?</h3>
+<p>Output the results of the one-sample t.test. The results of the test changes depending on the variables(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) that users choose.</p>
+</div>
+<div id="warning" class="section level3">
+<h3>Warning</h3>
+<p>Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for ‘carbon emissions’(2018 ~ 2020) &amp; ‘customers’(2001 ~ 2007). So if the users choose these options they cannot see the graph.</p>
+</div>
 </div>
 <div id="tab-2-bivariate-analysis" class="section level2">
 <h2>Tab 2: Bivariate Analysis</h2>
@@ -286,9 +310,6 @@ Initial / descriptive data analyses
 Question finding / hypothesis generation</code></pre>
 </div>
 </div>
-<div id="statistical-analysis-inputs-controls-and-outputs" class="section level1">
-<h1>Statistical Analysis Inputs, Controls, and Outputs</h1>
-</div>
 <div id="refrences" class="section level1">
 <h1>Refrences</h1>
 <p>There are three references from either academic papers or widely available authoritative sources that are relevant to this app. See below:</p>
@@ -297,6 +318,9 @@ Question finding / hypothesis generation</code></pre>
 <li><p><a href="https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html" class="uri">https://www.degruyter.com/document/doi/10.2202/1935-1690.1607/html</a></p></li>
 <li><p><a href="https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871" class="uri">https://www.aeaweb.org/articles?id=10.1257/jel.46.4.871</a></p></li>
 </ol>
+</div>
+<div id="de5201203db6a00bd8bbf7737318e60c7c7fc" class="section level1">
+<h1>&gt;&gt;&gt;&gt;&gt;&gt;&gt; 677de5201203db6a00bd8bbf7737318e60c7c7fc</h1>
 </div>
 
 

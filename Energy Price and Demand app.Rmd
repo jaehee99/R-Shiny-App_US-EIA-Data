@@ -30,8 +30,11 @@ We know that for the manufacturing sector as well as the business sector, a larg
 
 ## Typical questions that this app should help the user answer.
 
+Question 1 - 
 
-# >>>>>>> 677de5201203db6a00bd8bbf7737318e60c7c7fc
+Question 2 - 
+
+Question 3 - 
 
 # Required Packages
 
@@ -104,7 +107,28 @@ str(Full_data)
 In order to perform EDA, the data needed to be cleaned. Here is the explanation on how each tab get along with the app and will allow the user to conduct an effective EDA.
 
 ## Tab 1: Univariate Analysis
-The **univariate** tab allows the user to see the distribution for each of the variables. This allows the user to see how different energy sources or energy prices are distributed in each state. Also, this tab allows the user to choose between a frequency polygon, a histogram, and a density plot so the user may visualize the variables as preferred.
+The **univariate** tab allows the user to see the distribution for each of the variable. This allows the user to see how different energy sources or energy prices are distributed in each state/year. 
+
+### Filter state or year? 
+User can interactively choose between state or year. 
+
+### Filter which state? Filter what year? 
+If the user chose state, then this filter will automatically give the users options on 50 states. 
+If the user chose year, then this filter will automatically give the users options on year(2001-2020)
+
+### Choose a plot type?
+This tab allows the user to choose between a "Density Plot", "Histogram", "Frequency Polygon", in order to make the user may choose the type of the plot to visualize better/preferred
+
+### Histogram: Number of Bins? 
+Users can interactively change the number of bins(min =1, max = 100) in the histogram if they want 
+
+### t.test? 
+Output the results of the one-sample t.test. The results of the test changes depending on the variables(electricity_price, carbon_emissions, customers, retail_sales, total_electricity) that users choose.
+
+### Warning
+Input at the end to give additional explanation on the data. After cleaning the data, we found out that there is no data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007). So if the users choose these options they cannot see the graph. 
+
+
 
 ## Tab 2: Bivariate Analysis
 The **bivariate** tab allows the user to make comparisons between variables in the data set. That is, by allowing the user select variables of interest to display a linear regression model so that the user may make predictions based of the data. For example, the user may see that there is trend that carbon emissions are going up with time. The user may then switch to the bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
@@ -125,7 +149,6 @@ The **multivariate** tab allows the user
     Question finding / hypothesis generation
 
 
-# Statistical Analysis Inputs, Controls, and Outputs
 
 # Refrences
 
@@ -143,6 +166,7 @@ There are three references from either academic papers or widely available autho
 
 
 
+# >>>>>>> 677de5201203db6a00bd8bbf7737318e60c7c7fc
 
 
 
