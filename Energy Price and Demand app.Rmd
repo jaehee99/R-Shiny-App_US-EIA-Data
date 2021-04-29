@@ -116,6 +116,9 @@ User can interactively choose between state or year.
 If the user chose state, then this filter will automatically give the users options on 50 states. 
 If the user chose year, then this filter will automatically give the users options on year(2001-2020)
 
+### Variable? 
+The variable of interest
+
 ### Choose a plot type?
 This tab allows the user to choose between a "Density Plot", "Histogram", "Frequency Polygon", in order to make the user may choose the type of the plot to visualize better/preferred
 
@@ -132,7 +135,27 @@ Input at the end to give additional explanation on the data. After cleaning the 
 ## Tab 2: Bivariate Analysis
 The **bivariate** tab allows the user to make comparisons between two variables in the data set. 
 
-That is, by allowing the user select variables of interest to display a linear regression model so that the user may make predictions based of the data. For example, the user may see that there is trend that carbon emissions are going up with time. The user may then switch to the bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
+### Filter state or year? 
+User can interactively choose between state or year. 
+
+### Filter which state? Filter what year? 
+If the user chose state, then this filter will automatically give the users options on 50 states. 
+If the user chose year, then this filter will automatically give the users options on year(2001-2020)
+
+### Variables?
+The variable of interest for the X axis and the Y axis 
+
+### Whether to add an OLS line in [PLOT 1]? 
+Allows the user to see a display of linear regression model of [PLOT 1], so that the user may make analyze based of the data. 
+
+### All states? All year? 
+This checkboxInput will help user to see all the data regarding two variables(X axis, Y axis) that the user chose. Also, it will be colored by state. 
+
+### Wheter to add an OLS line in [PLOT 2]? 
+Allows the user to see a display of linear regression model of [PLOT 2], so that the user may make analyze based of the data.
+
+## Show summary? 
+If the 'Show summary?' is requested, add a summary below [PLOT 2] from running a linear model based on [PLOT2].
 
 ## Tab 3: Multivariate Analysis 
 The **multivariate** tab allows the user 
@@ -149,7 +172,12 @@ The **multivariate** tab allows the user
     Initial / descriptive data analyses
     Question finding / hypothesis generation
 
+### Example of how to use?
+For example, let's say that the user chose for filters state, California and chose X axis for carbon emissions and Y axis for electricity price
 
+For example, the user may see that there is trend that carbon emissions are going up with time. The user may then switch to the bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
+
+#3 output
 
 # Refrences
 
