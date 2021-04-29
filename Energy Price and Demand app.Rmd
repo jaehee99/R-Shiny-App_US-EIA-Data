@@ -21,18 +21,19 @@ knitr::opts_chunk$set(
 
 This app has been designed in order to analyze the demand as well as the price for energy inputs across different states. This app may be used by businesses and economists who may want to analyze the usage of different sources of energy as well as the price by different states/years. We know that for the manufacturing sector as well as other business sectors, a large fraction of costs pertain to energy alone and hence, this app uses data from the eia in order to provide those who want to make energy related business decisions with statistical and graphical information.   
 
+
 ### Who is the expected typical user? 
 
-Business analysts, economists, policymakers, or general public who may want to analyze the usage of different sources of energy as well as the price by different states. 
+Business analysts, economists, Government policymakers, businesses or general public who may want to analyze the usage of different sources of energy as well as the price by different states. 
 
 
 ### Typical questions that this app should help the user answer.
 
-    1. Question 1 - 
+    * Question 1 - 
 
-    1. Question 2 - 
+    * Question 2 - 
 
-    1. Question 3 - 
+    * Question 3 - 
 
 # Required Packages
 
@@ -60,7 +61,7 @@ The use of the app requires that the user must have the following packages insta
 * `ggplot2` - In order to run the app the use of version >= 3.0.0 is required.  
 * `ggthemes` - In order to run the app the use of version >= .  
 * `ggcorrplot` - In order to run the app the use of version >= 0.1.3 is suggested.  
-* `GGally` - In order to run the app the use of version >= . 
+* `GGally` - In order to run the app the use of version >=  
 * `broom` - In order to run the app the use of version >=0.3 is required. 
 * `shinythemes` - In order to run the app the use of version >=1.1.1.  
 
@@ -111,9 +112,6 @@ In order to perform EDA, the data needed to be cleaned. Here is the explanation 
 ## Tab 1: Univariate Analysis
 The **univariate** tab allows the user to see the distribution for each of the variable. This allows the user to see how different energy sources or energy prices are distributed in each state/year. 
 
-1. How to interpret results? / Breifly walks through 'Use case' describing how to solve the problem?
-    * MISSING 
-
 1. Filter state or year? 
     * User can interactively choose between state or year. 
 
@@ -138,9 +136,8 @@ The **univariate** tab allows the user to see the distribution for each of the v
 
 ## Tab 2: Bivariate Analysis
 The **bivariate** tab allows the user to make comparisons between two variables in the data set. 
-
-1. How to interpret results? / Breifly walks through 'Use case' describing how to solve the problem?
-    * MISSING 
+[PLOT 1] will help users understand the relationship between two variables by one of the states/by one of the years that users chose
+[PLOT 2] will help users understand the relationship between two variables by based on all the data
 
 1. Filter state or year? 
     * User can interactively choose between state or year. 
@@ -173,9 +170,6 @@ The **multivariate** tab allows the user to see analysis based on more than two 
 
 Since there is no data for 'carbon emissions'(2018 ~ 2020) & 'customers'(2001 ~ 2007), the rows(observations) of all five variables doesn't match. Therefore, we selected the overlapping years from 2008~2017 in order to make the rows same to conduct correlation and pairs plot.   
 
-1. How to interpret results? / Breifly walks through 'Use case' describing how to solve the problem?
-MISSING 
-
 1. Correlation 
     * This tab will output the correlation matrix heatmap from 2008~ 2017 across all states. 
 If the number is close to 1, it will be strong positive correlation, but if the number is close to -1, it will be strong negative correlation. This is not interactive plot with the users but will provide overall correlations between the variables. 
@@ -187,9 +181,6 @@ Shows all of the scatter plots between variables in one glance, also this is not
 
 ## Tab 4: Daily Load
 This tab will help users to compare two regions based on demand for electricity throughout the day. This tab used local time variable rather than UTC
-
-1. How to interpret results? / Breifly walks through 'Use case' describing how to solve the problem?
-    * MISSING 
 
 1. Choose 1? 
     * Select one region from California, Carolina, Central, Florida, Mid-Atlantic, Midwest, New England, New York, Northwest, Southeast, Southwest,Tennessee, Texas
@@ -203,9 +194,6 @@ This tab will help users to compare two regions based on demand for electricity 
 ## Tab 5: Time Series
 This tab allows user to interactively see the trend of variables. Four plots in this tab X-axis is automatically year variable(time), since time series plot is dealing with the trend over time. 
 User can choose a state first, and then choose two variables to compare trends. PLOT 3 and PLOT 4 will show the users the trend of the variables over time regarding all of the states data.
-
-1. How to interpret results? / Breifly walks through 'Use case' describing how to solve the problem?
-    * MISSING
 
 1. Choose state? 
     * User can choose from 50 states
@@ -232,8 +220,6 @@ Users can interact with this spreadsheet. They can search or choose entries that
 # How to use interactively between tabs?
 
 For example, the user may see that there is a trend that carbon emissions are going up with time in Time series tab. Then the user may switch to the Bivariate tab in order to see how energy prices in that state correlate with an increase in carbon emissions. 
-
-
 
 # References
 
