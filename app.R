@@ -338,7 +338,7 @@ server <- function(input, output, session) {
       select(-Year, -State) -> new_data
     pairs(new_data)+ 
       theme_bw()
-  })
+  }, width = 800, height = 700)
   # tab 4: Daily load   
   observe({
     updateSelectInput(session,
