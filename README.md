@@ -14,4 +14,4 @@
 5. Revenue from retail sales of electricity
 
 ## Link to the App 
-https://jaehee99.shinyapps.io/eia-project-Jaehee/
+https://jaehee99.shinyapps.io/energy_project/
